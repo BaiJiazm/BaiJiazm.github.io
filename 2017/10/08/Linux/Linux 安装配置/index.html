@@ -1,0 +1,883 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Linux," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="1.
+按照老师下发文档逐步完成即可。
+2.
+
+![](Linux 安装配置/21.png)
+（PS：开始由于在mac地址中输入错误了一位数字，重启会失败）
+3.
+虚拟机ping宿主机
+宿主机ping虚拟机
+4.
+SecureCRT登录Linux成功。
+5.
+修改配置文件使中文显示正常
+最后一行添加
+结果验证
+6.
+配置mariaDB开机自启动方法
+验证是否启动
+设置数据库登录密码
+7.
+修改mys">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Linux 安装配置">
+<meta property="og:url" content="http://yoursite.com/2017/10/08/Linux/Linux 安装配置/index.html">
+<meta property="og:site_name" content="BaiJiazm">
+<meta property="og:description" content="1.
+按照老师下发文档逐步完成即可。
+2.
+
+![](Linux 安装配置/21.png)
+（PS：开始由于在mac地址中输入错误了一位数字，重启会失败）
+3.
+虚拟机ping宿主机
+宿主机ping虚拟机
+4.
+SecureCRT登录Linux成功。
+5.
+修改配置文件使中文显示正常
+最后一行添加
+结果验证
+6.
+配置mariaDB开机自启动方法
+验证是否启动
+设置数据库登录密码
+7.
+修改mys">
+<meta property="og:image" content="https://i.imgur.com/bT6A4dc.png">
+<meta property="og:updated_time" content="2017-10-08T07:03:34.560Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Linux 安装配置">
+<meta name="twitter:description" content="1.
+按照老师下发文档逐步完成即可。
+2.
+
+![](Linux 安装配置/21.png)
+（PS：开始由于在mac地址中输入错误了一位数字，重启会失败）
+3.
+虚拟机ping宿主机
+宿主机ping虚拟机
+4.
+SecureCRT登录Linux成功。
+5.
+修改配置文件使中文显示正常
+最后一行添加
+结果验证
+6.
+配置mariaDB开机自启动方法
+验证是否启动
+设置数据库登录密码
+7.
+修改mys">
+<meta name="twitter:image" content="https://i.imgur.com/bT6A4dc.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/10/08/Linux/Linux 安装配置/"/>
+
+
+
+
+
+  <title>Linux 安装配置 | BaiJiazm</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">BaiJiazm</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">每一段路都是一种领悟</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/10/08/Linux/Linux 安装配置/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="BaiJiazm">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="BaiJiazm">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Linux 安装配置</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-08T14:22:13+08:00">
+                2017-10-08
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2>1.</h2>
+<p>按照老师下发文档逐步完成即可。</p>
+<h2>2.</h2>
+<p><img src="https://i.imgur.com/bT6A4dc.png" alt=""></p>
+<p>![](Linux 安装配置/21.png)</p>
+<p>（PS：开始由于在mac地址中输入错误了一位数字，重启会失败）</p>
+<h2>3.</h2>
+<p>虚拟机ping宿主机</p>
+<p>宿主机ping虚拟机</p>
+<h2>4.</h2>
+<p>SecureCRT登录Linux成功。</p>
+<h2>5.</h2>
+<p>修改配置文件使中文显示正常</p>
+<p>最后一行添加</p>
+<p>结果验证</p>
+<h2>6.</h2>
+<p>配置mariaDB开机自启动方法</p>
+<p>验证是否启动</p>
+<p>设置数据库登录密码</p>
+<h2>7.</h2>
+<p>修改mysql配置文件，使缺省字符集为GBK
+转到/etc/my.cnf.d/目录下，为配置文件目录</p>
+<p>client.cnf中添加最后一行</p>
+<p>server.cnf中添加最后一行</p>
+<p>重启使配置生效</p>
+<p>可以看到mysql缺省字符集的变化</p>
+<p>将demo.sql导入到数据库中</p>
+<p>在客户端中进行查询，中文显示正确</p>
+<h2>8.</h2>
+<p>本次作业参考
+http://blog.btthly.com/rhel-configure-lamp-server-7-0-installation-apachephpmariadb.html
+其中包含了几乎所有安装配置过程，但是有些地方有误或不同，个人操作如下（红色代表不同）：
+一、使用系统镜像文件配置本地yum源
+1、使用FlashFXP等工具上传系统镜像文件rhel-server-7.4-x86_64-dvd.iso到/usr/local/src目录
+2、使用SecureCRT工具远程连接到RHEL服务器
+3、挂载系统镜像文件
+mkdir /media/cdrom	#新建镜像文件挂载目录
+cd /usr/local/src	#进入系统镜像文件存放目录
+ls					#列出目录文件，可以看到刚刚上传的系统镜像文件
+mount -t iso9660 -o loop /usr/local/src/rhel-server-7.4-x86_64-dvd.iso /media/cdrom 			#挂载系统镜像
+cd /media/cdrom 	#进入挂载目录，使用ls命令可以看到已经有文件存在了
+备注：umount /media/cdrom #卸载系统镜像
+4、设置开机自动挂载系统镜像文件
+vi /etc/fstab		#添加以下代码。实现开机自动挂载
+/usr/local/src/rhel-server-7.4-x86_64-dvd.iso /media/cdrom iso9660 defaults,ro,loop 0 0
+:wq! #保存退出
+备注：iso9660使用df -T 查看
+5、配置本地yum源
+cd /etc/yum.repos.d/ 	#进入yum配置目录
+touch rhel-media.repo 	#建立yum配置文件
+vi rhel-media.repo 		#编辑配置文件，添加以下内容
+[rhel-media]
+name=Red Hat Enterprise Linux 7.4	 #自定义名称
+baseurl=file:///media/cdrom 		#本地光盘挂载路径
+enabled=1 			#启用yum源，0为不启用，1为启用
+gpgcheck=1 			#检查GPG-KEY，0为不检查，1为检查
+gpgkey=file:///media/cdrom/RPM-GPG-KEY-redhat-release #GPG-KEY路径
+:wq! #保存退出
+6、配置yum命令
+yum clean all		#清除yum缓存
+yum makecache 		#缓存本地yum源中的软件包信息
+#现在，已经可以使用yum命令自动安装软件了。
+二、配置防火墙，开启80端口、3306端口
+准备篇：
+RHEL 7.0默认使用的是firewall作为防火墙，这里改为iptables防火墙。
+1、关闭firewall：
+systemctl stop firewalld.service	#停止firewall
+systemctl disable firewalld.service	#禁止firewall开机启动
+2、安装iptables防火墙
+yum install iptables-services 	#安装
+vi /etc/sysconfig/iptables 		#编辑防火墙配置文件</p>
+<h1>Firewall configuration written by system-config-firewall</h1>
+<h1>Manual customization of this file is not recommended.</h1>
+<p><em>filter
+:INPUT ACCEPT [0:0]
+:FORWARD ACCEPT [0:0]
+:OUTPUT ACCEPT [0:0]
+-A INPUT -m state –state ESTABLISHED,RELATED -j ACCEPT
+-A INPUT -p icmp -j ACCEPT
+-A INPUT -i lo -j ACCEPT
+-A INPUT -p tcp -m state --state NEW -m tcp –dport 22 -j ACCEPT
+-A INPUT -p tcp -m state --state NEW -m tcp –dport 80 -j ACCEPT
+-A INPUT -p tcp -m state --state NEW -m tcp –dport 3306 -j ACCEPT
+-A INPUT -j REJECT –reject-with icmp-host-prohibited
+-A FORWARD -j REJECT –reject-with icmp-host-prohibited
+COMMIT
+:wq! #保存退出
+systemctl restart iptables.service #最后重启防火墙使配置生效
+三、关闭SELINUX
+vi /etc/selinux/config
+#SELINUX=enforcing		#注释掉
+#SELINUXTYPE=targeted 	#注释掉
+SELINUX=disabled 		#增加
+:wq! #保存退出
+setenforce 0	#使配置立即生效
+安装篇：
+一、安装Apache
+yum install httpd				#根据提示，输入Y安装即可成功安装
+systemctl start httpd.service 	#启动apache
+systemctl stop httpd.service 	#停止apache
+systemctl restart httpd.service #重启apache
+systemctl enable httpd.service 	#设置apache开机启动
+二、安装MariaDB
+已经在前面的步骤中配置好。
+三、安装PHP
+1、安装PHP
+yum install php 	#据提示输入Y直到安装完成
+2、安装PHP组件，使PHP支持 MariaDB
+yum install php-mysql php-gd libjpeg</em>  php-ldap php-odbc php-pear php-xml php-xmlrpc php-mhash php-mysqli
+#这里选择以上安装包进行安装，根据提示输入Y回车
+systemctl restart mariadb.service 	#重启MariaDB
+systemctl restart httpd.service 	#重启apache
+配置篇：
+一、Apache配置
+vi /etc/httpd/conf/httpd.conf 	#编辑文件
+ServerSignature On　#添加，在错误页中显示Apache的版本，Off为不显示
+Options Indexes FollowSymLinks　#修改为：Options Includes ExecCGI FollowSymLinks（允许服务器执行CGI及SSI，禁止列出目录）
+#AddHandler cgi-script .cgi　#修改为：AddHandler cgi-script .cgi .pl （允许扩展名为.pl的CGI脚本运行）
+AllowOverride None　 #修改为：AllowOverride All （允许.htaccess）
+AddDefaultCharset UTF-8　#修改为：AddDefaultCharset GBK　（添加GBK为默认编码）
+#Options Indexes FollowSymLinks  #修改为 Options FollowSymLinks（不在浏览器上显示树状目录结构）
+DirectoryIndex index.html  #修改为：DirectoryIndex index.html index.htm Default.html Default.htm index.php（设置默认首页文件，增加index.php）（此处没有将index换为demo，而将后面的demo.php命名为index.php）
+MaxKeepAliveRequests 500	#添加MaxKeepAliveRequests 500 （增加同时连接数）
+:wq! #保存退出
+systemctl restart httpd.service 	#重启apache
+二、php配置
+vi /etc/php.ini 	#编辑
+extension = php_mysqli.so	#添加在最后
+:wq! #保存退出
+systemctl restart mariadb.service	#重启MariaDB
+systemctl restart httpd.service 	#重启apache
+测试篇：
+1、静态页面测试
+cd /var/www/html
+vi index.php #输入下面内容</p>
+<?php
+phpinfo();
+?>
+<p>:wq! #保存退出
+在客户端浏览器输入服务器IP地址，可以看到相关的配置信息！
+2、数据库连接测试
+cd /var/www/html
+	#将demo.php放到该目录，改名为index.php
+	#demo.php中连接密码为root123更改为自己数据库密码123456
+	#在客户端浏览器中输入192.168.80.230，配置成功。</p>
+<h2>9.</h2>
+<p>安装ODBC等相关库。</p>
+<p>查看相关用法。</p>
+<p>编译运行</p>
+<h2>10.</h2>
+<p>点击“站点”，“站点管理”进行下图设置，完成。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Linux/" rel="tag"># Linux</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/10/08/Life/to be continued/" rel="next" title="to be continued ...">
+                <i class="fa fa-chevron-left"></i> to be continued ...
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">BaiJiazm</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#undefined"><span class="nav-number">1.</span> <span class="nav-text">1.</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#undefined"><span class="nav-number">2.</span> <span class="nav-text">2.</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#undefined"><span class="nav-number">3.</span> <span class="nav-text">3.</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#undefined"><span class="nav-number">4.</span> <span class="nav-text">4.</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#undefined"><span class="nav-number">5.</span> <span class="nav-text">5.</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#undefined"><span class="nav-number">6.</span> <span class="nav-text">6.</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#undefined"><span class="nav-number">7.</span> <span class="nav-text">7.</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#undefined"><span class="nav-number">8.</span> <span class="nav-text">8.</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#undefined"><span class="nav-number"></span> <span class="nav-text">Firewall configuration written by system-config-firewall</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#undefined"><span class="nav-number"></span> <span class="nav-text">Manual customization of this file is not recommended.</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#undefined"><span class="nav-number">1.</span> <span class="nav-text">9.</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#undefined"><span class="nav-number">2.</span> <span class="nav-text">10.</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">BaiJiazm</span>
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
