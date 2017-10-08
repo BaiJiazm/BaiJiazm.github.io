@@ -248,6 +248,208 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/10/08/Linux/LinuxMySQL静态编译/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="BaiJiazm">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="BaiJiazm">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/10/08/Linux/LinuxMySQL静态编译/" itemprop="url">Linux-MySQL的静态编译</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-08T23:26:12+08:00">
+                2017-10-08
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <hr>
+<ol>
+<li>
+<p><strong>准备</strong></p>
+<p>1.1 <strong>libc 静态库文件</strong><br>
+若缺少libc静态库文件，则会失败，如下信息。</p>
+<p><img src="/2017/10/08/Linux/LinuxMySQL静态编译/1.png" alt=""></p>
+<p>安装如下：
+首先下载相应安装包，<a href="https://centos.pkgs.org/7/centos-x86_64/glibc-static-2.17-196.el7.x86_64.rpm.html" target="_blank" rel="external">下载地址</a>，放置到任意目录下（此处为/home），进入该目录，</p>
+<p>执行如下命令，升级安装完成。</p>
+<p><img src="/2017/10/08/Linux/LinuxMySQL静态编译/2.jpg" alt=""></p>
+<p>可查看系统安装的GLIBC包，如下</p>
+<p><img src="/2017/10/08/Linux/LinuxMySQL静态编译/3.png" alt=""></p>
+<p>1.2 <strong>获取libmysqlclient.a静态库</strong><br>
+<strong>下载源码编译方式</strong></p>
+<p>获取MariaDB源码
+下载相应源码，下载地址https://downloads.mariadb.org/mariadb/5.5.56/ 下载后传到虚拟机中，解压然后编译。</p>
+<p><img src="/2017/10/08/Linux/LinuxMySQL静态编译/4.png" alt=""></p>
+<p>准备安装环境</p>
+<pre><code>yum –y groupinstall Development tools
+yum –y install ncurses-devel
+yum –y install cmake
+</code></pre>
+<p>编译MariaDB得到libmysqlclient.a</p>
+<pre><code>tar –zxvf mariadb-5.5.56.tar.gz
+cd mariadb-5.5.56
+cmake . –LH		#查看cmake的可用选项
+cmake . -DCMAKE_INSTALL_PREFIX=/home/mysql
+        -DMYSQL_DATADIR=/home/mysqldata -DSYSCONFDIR=/etc 
+        -DWITHOUT_TOKUDB=1 -DMYSQL_UNIX_ADDR=/home/tmp/mysql.sock 
+        -DDEFAULT_CHARSET=gbk -DDEFAULT_COLLATION=gbk_general_ci
+make
+make install
+</code></pre>
+<p>完成上述命令后，在/home/mysql/lib/目录下可得到libmysqlclient.a静态库文件</p>
+<p><strong>直接获取libmysqlclient.a方式</strong><br>
+下载编译后的MariaDB文件，<a href="https://downloads.mariadb.org/mariadb/5.5.56/" target="_blank" rel="external">下载地址</a></p>
+<p><img src="/2017/10/08/Linux/LinuxMySQL静态编译/5.jpg" alt=""></p>
+<p>解压</p>
+<pre><code>tar -zxvf mariadb-5.5.56-linux-x86_64.tar.gz
+</code></pre>
+<p>在mariadb-5.5.56-linux-x86_64目录下的lib文件夹下得到libmysqlclient.a文件</p>
+<p><img src="/2017/10/08/Linux/LinuxMySQL静态编译/6.png" alt=""></p>
+</li>
+<li>
+<p><strong>编译</strong></p>
+<p><strong>编译说明：</strong></p>
+<pre><code> 这里采用的是半静态半动态编译方法。libmysqlclient.a库用静态连接，一些常用的库用动态连接。
+ 因为程序是运行在linux中的，常用库系统默认都会有的。  
+</code></pre>
+<p><strong>编译命令：</strong></p>
+<pre><code> g++ mysql_demo.cpp -o mysql_demo -I/usr/include/mysql -Wl,-dn -L. 
+  -lmysqlclient  -Wl,-dy -lpthread -lm -ldl -lcrypt
+</code></pre>
+<p><strong>命令解释：</strong></p>
+<pre><code> -Idir
+ 编译时优先在选项后的目录中查找包含的头文件,然后将到系统缺省的头文件目录查找
+ -Ldir
+ 指定编译搜索库的路径
+ -llibrary
+ 制定编译的时候使用的库
+ -Wl,-dn
+ 后面是静态链接
+ -Wl,-dy
+ 后面是动态连接
+</code></pre>
+<p><strong>库解释：</strong></p>
+<pre><code> -lpthread
+ 使用POSIX线程库添加对多线程的支持
+ -lm 
+ 链接的是数学函数库
+ -ldl
+ 显式加载动态库的动态函数库（dlopen(),dlclose() , dlerror() , dlsym()）
+</code></pre>
+</li>
+<li>
+<p><strong>运行</strong></p>
+<p>ln命令用来为文件创件连接，连接类型分为硬连接和符号连接两种，默认的连接类型是硬连接。如果要创建符号连接必须使用&quot;-s&quot;选项。</p>
+<pre><code>ln -s /var/lib/mysql/mysql.sock /tmp/mysql.sock
+</code></pre>
+<p><img src="/2017/10/08/Linux/LinuxMySQL静态编译/7.jpg" alt=""></p>
+</li>
+</ol>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/10/08/Linux/Linux动态编译/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1967,7 +2169,7 @@ g++ [-选项1-] [-选项2-] .... [-选项n-] &lt;源文件名&gt;
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">10</span>
+                  <span class="site-state-item-count">11</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
