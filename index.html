@@ -248,7 +248,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/10/08/Linux/Linux 安装配置/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/10/08/Linux/Linux安装配置/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="BaiJiazm">
@@ -267,7 +267,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/10/08/Linux/Linux 安装配置/" itemprop="url">Linux 安装配置</a></h1>
+                <a class="post-title-link" href="/2017/10/08/Linux/Linux安装配置/" itemprop="url">Linux安装配置</a></h1>
         
 
         <div class="post-meta">
@@ -319,33 +319,38 @@
       
         
           
-            <h2>1.</h2>
+            <h2>1.安装Linux基本系统</h2>
 <p>按照老师下发文档逐步完成即可。</p>
-<h2>2.</h2>
-<p><img src="https://i.imgur.com/bT6A4dc.png" alt=""></p>
-<p>![](Linux 安装配置/21.jpg)
-![](Linux 安装配置/22.jpg)</p>
-<h2>3.</h2>
-<p>![](Linux 安装配置/31.jpg)</p>
-<h2>4.</h2>
-<p>![](Linux 安装配置/41.jpg)</p>
-<h2>5.</h2>
-<p>![](Linux 安装配置/51.jpg)</p>
-<h2>6.</h2>
-<p>![](Linux 安装配置/61.jpg)</p>
-<h2>7.</h2>
-<p>![](Linux 安装配置/71.jpg)
-![](Linux 安装配置/72.jpg)
-![](Linux 安装配置/73.jpg)
-![](Linux 安装配置/74.jpg)</p>
-<h2>8.</h2>
+<h2>2.设置网卡</h2>
+<p><img src="/2017/10/08/Linux/Linux安装配置/21.jpg" alt="">
+<img src="/2017/10/08/Linux/Linux安装配置/22.jpg" alt=""></p>
+<h2>3.双向ping通</h2>
+<p><img src="/2017/10/08/Linux/Linux安装配置/31.jpg" alt=""></p>
+<h2>4.Secure安装登录</h2>
+<p><img src="/2017/10/08/Linux/Linux安装配置/41.jpg" alt=""></p>
+<h2>5.中文显示</h2>
+<p><img src="/2017/10/08/Linux/Linux安装配置/51.jpg" alt=""></p>
+<h2>6.配置数据库-登录启动</h2>
+<p><img src="/2017/10/08/Linux/Linux安装配置/61.jpg" alt=""></p>
+<h2>7.配置数据库-字符集</h2>
+<p><img src="/2017/10/08/Linux/Linux安装配置/71.jpg" alt=""></p>
+<p><img src="/2017/10/08/Linux/Linux安装配置/72.jpg" alt=""></p>
+<p><img src="/2017/10/08/Linux/Linux安装配置/73.jpg" alt=""></p>
+<p><img src="/2017/10/08/Linux/Linux安装配置/74.jpg" alt=""></p>
+<h2>8.安装配置 PHP Apache</h2>
 <p>本次作业<a href="http://blog.btthly.com/rhel-configure-lamp-server-7-0-installation-apachephpmariadb.html" target="_blank" rel="external">参考链接</a>，其中包含了几乎所有安装配置过程，但是有些地方有误或不同，个人操作如下（红色代表不同）：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div><div class="line">113</div><div class="line">114</div><div class="line">115</div><div class="line">116</div><div class="line">117</div><div class="line">118</div><div class="line">119</div><div class="line">120</div><div class="line">121</div><div class="line">122</div><div class="line">123</div><div class="line">124</div><div class="line">125</div><div class="line">126</div><div class="line">127</div><div class="line">128</div><div class="line">129</div><div class="line">130</div><div class="line">131</div><div class="line">132</div><div class="line">133</div><div class="line">134</div><div class="line">135</div><div class="line">136</div><div class="line">137</div><div class="line">138</div><div class="line">139</div><div class="line">140</div><div class="line">141</div><div class="line">142</div><div class="line">143</div><div class="line">144</div><div class="line">145</div><div class="line">146</div><div class="line">147</div><div class="line">148</div><div class="line">149</div><div class="line">150</div><div class="line">151</div><div class="line">152</div><div class="line">153</div><div class="line">154</div><div class="line">155</div></pre></td><td class="code"><pre><div class="line">准备篇：</div><div class="line"></div><div class="line">一、使用系统镜像文件配置本地yum源</div><div class="line"></div><div class="line">1、使用FlashFXP等工具上传系统镜像文件rhel-server-7.4-x86_64-dvd.iso</div><div class="line">到/usr/local/src目录</div><div class="line">2、使用SecureCRT工具远程连接到RHEL服务器</div><div class="line">3、挂载系统镜像文件</div><div class="line">    mkdir /media/cdrom	#新建镜像文件挂载目录</div><div class="line">    cd /usr/local/src	#进入系统镜像文件存放目录</div><div class="line">    ls					#列出目录文件，可以看到刚刚上传的系统镜像文件</div><div class="line">    mount -t iso9660 -o loop</div><div class="line">     /usr/local/src/rhel-server-7.4-x86_64-dvd.iso /media/cdrom </div><div class="line">	                    #挂载系统镜像</div><div class="line">    cd /media/cdrom 	#进入挂载目录，使用ls命令可以看到已经有文件存在了</div><div class="line">    备注：umount /media/cdrom #卸载系统镜像</div><div class="line">4、设置开机自动挂载系统镜像文件</div><div class="line">    vi /etc/fstab		#添加以下代码。实现开机自动挂载</div><div class="line">    /usr/local/src/rhel-server-7.4-x86_64-dvd.iso (不换行)</div><div class="line">    /media/cdrom iso9660 defaults,ro,loop 0 0</div><div class="line">    :wq! #保存退出</div><div class="line">    备注：iso9660使用df -T 查看</div><div class="line">5、配置本地yum源</div><div class="line">    cd /etc/yum.repos.d/ 	#进入yum配置目录</div><div class="line">    touch rhel-media.repo 	#建立yum配置文件</div><div class="line">    vi rhel-media.repo 		#编辑配置文件，添加以下内容</div><div class="line">        [rhel-media]</div><div class="line">        name=Red Hat Enterprise Linux 7.4	 #自定义名称</div><div class="line">        baseurl=file:///media/cdrom 		#本地光盘挂载路径</div><div class="line">        enabled=1 			#启用yum源，0为不启用，1为启用</div><div class="line">        gpgcheck=1 			#检查GPG-KEY，0为不检查，1为检查</div><div class="line">        gpgkey=file:///media/cdrom/RPM-GPG-KEY-redhat-release #GPG-KEY路径</div><div class="line">    :wq! #保存退出</div><div class="line">6、配置yum命令</div><div class="line">    yum clean all		#清除yum缓存</div><div class="line">    yum makecache 		#缓存本地yum源中的软件包信息</div><div class="line">    #现在，已经可以使用yum命令自动安装软件了。</div><div class="line"></div><div class="line">二、配置防火墙，开启80端口、3306端口</div><div class="line"></div><div class="line">    RHEL 7.0默认使用的是firewall作为防火墙，这里改为iptables防火墙。</div><div class="line"></div><div class="line">1、关闭firewall：</div><div class="line">    systemctl stop firewalld.service	#停止firewall</div><div class="line">    systemctl disable firewalld.service	#禁止firewall开机启动</div><div class="line">2、安装iptables防火墙</div><div class="line">    yum install iptables-services 	#安装</div><div class="line">    vi /etc/sysconfig/iptables 		#编辑防火墙配置文件</div><div class="line">        # Firewall configuration written by system-config-firewall</div><div class="line">            # Manual customization of this file is not recommended.</div><div class="line">        *filter</div><div class="line">        :INPUT ACCEPT [0:0]</div><div class="line">        :FORWARD ACCEPT [0:0]</div><div class="line">        :OUTPUT ACCEPT [0:0]</div><div class="line">        -A INPUT -m state –state ESTABLISHED,RELATED -j ACCEPT</div><div class="line">        -A INPUT -p icmp -j ACCEPT</div><div class="line">        -A INPUT -i lo -j ACCEPT</div><div class="line">        -A INPUT -p tcp -m state --state NEW -m tcp –dport 22 -j ACCEPT</div><div class="line">        -A INPUT -p tcp -m state --state NEW -m tcp –dport 80 -j ACCEPT</div><div class="line">        -A INPUT -p tcp -m state --state NEW -m tcp –dport 3306 -j ACCEPT</div><div class="line">        -A INPUT -j REJECT –reject-with icmp-host-prohibited</div><div class="line">        -A FORWARD -j REJECT –reject-with icmp-host-prohibited</div><div class="line">        COMMIT</div><div class="line">        :wq! #保存退出</div><div class="line">    systemctl restart iptables.service #最后重启防火墙使配置生效</div><div class="line"></div><div class="line">三、关闭SELINUX</div><div class="line"></div><div class="line">    vi /etc/selinux/config</div><div class="line">        #SELINUX=enforcing		#注释掉</div><div class="line">        #SELINUXTYPE=targeted 	#注释掉</div><div class="line">        SELINUX=disabled 		#增加</div><div class="line">        :wq! #保存退出</div><div class="line">    setenforce 0	#使配置立即生效</div><div class="line"></div><div class="line">安装篇：</div><div class="line"></div><div class="line">一、安装Apache</div><div class="line">    yum install httpd				#根据提示，输入Y安装即可成功安装</div><div class="line">    systemctl start httpd.service 	#启动apache</div><div class="line">    systemctl stop httpd.service 	#停止apache</div><div class="line">    systemctl restart httpd.service #重启apache</div><div class="line">    systemctl enable httpd.service 	#设置apache开机启动</div><div class="line"></div><div class="line">二、安装MariaDB</div><div class="line">    已经在前面的步骤中配置好。</div><div class="line"></div><div class="line">三、安装PHP</div><div class="line"></div><div class="line">1、安装PHP</div><div class="line">    yum install php 	#据提示输入Y直到安装完成</div><div class="line">2、安装PHP组件，使PHP支持 MariaDB</div><div class="line">    yum install php-mysql php-gd libjpeg*  php-ldap php-odbc (不换行) </div><div class="line">    php-pear php-xml php-xmlrpc php-mhash php-mysqli</div><div class="line">        #这里选择以上安装包进行安装，根据提示输入Y回车</div><div class="line">    systemctl restart mariadb.service 	#重启MariaDB</div><div class="line">    systemctl restart httpd.service 	#重启apache</div><div class="line"></div><div class="line">配置篇：</div><div class="line"></div><div class="line">一、Apache配置</div><div class="line"></div><div class="line">    vi /etc/httpd/conf/httpd.conf 	#编辑文件</div><div class="line"></div><div class="line">        ServerSignature On　</div><div class="line">        #添加，在错误页中显示Apache的版本，Off为不显示</div><div class="line">        </div><div class="line">        Options Indexes FollowSymLinks　</div><div class="line">        #修改为：Options Includes ExecCGI FollowSymLinks</div><div class="line">        （允许服务器执行CGI及SSI，禁止列出目录）</div><div class="line">        </div><div class="line">        #AddHandler cgi-script .cgi　</div><div class="line">        #修改为：AddHandler cgi-script .cgi .pl （允许扩展名为.pl的CGI脚本运行）</div><div class="line"></div><div class="line">        AllowOverride None　 #修改为：AllowOverride All （允许.htaccess）</div><div class="line">        </div><div class="line">        AddDefaultCharset UTF-8　</div><div class="line">        #修改为：AddDefaultCharset GBK　（添加GBK为默认编码）</div><div class="line"></div><div class="line">        #Options Indexes FollowSymLinks  </div><div class="line">        #修改为 Options FollowSymLinks（不在浏览器上显示树状目录结构）</div><div class="line"></div><div class="line">        DirectoryIndex index.html  </div><div class="line">        #修改为：DirectoryIndex index.html index.htm </div><div class="line">        Default.html Default.htm index.php</div><div class="line">        （设置默认首页文件，增加index.php）</div><div class="line">        （此处没有将index换为demo，而将后面的demo.php命名为index.php）</div><div class="line">        </div><div class="line">        MaxKeepAliveRequests 500	</div><div class="line">        #添加MaxKeepAliveRequests 500 （增加同时连接数）</div><div class="line">    :wq! #保存退出</div><div class="line">    systemctl restart httpd.service 	#重启apache</div><div class="line"></div><div class="line">二、php配置</div><div class="line">    vi /etc/php.ini 	#编辑</div><div class="line">        extension = php_mysqli.so	#添加在最后</div><div class="line">    :wq! #保存退出</div><div class="line">    systemctl restart mariadb.service	#重启MariaDB</div><div class="line">    systemctl restart httpd.service 	#重启apache</div><div class="line"></div><div class="line">测试篇：</div><div class="line"></div><div class="line">1、静态页面测试</div><div class="line">    cd /var/www/html</div><div class="line">    vi index.php #输入下面内容</div><div class="line">        &lt;?php</div><div class="line">        phpinfo();</div><div class="line">        ?&gt;</div><div class="line">    :wq! #保存退出</div><div class="line">    在客户端浏览器输入服务器IP地址，可以看到相关的配置信息！</div><div class="line">2、数据库连接测试</div><div class="line">    cd /var/www/html</div><div class="line">    #将demo.php放到该目录，改名为index.php</div><div class="line">    #demo.php中连接密码为root123更改为自己数据库密码123456</div><div class="line">    #在客户端浏览器中输入192.168.80.230，配置成功。</div></pre></td></tr></table></figure>
-<h2>9.</h2>
-<p>![](Linux 安装配置/91.jpg)
-![](Linux 安装配置/92.jpg)</p>
-<h2>10.</h2>
-<p>![](Linux 安装配置/101.jpg)</p>
+<p><img src="/2017/10/08/Linux/Linux安装配置/81.jpg" alt="">
+<img src="/2017/10/08/Linux/Linux安装配置/82.jpg" alt="">
+<img src="/2017/10/08/Linux/Linux安装配置/83.jpg" alt="">
+<img src="/2017/10/08/Linux/Linux安装配置/84.jpg" alt="">
+<img src="/2017/10/08/Linux/Linux安装配置/85.jpg" alt="">
+<img src="/2017/10/08/Linux/Linux安装配置/86.jpg" alt="">
+<img src="/2017/10/08/Linux/Linux安装配置/87.jpg" alt=""></p>
+<h2>9.安装MySQL组件</h2>
+<p><img src="/2017/10/08/Linux/Linux安装配置/91.jpg" alt="">
+<img src="/2017/10/08/Linux/Linux安装配置/92.jpg" alt=""></p>
+<h2>10.修改FLASHFXP配置</h2>
+<p><img src="/2017/10/08/Linux/Linux安装配置/101.jpg" alt=""></p>
 
           
         
