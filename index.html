@@ -248,6 +248,1201 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/10/22/Linux/Linux-rpm制作/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="BaiJiazm">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="BaiJiazm">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/10/22/Linux/Linux-rpm制作/" itemprop="url">Linux-rpm包的制作</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-22T11:21:19+08:00">
+                2017-10-22
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <hr>
+<h4>RPM相关知识准备</h4>
+<hr>
+<p><a href="https://fedoraproject.org/wiki/How_to_create_an_RPM_package/zh-cn#RPM_.E5.9F.BA.E7.A1.80.E7.9F.A5.E8.AF.86" target="_blank" rel="external">官方文档</a></p>
+<h5>RPM 基础知识</h5>
+<p>若要构建一个标准的 RPM 包，您需要创建 .spec 文件，其中包含软件打包的全部信息。然后，对此文件执行 rpmbuild 命令，经过这一步，系统会按照步骤生成最终的 RPM 包。</p>
+<p>一般情况，您应该把源代码包，比如由开发者发布的以 .tar.gz 结尾的文件，放入 ~/rpmbuild/SOURCES 目录。将.spec 文件放入 ~/rpmbuild/SPECS 目录，并命名为 &quot;软件包名.spec&quot; 。当然， 软件包名 就是最终 RPM 包的名字。为了创建二进制（Binary RPM）和源码软件包（SRPM），您需要将目录切换至 ~/rpmbuild/SPECS 并执行：</p>
+<pre><code> $ rpmbuild -ba NAME.spec   
+</code></pre>
+<p>当执行此命令时，rpmbuild 会自动读取 .spec 文件并按照下表列出的步骤完成构建。下表中，以 % 开头的语句为预定义宏，每个宏的作用如下：</p>
+<p><img src="/2017/10/22/Linux/Linux-rpm制作/rpm1.jpg" alt=""></p>
+<p>在 rpmbuild 中，对上表中的每个宏代码都有对应的目录：</p>
+<p><img src="/2017/10/22/Linux/Linux-rpm制作/rpm2.jpg" alt=""></p>
+<p>如果某一阶段失败，请查看输出信息以了解失败原因，并根据需要修改 .spec 文件。</p>
+<p>做好准备打包一个特殊程序</p>
+<p>如果这里有特殊的程序，它们需要被安装或者运行以便让您打包的普通程序正常工作，那么请先安装它们，然后记录下诸如软件包等相关信息。</p>
+<p>不可以使用预编译代码进行打包。将源代码（通常是 .tar.gz 文件）放入 &quot;~/rpmbuild/SOURCES&quot; 目录（注意用户）。</p>
+<p>仔细阅读该软件的安装说明。我们建议您先手工安装一次以了解具体情况。除少数情况外，所有二进制文件和程序库都必须由源码包中的源码编译而成。</p>
+<h5>新建一个 .spec 文件</h5>
+<p>现在，您需要在 ~/rpmbuild/SPECS 目录下，新建一个 SPEC 文件。文件应命名为 &quot;软件包名.spec&quot;。名称根据软件包名或通用名填写即可。但是，必须要遵守 软件包命名规定。</p>
+<p>如果您首次创建 .spec 文件，vim 或 emacs 会自动生成模板：</p>
+<pre><code> $ cd ~/rpmbuild/SPECS
+ $ vim program.spec
+</code></pre>
+<p>示例（仅供参考）：</p>
+<pre><code>Name:
+Version:
+Release:	1%{?dist}
+Summary:
+Group:
+License:
+URL:
+Source0:
+BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+
+BuildRequires:
+Requires:
+
+%description
+
+%prep
+%setup -q
+
+%build
+%configure
+make %{?_smp_mflags}
+
+%install
+rm -rf %{buildroot}
+make install DESTDIR=%{buildroot}
+
+%clean
+rm -rf %{buildroot}
+
+%files
+%defattr(-,root,root,-)
+%doc
+
+%changelog
+</code></pre>
+<p>您可以使用 $RPM_BUILD_ROOT 代替 %{buildroot}，两者都可以使用。
+您也可以使用 rpmdev-newspec 命令来创建 SPEC 文件。rpmdev-newspec 软件包名 可以创建一个初始 SPEC 文件，该工具从软件包名判断使用哪个模板，支持指定模板。 /etc/rpmdevtools/spectemplate-*.spec 包含所有可用的模板，使用 rpmdev-newspec --help 命令了解更多信息。例如，为 python 模块创建 SPEC 文件：</p>
+<pre><code>cd ~/rpmbuild/SPECS
+rpmdev-newspec python-antigravity
+vi python-antigravity.spec
+</code></pre>
+<h5>SPEC 文件综述</h5>
+<p>您需要遵守这些规定：软件包命名规定，打包规定 和 软件包审核规定。</p>
+<p>&quot;#&quot; 字符表示注释，但需要避免注释宏（以 % 开头），因为它们会首先被替换展开。使用 %% 注释宏。另外，还要避免在脚本命令的相同行中使用行内注释。</p>
+<p>以下介绍了主要的标签。注意 %{name}，%{version} 和 %{release} 代表 Name, Version 和 Release 这三个标签。只要更改标签，宏就会使用新值。</p>
+<p><img src="/2017/10/22/Linux/Linux-rpm制作/rpm3.jpg" alt="">
+<img src="/2017/10/22/Linux/Linux-rpm制作/rpm4.jpg" alt=""></p>
+<h5>SPEC 文件剖析</h5>
+<ul>
+<li>
+<p><strong>%prep部分</strong></p>
+<p>描述了解压源码包的方法。一般而言，其中包含 &quot;%autosetup&quot; 命令。另外，还可以使用 &quot;%setup&quot; 和 &quot;%patch&quot; 命令来指定操作 Source0 等标签的文件。</p>
+</li>
+<li>
+<p><strong>%prep 部分：%autosetup 命令</strong></p>
+<p>&quot;%autosetup&quot; 命令用于解压源码包。可用选项包括：<br>
+-n name : 如果源码包解压后的目录名称与 RPM 名称不同，此选项用于指定正确的目录名称。例如，如果 tarball 解压目录为 FOO，则使用 &quot;%autosetup -n FOO&quot;。<br>
+-c name : 如果源码包解压后包含多个目录，而不是单个目录时，此选项可以创建名为 name 的目录，并在其中解压。<br>
+如果使用 &quot;%setup&quot; 命令，通常使用 -q' 抑止不必要的输出。</p>
+</li>
+<li>
+<p><strong>%build 部分</strong></p>
+<p>&quot;%build&quot; 部分有时会有点复杂；在这里你可以配置，并编译用于安装的文件。<br>
+许多程序使用 GNU configure 进行配置。默认情况下，文件会安装到前缀为 &quot;/usr/local&quot; 的路径下，对于手动安装很合理。然而，打包时需要修改前缀为 &quot;/usr&quot;。共享库路径视架构而定，安装至 /usr/lib 或 /usr/lib64 目录。<br>
+由于 GNU configure 很常见，可使用 &quot;%configure&quot; 宏来自动设置正确选项（例如，设置前缀为 /usr）。一般用法如下：</p>
+<pre><code> %configure
+ make %{?_smp_mflags}
+</code></pre>
+<p>若需要覆盖 makefile 变量，请将变量作为参数传递给 make：</p>
+<pre><code>make %{?_smp_mflags} CFLAGS=&quot;%{optflags}&quot; BINDIR=%{_bindir}
+</code></pre>
+</li>
+<li>
+<p><strong>%install 部分</strong></p>
+<p>此部分包含安装阶段需要执行的命令，即从 %{_builddir} 复制相关文件到 %{buildroot} 目录（通常表示从 ~/rpmbuild/BUILD 复制到 ~/rpmbuild/BUILDROOT) 目录，并根据需要在 %{buildroot} 中创建必要目录。</p>
+<p>容易混淆的术语：<br>
+&quot;build 目录&quot;，也称为 %{_builddir}，实际上与 &quot;build root&quot;，又称为 %{buildroot}，是不同的目录。在前者中进行编译，并将需要打包的文件从前者复制到后者。<br>
+在 %build 阶段，当前目录为 %{buildsubdir}，是 %prep 阶段中在 %{_builddir} 下创建的子目录。这些目录通常名为 ~/rpmbuild/BUILD/%{name}-%{version}。<br>
+%install 阶段的命令不会在用户安装 RPM 包时执行，此阶段仅在打包时执行。
+一般，这里执行 &quot;make install&quot; 之类的命令：</p>
+<pre><code>%install
+rm -rf %{buildroot} # 仅用于 RHEL 5
+%make_install
+</code></pre>
+<p>理想情况下，对于支持的程序，你应该使用 %make_install，它等同于 DESTDIR=%{buildroot}，它会将文件安装到 %{buildroot} 目录中。</p>
+</li>
+</ul>
+<h5>Scriptlets</h5>
+<p>当用户安装 RPM 时，您可能想要执行一些命令。这可以通过 scriptlets 完成。请查看 Packaging/ScriptletSnippets。</p>
+<p>脚本片段可以：</p>
+<ul>
+<li>在软体包安装之前 (%pre) 或之后 (%post) 执行</li>
+<li>在软体包卸载之前 (%preun) 或之后 (%postun) 执行</li>
+<li>在事务开始 (%pretrans) 或结束 (%posttrans) 时执行</li>
+</ul>
+<hr>
+<h4>test-1453381.rpm包的制作过程</h4>
+<hr>
+<ol>
+<li>
+<p>开始前的准备</p>
+<p>安装rpmbuild软件包</p>
+<pre><code>yum -y install rpm-build
+</code></pre>
+<p>Linux RedHat 7.4已经安装了。</p>
+</li>
+<li>
+<p>生成相关目录</p>
+<pre><code>mkdir -p $(rpmDir)/SOURCES $(rpmDir)/SPECS $(rpmDir)/BUILD $(rpmDir)/RPMS $(rpmDir)/SRPMS
+</code></pre>
+<p>目录结构如下：</p>
+<pre><code>rpmbuild/
+├── BUILD
+├── BUILDROOT
+├── RPMS
+├── SOURCES
+├── SPECS
+└── SRPMS
+</code></pre>
+</li>
+<li>
+<p>编写.spec文件</p>
+<pre><code>Name:	test-1453381
+Version:	1.0
+Release:	1%{?dist}
+Summary:	test-rpm
+
+Group:		none
+License:	none
+URL:		none
+Source0:	test-1453381-1.0.tar.gz
+
+%description
+test-1453381-rpm
+
+%prep
+%setup -q 
+
+%pre
+echo &quot;准备安装test-1453381&quot;
+
+%post
+echo &quot;完成安装test-1453381&quot;
+
+%build
+make
+
+%install
+make install DESTDIR=%{buildroot}
+
+%preun
+echo &quot;准备卸载test-1453381&quot;
+
+%postun
+cd %{_builddir}/%{name}-%{version}/
+make uninstall 
+echo &quot;完成卸载test-1453381&quot;
+
+%files
+%doc
+
+%changelog
+</code></pre>
+</li>
+<li>
+<p>拷贝相关文件到指定目录</p>
+<pre><code>mkdir $(releaseName)
+cp $(rpmSrcFile) $(releaseName)/
+tar -zcvf $(rpmDir)/SOURCES/$(rpmGz) $(releaseName)
+rm -rf $(releaseName)
+cp $(rpmSpec) $(rpmDir)/SPECS
+</code></pre>
+</li>
+<li>
+<p>生成rpm包</p>
+<pre><code>rpmbuild -bb $(rpmDir)/SPECS/$(rpmSpec)
+cp $(rpmDir)/RPMS/x86_64/$(releaseName)-1.el7.x86_64.rpm $(binFinal).rpm
+</code></pre>
+</li>
+<li>
+<p>测试</p>
+<p><img src="/2017/10/22/Linux/Linux-rpm制作/rpmp1.jpg" alt=""></p>
+<p><img src="/2017/10/22/Linux/Linux-rpm制作/rpmp2.jpg" alt=""></p>
+</li>
+</ol>
+<p>可供参考：<a href="http://www.cnblogs.com/postgres/p/5726339.html" target="_blank" rel="external">链接</a></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/10/22/Linux/Linux-service自定义/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="BaiJiazm">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="BaiJiazm">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/10/22/Linux/Linux-service自定义/" itemprop="url">Linux-service自定义</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-22T11:20:37+08:00">
+                2017-10-22
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <hr>
+<h5>制作service的基本知识</h5>
+<ol>
+<li>
+<p><strong>服务权限</strong></p>
+<p>systemd有系统和用户区分；系统（<code>/user/lib/systemd/system/</code>）、用户（<code>/etc/lib/systemd/user/</code>）.一般系统管理员手工创建的单元文件建议存放在<code>/etc/systemd/system/</code>目录下面。</p>
+</li>
+<li>
+<p><strong>创建服务文件</strong></p>
+<p><strong>[Unit]</strong><br>
+<strong>Description</strong> : 服务的简单描述<br>
+<strong>Documentation</strong> ： 服务文档<br>
+<strong>Before、After</strong> :定义启动顺序。Before=xxx.service,代表本服务在xxx.service启动之前启动。After=xxx.service,代表本服务在xxx.service之后启动。<br>
+<strong>Requires</strong>：这个单元启动了，它需要的单元也会被启动；它需要的单元被停止了，这个单元也停止了。<br>
+<strong>Wants</strong>：这个单元启动了，它需要的单元也会被启动；它需要的单元被停止了，对本单元没有影响。</p>
+<p><strong>[Service]</strong><br>
+<strong>Type=simple（默认值）</strong>：systemd认为该服务将立即启动。服务进程不会fork。如果该服务要启动其他服务，不要使用此类型启动，除非该服务是socket激活型。<br>
+<strong>Type=forking</strong>：systemd认为当该服务进程fork，且父进程退出后服务启动成功。对于常规的守护进程（daemon），除非你确定此启动方式无法满足需求，使用此类型启动即可。使用此启动类型应同时指定 PIDFile=，以便systemd能够跟踪服务的主进程。<br>
+<strong>Type=oneshot</strong>：这一选项适用于只执行一项任务、随后立即退出的服务。可能需要同时设置 RemainAfterExit=yes 使得 systemd 在服务进程退出之后仍然认为服务处于激活状态。<br>
+<strong>Type=notify</strong>：与 Type=simple 相同，但约定服务会在就绪后向 systemd 发送一个信号。这一通知的实现由 libsystemd-daemon.so 提供。<br>
+<strong>Type=dbus</strong>：若以此方式启动，当指定的 BusName 出现在DBus系统总线上时，systemd认为服务就绪。<br>
+<strong>Type=idle</strong>: systemd会等待所有任务(Jobs)处理完成后，才开始执行idle类型的单元。除此之外，其他行为和Type=simple 类似。<br>
+<strong>PIDFile</strong>：pid文件路径<br>
+<strong>ExecStart</strong>：指定启动单元的命令或者脚本，ExecStartPre和ExecStartPost节指定在ExecStart之前或者之后用户自定义执行的脚本。Type=oneshot允许指定多个希望顺序执行的用户自定义命令。<br>
+<strong>ExecReload</strong>：指定单元停止时执行的命令或者脚本。<br>
+<strong>ExecStop</strong>：指定单元停止时执行的命令或者脚本。<br>
+<strong>PrivateTmp</strong>：True表示给服务分配独立的临时空间<br>
+<strong>Restart</strong>：这个选项如果被允许，服务重启的时候进程会退出，会通过systemctl命令执行清除并重启的操作。<br>
+<strong>RemainAfterExit</strong>：如果设置这个选择为真，服务会被认为是在激活状态，即使所以的进程已经退出，默认的值为假，这个选项只有在Type=oneshot时需要被配置。</p>
+<p><strong>[Install]</strong><br>
+<strong>Alias</strong>：为单元提供一个空间分离的附加名字。<br>
+<strong>RequiredBy</strong>：单元被允许运行需要的一系列依赖单元，RequiredBy列表从Require获得依赖信息。<br>
+<strong>WantBy</strong>：单元被允许运行需要的弱依赖性单元，Wantby从Want列表获得依赖信息。<br>
+<strong>Also</strong>：指出和单元一起安装或者被协助的单元。<br>
+<strong>DefaultInstance</strong>：实例单元的限制，这个选项指定如果单元被允许运行默认的实例。</p>
+</li>
+</ol>
+<hr>
+<h5>Linux test-1453381.service实际制作</h5>
+<ol>
+<li>
+<p>编写service文件</p>
+<p>test-1453381.service</p>
+<pre><code># cp test-1453381.service /etc/systemd/system/
+
+[Unit]
+Description=test-1453381
+
+[Service]
+Type=forking
+#下面这行对于此次的test.service需要注释掉
+#PIDFile=/usr/local/test-1453381.pid
+ExecStart=/usr/sbin/test-1453381 &amp;
+ExecReload=/bin/kill -s HUP $MAINPID
+ExecStop=/bin/kill -s QUIT $MAINPID
+
+[Install]
+WantedBy=multi-user.target
+</code></pre>
+<p>为避免<code>systemctl start</code> 时遇到<code>Warning: test-1453381.service changed on disk. Run 'systemctl daemon-reload' to reload units.</code>,可在start前先执行 <code>systemctl enable teset.service</code> 。</p>
+</li>
+<li>
+<p>拷贝编写好的service文件至特定目录</p>
+<pre><code>cp test-1453381.service /etc/systemd/system/
+</code></pre>
+</li>
+<li>
+<p>测试</p>
+<p><img src="/2017/10/22/Linux/Linux-service自定义/1.jpg" alt=""></p>
+</li>
+</ol>
+<p>参考链接：</p>
+<ul>
+<li><a href="https://www.freedesktop.org/software/systemd/man/systemd.service.html#" target="_blank" rel="external">参考1</a></li>
+<li><a href="https://wiki.archlinux.org/index.php/systemd_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)" target="_blank" rel="external">参考2</a></li>
+<li><a href="http://blog.chinaunix.net/uid-26790551-id-3189115.html" target="_blank" rel="external">参考3</a></li>
+</ul>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/10/18/Linux/Linux守护进程4/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="BaiJiazm">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="BaiJiazm">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/10/18/Linux/Linux守护进程4/" itemprop="url">Linux守护进程4</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-18T19:44:25+08:00">
+                2017-10-18
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <hr>
+<h4>Linux守护进程4 -- 杀掉守护进程及其子进程</h4>
+<hr>
+<ul>
+<li>
+<p><strong>在04 子目录下写test4-1.c，循环10 次，每隔3 秒产生一个子进程，循环完成后，自己进入
+死循环操作，每5 秒打印&quot;父进程号+自己的进程号+你的学号+main&quot;信息即可；分裂出的子进
+程进入死循环操作，要求每15 秒打印&quot;父进程号+自己的进程号+你的学号+sub&quot;；写配套的
+makefile 文件，make 后可生成test4-1 可执行文件</strong></p>
+<pre><code>//test4-1.c
+
+#include &lt;unistd.h&gt;
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;sys/types.h&gt;
+#include &lt;signal.h&gt;
+#include &lt;errno.h&gt;
+#include &lt;sys/wait.h&gt;
+
+#define FORK_NUM 10
+#define FORK_SLEEP_TIME 3
+#define MAIN_SLEEP_TIME 5
+#define SUB_SLEEP_TIME 15
+
+int daemon_init(void){
+    pid_t pid;
+    if ((pid = fork()) &lt; 0)
+		return -1;
+	else if (pid)   
+		exit(0);	/* parent exit */
+
+	/* child continues */
+	setsid();	/* become session leader */
+    chdir(&quot;/&quot;);	/* change working directory */
+	umask(0);	/* clear file mode creation mask */
+	close(0);    /* close stdin stdout stderr */
+//	close(1);
+	close(2);
+	return 0;
+}
+
+int main(){
+	if (daemon_init() == -1){
+		printf(&quot;can't fork self\n&quot;);
+		exit(0);
+	}
+	
+	pid_t pid;
+	int i;
+	for (i=0; i&lt;FORK_NUM; ++i)
+		if ((pid=fork()) &lt; 0){
+			perror(&quot;fork error&quot;);
+			exit(errno);
+		}
+		else if(pid==0)
+			//子进程退出
+			break;
+		else 
+			//父进程间隔3s
+			sleep(FORK_SLEEP_TIME);	
+	
+	if(pid){	//父进程
+		while(1){
+			printf(&quot;%d %d 1453381 main\n&quot;, getppid(), getpid());
+			sleep(MAIN_SLEEP_TIME);
+		}
+	}
+	else{		//子进程
+		while(1){
+			printf(&quot;%d %d 1453381 sub\n&quot;, getppid(), getpid());
+			sleep(SUB_SLEEP_TIME);
+		}
+	}
+	
+	return 0;
+}
+</code></pre>
+<p>makefile :</p>
+<pre><code>CC ?= gcc
+CFLAGS =
+
+srcNames :=test4-1 test4-2
+
+all :
+	@for src in $(srcNames) ; \
+	do \
+		$(CC) $(CFLAGS) -o $$src &quot;$$src&quot;.c ; \
+	done
+
+clean :
+	rm -f *.o $(srcNames)
+
+.PHONY : all clean
+</code></pre>
+<p>测试截图：</p>
+<p><img src="/2017/10/18/Linux/Linux守护进程4/0.jpg" alt=""></p>
+</li>
+<li>
+<p><strong>如何杀死test4-1 分裂出来的一个子进程？</strong></p>
+<pre><code>kill -9 pid
+</code></pre>
+</li>
+<li>
+<p><strong>如何快速杀死test4-1 分裂出来的全部子进程？</strong></p>
+<pre><code>ps -ef |grep test4-1 |grep -v grep|cut -c 9-15|xargs kill -9
+
+# 批量杀死包含关键字&quot;test4-1&quot;的进程
+# &quot;ps -ef&quot; ——查看所有进程
+# &quot;grep test4-1&quot; ——列出所有含有关键字&quot;test4-1&quot;的进程
+# &quot;grep -v grep&quot; ——在列出的进程中去除含有关键字&quot;grep&quot;的进程
+# &quot;cut -c 9-15&quot; ——截取输入行的第9个字符到第15个字符，而这正好是进程号PID
+# &quot;xargs kill -9&quot; ——xargs 命令是用来把前面命令的输出结果（PID）作为&quot;kill -9&quot;
+  命令的参数，并执行该命令。&quot;kill -9&quot;会强行杀掉指定进程。
+</code></pre>
+<p>测试截图：</p>
+<p><img src="/2017/10/18/Linux/Linux守护进程4/1.jpg" alt=""></p>
+</li>
+<li>
+<p><strong>如果杀死test4-1，其子进程会发生哪些变化？</strong></p>
+<p>子进程成为孤儿进程，被 pid=1 （RedHat7.4下名为systemd） 的进程收留，ppid成为1。</p>
+<p>测试截图：</p>
+<p><img src="/2017/10/18/Linux/Linux守护进程4/2.jpg" alt=""></p>
+</li>
+<li>
+<p><strong>写test4-2.c，要求与test4-1 相同，但是要求杀死test4-2 后，它的全部子进程自动退出</strong></p>
+<p>可以在父进程终止退出前，调用kill函数，kill函数相关用法如下:</p>
+<pre><code>#include &lt;sys/types.h&gt; 
+#include &lt;signal.h&gt;
+
+int kill(pid_t pid, int sig);
+
+作用：用于向任何进程组或进程发送信号。
+
+参数： 
+pid：可能选择有以下四种
+1. pid大于零时，pid是信号欲送往的进程的标识。
+2. pid等于零时，信号将送往所有与调用kill()的那个进程属同一个使用组的进程。
+3. pid等于-1时，信号将送往所有调用进程有权给其发送信号的进程，除了进程1(init)。
+4. pid小于-1时，信号将送往以-pid为组标识的进程。
+</code></pre>
+<p>需要在main函数中第一行添加<code>signal(SIGTERM, kill_child);</code>意在父进程退出时进入kill_child函数进行处理，kill_child函数如下：</p>
+<pre><code>void kill_child(int sig){
+	kill(0, SIGKILL);
+	int status;
+	while(waitpid(-1, &amp;status, WNOHANG)&gt;0)
+		;
+	exit(0);
+}
+</code></pre>
+<p>test4-2.c最终代码如下：</p>
+<pre><code>//test4-2.c
+
+#include &lt;unistd.h&gt;
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;sys/types.h&gt;
+#include &lt;signal.h&gt;
+#include &lt;errno.h&gt;
+#include &lt;sys/wait.h&gt;
+
+#define FORK_NUM 10
+#define FORK_SLEEP_TIME 3
+#define MAIN_SLEEP_TIME 5
+#define SUB_SLEEP_TIME 15
+
+int daemon_init(void){
+    pid_t pid;
+    if ((pid = fork()) &lt; 0)
+		return -1;
+	else if (pid)   
+		exit(0);	/* parent exit */
+
+	/* child continues */
+	setsid();	/* become session leader */
+    chdir(&quot;/&quot;);	/* change working directory */
+	umask(0);	/* clear file mode creation mask */
+	close(0);    /* close stdin stdout stderr */
+//	close(1);
+	close(2);
+	return 0;
+}
+
+void kill_child(int sig){
+	kill(0, SIGKILL);
+	int status;
+	while(waitpid(-1, &amp;status, WNOHANG)&gt;0)
+		;
+	exit(0);
+}
+
+int main(){
+	if (daemon_init() == -1){
+		printf(&quot;can't fork self\n&quot;);
+		exit(0);
+	}
+
+	signal(SIGTERM, kill_child);
+
+	pid_t pid;
+	int i;
+	for (i=0; i&lt;FORK_NUM; ++i)
+		if ((pid=fork()) &lt; 0){
+			perror(&quot;fork error&quot;);
+			exit(errno);
+		}
+		else if(pid==0)
+			//子进程退出
+			break;
+		else 
+			//父进程间隔3s
+			sleep(FORK_SLEEP_TIME);	
+	
+	pid_t selfid=getpid();
+	pid_t faid=getppid();
+	
+	if(pid){	//父进程
+		while(1){
+			printf(&quot;%d %d 1453381 main\n&quot;, faid, selfid);
+			sleep(MAIN_SLEEP_TIME);
+		}
+	}
+	else{		//子进程
+		while(1){
+			printf(&quot;%d %d 1453381 sub\n&quot;, faid, selfid);
+			sleep(SUB_SLEEP_TIME);
+		}
+	}
+	
+	return 0;
+}
+</code></pre>
+<p>最后需要说明的是，杀掉父进程时，需要用<code>kill -15 pid</code>结束，此时定义在main函数中的<code>signal(SIGTERM, kill_child)</code>才会生效，如果用<code>kill -9 pid</code>结束父进程，分裂的子进程父进程变为1，成为孤儿进程。</p>
+<p>测试截图：</p>
+<p><img src="/2017/10/18/Linux/Linux守护进程4/3.jpg" alt=""></p>
+</li>
+</ul>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/10/18/Linux/Linux守护进程2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="BaiJiazm">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="BaiJiazm">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/10/18/Linux/Linux守护进程2/" itemprop="url">Linux守护进程2</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-18T19:44:25+08:00">
+                2017-10-18
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <hr>
+<h4>Linux守护进程2——守护进程的作用、用途、父进程标识的特点</h4>
+<hr>
+<ul>
+<li>
+<p><strong>在02 子目录下写test2.c，写配套的makefile 文件，make 后可生成test2 可执行文件</strong></p>
+<p>基本概念如下：<br>
+<strong>进程组 ：</strong><br>
+每个进程属于一个进程组<br>
+每个进程都有一个进程组号，该号等于该进程组组长的PID号<br>
+一个进程只能为它自己或子进程设置进程组ID号</p>
+<p><strong>会话期：</strong><br>
+会话期(session)是一个或多个进程组的集合<br>
+setsid()函数可以建立一个对话期。如果调用setsid的进程不是一个进程组的组长，此函数创建一个新的会话期：<br>
+(1)此进程变成该对话期的首进程<br>
+(2)此进程变成一个新进程组的组长进程。<br>
+(3)此进程没有控制终端，如果在调用setsid前，该进程有控制终端，那么与该终端的联系被解除。 如果该进程是一个进程组的组长，此函数返回错误。<br>
+(4)为了保证这一点，我们先调用fork()然后exit()，此时只有子进程在运行</p>
+<p><strong>编写守护进程的一般步骤步骤：</strong><br>
+（1）在父进程中执行fork并exit推出；<br>
+（2）在子进程中调用setsid函数创建新的会话；<br>
+（3）在子进程中调用chdir函数，让根目录 ”/” 成为子进程的工作目录；<br>
+（4）在子进程中调用umask函数，设置进程的umask为0；<br>
+（5）在子进程中关闭任何不需要的文件描述符</p>
+<pre><code>//test2.c
+#include &lt;unistd.h&gt;
+#include &lt;sys/types.h&gt;
+#include &lt;sys/stat.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;stdio.h&gt;
+#include &lt;syslog.h&gt;
+#include &lt;signal.h&gt;
+
+int daemon_init(void){
+    pid_t pid;
+    if ((pid = fork()) &lt; 0)
+		return -1;
+	else if (pid)   
+		exit(0);	/* parent exit */
+
+	/* child continues */
+	/* become session leader */
+	setsid();
+	/* change working directory */
+    chdir(&quot;\n&quot;);
+	/* clear file mode creation mask */
+	umask(0);
+    /* close stdin stdout stderr */
+	close(0);
+	close(1);
+	close(2);
+
+	return 0;
+}       
+
+void sig_term(int signo){
+	if(signo==SIGTERM){
+		syslog(LOG_INFO, &quot;program terminated&quot;);
+		closelog();
+		exit(0);
+	}
+}
+
+#define SLEEP_TIME 5
+
+int main(){
+	
+	if (daemon_init() == -1){
+		printf(&quot;can't fork self\n&quot;);
+		exit(0);
+	}
+
+	//以下三行不是必须的，仅提供log信息
+	openlog(&quot;daemontest&quot;, LOG_PID, LOG_USER);
+	syslog(LOG_INFO, &quot;program started&quot;);
+	signal(SIGTERM, sig_term);
+
+	while(1){
+		printf(&quot;1453381\n&quot;);
+		sleep(SLEEP_TIME);
+	}
+	
+	return 0;
+}
+</code></pre>
+<p>makefile :</p>
+<pre><code>CC=gcc
+CFLAGS=
+
+BIN=test2
+SRC=$(wildcard *.c)
+OBJ=$(SRC:.c=.o)
+
+$(BIN):$(OBJ)
+	$(CC) $(OBJ) -o $(BIN)
+
+.PHONY :clean
+clean:
+	rm -f $(BIN) $(OBJ)
+</code></pre>
+<p>说明：</p>
+<ol>
+<li>在后台运行
+为避免挂起控制终端将Daemon放入后台执行。方法是在进程中调用fork使父进程终止，让Daemo在子
+进程中后台执行。
+if(pid=fork())
+exit(0);//是父进程，结束父进程，子进程继续</li>
+<li>脱离控制终端，登录会话和进程组
+登录会话和进程组之间的关系：进程属于一个进程组，进程组号（GID）就是进程组长的进程号（PID
+）。登录会话可以包含多个进程组。这些进程组共享一个控制终端。这个控制终端通常是创建进程的
+登录终端。 控制终端，登录会话和进程组通常是从父进程继承下来的。我们的目的就是要摆脱它们，
+使之不受它们的影响。方法是在第1点的基础上，调用setsid()使进程成为会话组长：
+setsid();
+说明：当进程是会话组长时setsid()调用失败。但第一点已经保证进程不是会话组长。setsid()调
+用成功后，进程成为新的会话组长和新的进程组长，并与原来的登录会话和进程组脱离。由于会话过
+程对控制终端的独占性，进程同时与控制终端脱离。</li>
+<li>禁止进程重新打开控制终端
+现在，进程已经成为无终端的会话组长。但它可以重新申请打开一个控制终端。可以通过使进程不再
+成为会话组长来禁止进程重新打开控制终端：
+if(pid=fork())
+exit(0);//结束第一子进程，第二子进程继续（第二子进程不再是会话组长）</li>
+<li>关闭打开的文件描述符
+进程从创建它的父进程那里继承了打开的文件描述符。如不关闭，将会浪费系统资源，造成进程所在
+的文件系统无法卸下以及引起无法预料的错误。</li>
+<li>改变当前工作目录
+进程活动时，其工作目录所在的文件系统不能卸下。一般需要将工作目录改变到根目录。对于需要转
+储核心，写运行日志的进程将工作目录改变到特定目录如/tmpchdir(&quot;/&quot;)</li>
+<li>重设文件创建掩模
+进程从创建它的父进程那里继承了文件创建掩模。它可能修改守护进程所创建的文件的存取位。为防
+止这一点，将文件创建掩模清除：umask(0);</li>
+</ol>
+</li>
+<li>
+<p><strong>用./test2 运行后直接成为守护进程</strong></p>
+</li>
+<li>
+<p><strong>test2 的进程标识、父进程标识是谁？如何查看？</strong></p>
+<p>进程 test2 的 ppid 为1，在 RedHat7.4 下为 systemd</p>
+<pre><code>ps -ef |grep test2
+pstree 1
+ps -ef |grep -E &quot;test2|systemd&quot;
+</code></pre>
+<p>测试截图：</p>
+<p><img src="/2017/10/18/Linux/Linux守护进程2/1.jpg" alt="">
+<img src="/2017/10/18/Linux/Linux守护进程2/2.jpg" alt=""></p>
+</li>
+<li>
+<p><strong>在另一个控制台中能否查看到test2 进程的相关信息？</strong></p>
+<p>能，完全一样。<br>
+测试截图：</p>
+<p><img src="/2017/10/18/Linux/Linux守护进程2/3.jpg" alt=""></p>
+</li>
+<li>
+<p><strong>当test2 在后台运行时，如果CTRL+D 退出控制台登录，test2 会怎样？</strong></p>
+<p>test2 是守护进程，即使 [CTRL] + D 退出登录，只要操作系统保持运行，则 test2 会保持运行。</p>
+</li>
+<li>
+<p><strong>再次登录控制台后，test2 是否仍在运行？此时打印信息能否继续出现在新登录的终端上？</strong></p>
+<p>再次登陆，test2 仍在运行，打印信息不能出现在终端，原因上个题目已说。</p>
+</li>
+<li>
+<p><strong>引申问题：如果想在进程中打印信息并保证始终能被查看到，应该如何做？</strong></p>
+<p>守护进程没有控制终端进行信息的输出，而有些情况还需要根据进程提供的信息进行系统管理和维护工作。因此Linux提供了syslogd守护进程，专门用于接受其他守护进程提供的信息记录在指定位置来解决日志记录的问题。</p>
+<p>在 RedHat7.4 中没有syslogd，但是有rsyslogd守护进程，rsyslog的配置文件是<code>/etc/rsyslog.conf</code></p>
+<p>下面说明一下相关syslog函数：</p>
+<pre><code>// 函数说明
+#include &lt;syslog.h&gt;
+vodi openlog(const char *ident, int option, int facility);
+void syslog(int priority, const char *format, ...);
+void closelog(void);
+
+openlog函数原型如下：
+1）void openlog(const char* ident, int option, int facility);
+        //打开系统日志链接，必须步骤。
+ident   :信息来源，哪个可执行程序
+option  :控制标志的参数，多个可以同时使用，用|操作合并
+facility:指定消息类型，与配置文件对应，日志会写入配置文件指定位置。
+
+2）void syslog(int priority,const char* format,....);
+priority：消息级别，与openlog中的facility可以共同决定日志写入位置。
+format  ：消息格式，再后面为格式对应的参数，类似printf的使用
+ 
+3）void closelog();
+关闭系统日志链接，可选步骤。
+</code></pre>
+<p>在原来的程序中打印学号的地方添加一行：</p>
+<pre><code>syslog(LOG_INFO, &quot;1453381\n&quot;);
+</code></pre>
+<p>执行后，查看新增信息</p>
+<pre><code>tail -f /var/log/messages
+</code></pre>
+<p>测试截图：</p>
+<p><img src="/2017/10/18/Linux/Linux守护进程2/4.jpg" alt=""></p>
+</li>
+</ul>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/10/18/Linux/Linux守护进程3/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1433,675 +2628,6 @@ int main(int argc, char **argv){
 <p><strong>提示：当极限测试导致子进程分裂失败后，Linux 系统还能正常操作吗？</strong></p>
 <p>已经不能正常工作。</p>
 <p><img src="/2017/10/18/Linux/Linux守护进程5/9.jpg" alt=""></p>
-</li>
-</ul>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/10/18/Linux/Linux守护进程2/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="BaiJiazm">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="BaiJiazm">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/10/18/Linux/Linux守护进程2/" itemprop="url">Linux守护进程2</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-18T19:44:25+08:00">
-                2017-10-18
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <hr>
-<h4>Linux守护进程2——守护进程的作用、用途、父进程标识的特点</h4>
-<hr>
-<ul>
-<li>
-<p><strong>在02 子目录下写test2.c，写配套的makefile 文件，make 后可生成test2 可执行文件</strong></p>
-<p>基本概念如下：<br>
-<strong>进程组 ：</strong><br>
-每个进程属于一个进程组<br>
-每个进程都有一个进程组号，该号等于该进程组组长的PID号<br>
-一个进程只能为它自己或子进程设置进程组ID号</p>
-<p><strong>会话期：</strong><br>
-会话期(session)是一个或多个进程组的集合<br>
-setsid()函数可以建立一个对话期。如果调用setsid的进程不是一个进程组的组长，此函数创建一个新的会话期：<br>
-(1)此进程变成该对话期的首进程<br>
-(2)此进程变成一个新进程组的组长进程。<br>
-(3)此进程没有控制终端，如果在调用setsid前，该进程有控制终端，那么与该终端的联系被解除。 如果该进程是一个进程组的组长，此函数返回错误。<br>
-(4)为了保证这一点，我们先调用fork()然后exit()，此时只有子进程在运行</p>
-<p><strong>编写守护进程的一般步骤步骤：</strong><br>
-（1）在父进程中执行fork并exit推出；<br>
-（2）在子进程中调用setsid函数创建新的会话；<br>
-（3）在子进程中调用chdir函数，让根目录 ”/” 成为子进程的工作目录；<br>
-（4）在子进程中调用umask函数，设置进程的umask为0；<br>
-（5）在子进程中关闭任何不需要的文件描述符</p>
-<pre><code>//test2.c
-#include &lt;unistd.h&gt;
-#include &lt;sys/types.h&gt;
-#include &lt;sys/stat.h&gt;
-#include &lt;stdlib.h&gt;
-#include &lt;stdio.h&gt;
-#include &lt;syslog.h&gt;
-#include &lt;signal.h&gt;
-
-int daemon_init(void){
-    pid_t pid;
-    if ((pid = fork()) &lt; 0)
-		return -1;
-	else if (pid)   
-		exit(0);	/* parent exit */
-
-	/* child continues */
-	/* become session leader */
-	setsid();
-	/* change working directory */
-    chdir(&quot;\n&quot;);
-	/* clear file mode creation mask */
-	umask(0);
-    /* close stdin stdout stderr */
-	close(0);
-	close(1);
-	close(2);
-
-	return 0;
-}       
-
-void sig_term(int signo){
-	if(signo==SIGTERM){
-		syslog(LOG_INFO, &quot;program terminated&quot;);
-		closelog();
-		exit(0);
-	}
-}
-
-#define SLEEP_TIME 5
-
-int main(){
-	
-	if (daemon_init() == -1){
-		printf(&quot;can't fork self\n&quot;);
-		exit(0);
-	}
-
-	//以下三行不是必须的，仅提供log信息
-	openlog(&quot;daemontest&quot;, LOG_PID, LOG_USER);
-	syslog(LOG_INFO, &quot;program started&quot;);
-	signal(SIGTERM, sig_term);
-
-	while(1){
-		printf(&quot;1453381\n&quot;);
-		sleep(SLEEP_TIME);
-	}
-	
-	return 0;
-}
-</code></pre>
-<p>makefile :</p>
-<pre><code>CC=gcc
-CFLAGS=
-
-BIN=test2
-SRC=$(wildcard *.c)
-OBJ=$(SRC:.c=.o)
-
-$(BIN):$(OBJ)
-	$(CC) $(OBJ) -o $(BIN)
-
-.PHONY :clean
-clean:
-	rm -f $(BIN) $(OBJ)
-</code></pre>
-<p>说明：</p>
-<ol>
-<li>在后台运行
-为避免挂起控制终端将Daemon放入后台执行。方法是在进程中调用fork使父进程终止，让Daemo在子
-进程中后台执行。
-if(pid=fork())
-exit(0);//是父进程，结束父进程，子进程继续</li>
-<li>脱离控制终端，登录会话和进程组
-登录会话和进程组之间的关系：进程属于一个进程组，进程组号（GID）就是进程组长的进程号（PID
-）。登录会话可以包含多个进程组。这些进程组共享一个控制终端。这个控制终端通常是创建进程的
-登录终端。 控制终端，登录会话和进程组通常是从父进程继承下来的。我们的目的就是要摆脱它们，
-使之不受它们的影响。方法是在第1点的基础上，调用setsid()使进程成为会话组长：
-setsid();
-说明：当进程是会话组长时setsid()调用失败。但第一点已经保证进程不是会话组长。setsid()调
-用成功后，进程成为新的会话组长和新的进程组长，并与原来的登录会话和进程组脱离。由于会话过
-程对控制终端的独占性，进程同时与控制终端脱离。</li>
-<li>禁止进程重新打开控制终端
-现在，进程已经成为无终端的会话组长。但它可以重新申请打开一个控制终端。可以通过使进程不再
-成为会话组长来禁止进程重新打开控制终端：
-if(pid=fork())
-exit(0);//结束第一子进程，第二子进程继续（第二子进程不再是会话组长）</li>
-<li>关闭打开的文件描述符
-进程从创建它的父进程那里继承了打开的文件描述符。如不关闭，将会浪费系统资源，造成进程所在
-的文件系统无法卸下以及引起无法预料的错误。</li>
-<li>改变当前工作目录
-进程活动时，其工作目录所在的文件系统不能卸下。一般需要将工作目录改变到根目录。对于需要转
-储核心，写运行日志的进程将工作目录改变到特定目录如/tmpchdir(&quot;/&quot;)</li>
-<li>重设文件创建掩模
-进程从创建它的父进程那里继承了文件创建掩模。它可能修改守护进程所创建的文件的存取位。为防
-止这一点，将文件创建掩模清除：umask(0);</li>
-</ol>
-</li>
-<li>
-<p><strong>用./test2 运行后直接成为守护进程</strong></p>
-</li>
-<li>
-<p><strong>test2 的进程标识、父进程标识是谁？如何查看？</strong></p>
-<p>进程 test2 的 ppid 为1，在 RedHat7.4 下为 systemd</p>
-<pre><code>ps -ef |grep test2
-pstree 1
-ps -ef |grep -E &quot;test2|systemd&quot;
-</code></pre>
-<p>测试截图：</p>
-<p><img src="/2017/10/18/Linux/Linux守护进程2/1.jpg" alt="">
-<img src="/2017/10/18/Linux/Linux守护进程2/2.jpg" alt=""></p>
-</li>
-<li>
-<p><strong>在另一个控制台中能否查看到test2 进程的相关信息？</strong></p>
-<p>能，完全一样。<br>
-测试截图：</p>
-<p><img src="/2017/10/18/Linux/Linux守护进程2/3.jpg" alt=""></p>
-</li>
-<li>
-<p><strong>当test2 在后台运行时，如果CTRL+D 退出控制台登录，test2 会怎样？</strong></p>
-<p>test2 是守护进程，即使 [CTRL] + D 退出登录，只要操作系统保持运行，则 test2 会保持运行。</p>
-</li>
-<li>
-<p><strong>再次登录控制台后，test2 是否仍在运行？此时打印信息能否继续出现在新登录的终端上？</strong></p>
-<p>再次登陆，test2 仍在运行，打印信息不能出现在终端，原因上个题目已说。</p>
-</li>
-<li>
-<p><strong>引申问题：如果想在进程中打印信息并保证始终能被查看到，应该如何做？</strong></p>
-<p>守护进程没有控制终端进行信息的输出，而有些情况还需要根据进程提供的信息进行系统管理和维护工作。因此Linux提供了syslogd守护进程，专门用于接受其他守护进程提供的信息记录在指定位置来解决日志记录的问题。</p>
-<p>在 RedHat7.4 中没有syslogd，但是有rsyslogd守护进程，rsyslog的配置文件是<code>/etc/rsyslog.conf</code></p>
-<p>下面说明一下相关syslog函数：</p>
-<pre><code>// 函数说明
-#include &lt;syslog.h&gt;
-vodi openlog(const char *ident, int option, int facility);
-void syslog(int priority, const char *format, ...);
-void closelog(void);
-
-openlog函数原型如下：
-1）void openlog(const char* ident, int option, int facility);
-        //打开系统日志链接，必须步骤。
-ident   :信息来源，哪个可执行程序
-option  :控制标志的参数，多个可以同时使用，用|操作合并
-facility:指定消息类型，与配置文件对应，日志会写入配置文件指定位置。
-
-2）void syslog(int priority,const char* format,....);
-priority：消息级别，与openlog中的facility可以共同决定日志写入位置。
-format  ：消息格式，再后面为格式对应的参数，类似printf的使用
- 
-3）void closelog();
-关闭系统日志链接，可选步骤。
-</code></pre>
-<p>在原来的程序中打印学号的地方添加一行：</p>
-<pre><code>syslog(LOG_INFO, &quot;1453381\n&quot;);
-</code></pre>
-<p>执行后，查看新增信息</p>
-<pre><code>tail -f /var/log/messages
-</code></pre>
-<p>测试截图：</p>
-<p><img src="/2017/10/18/Linux/Linux守护进程2/4.jpg" alt=""></p>
-</li>
-</ul>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/10/18/Linux/Linux守护进程4/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="BaiJiazm">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="BaiJiazm">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/10/18/Linux/Linux守护进程4/" itemprop="url">Linux守护进程4</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-18T19:44:25+08:00">
-                2017-10-18
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <hr>
-<h4>Linux守护进程4 -- 杀掉守护进程及其子进程</h4>
-<hr>
-<ul>
-<li>
-<p><strong>在04 子目录下写test4-1.c，循环10 次，每隔3 秒产生一个子进程，循环完成后，自己进入
-死循环操作，每5 秒打印&quot;父进程号+自己的进程号+你的学号+main&quot;信息即可；分裂出的子进
-程进入死循环操作，要求每15 秒打印&quot;父进程号+自己的进程号+你的学号+sub&quot;；写配套的
-makefile 文件，make 后可生成test4-1 可执行文件</strong></p>
-<pre><code>//test4-1.c
-
-#include &lt;unistd.h&gt;
-#include &lt;stdio.h&gt;
-#include &lt;stdlib.h&gt;
-#include &lt;sys/types.h&gt;
-#include &lt;signal.h&gt;
-#include &lt;errno.h&gt;
-#include &lt;sys/wait.h&gt;
-
-#define FORK_NUM 10
-#define FORK_SLEEP_TIME 3
-#define MAIN_SLEEP_TIME 5
-#define SUB_SLEEP_TIME 15
-
-int daemon_init(void){
-    pid_t pid;
-    if ((pid = fork()) &lt; 0)
-		return -1;
-	else if (pid)   
-		exit(0);	/* parent exit */
-
-	/* child continues */
-	setsid();	/* become session leader */
-    chdir(&quot;/&quot;);	/* change working directory */
-	umask(0);	/* clear file mode creation mask */
-	close(0);    /* close stdin stdout stderr */
-//	close(1);
-	close(2);
-	return 0;
-}
-
-int main(){
-	if (daemon_init() == -1){
-		printf(&quot;can't fork self\n&quot;);
-		exit(0);
-	}
-	
-	pid_t pid;
-	int i;
-	for (i=0; i&lt;FORK_NUM; ++i)
-		if ((pid=fork()) &lt; 0){
-			perror(&quot;fork error&quot;);
-			exit(errno);
-		}
-		else if(pid==0)
-			//子进程退出
-			break;
-		else 
-			//父进程间隔3s
-			sleep(FORK_SLEEP_TIME);	
-	
-	if(pid){	//父进程
-		while(1){
-			printf(&quot;%d %d 1453381 main\n&quot;, getppid(), getpid());
-			sleep(MAIN_SLEEP_TIME);
-		}
-	}
-	else{		//子进程
-		while(1){
-			printf(&quot;%d %d 1453381 sub\n&quot;, getppid(), getpid());
-			sleep(SUB_SLEEP_TIME);
-		}
-	}
-	
-	return 0;
-}
-</code></pre>
-<p>makefile :</p>
-<pre><code>CC ?= gcc
-CFLAGS =
-
-srcNames :=test4-1 test4-2
-
-all :
-	@for src in $(srcNames) ; \
-	do \
-		$(CC) $(CFLAGS) -o $$src &quot;$$src&quot;.c ; \
-	done
-
-clean :
-	rm -f *.o $(srcNames)
-
-.PHONY : all clean
-</code></pre>
-<p>测试截图：</p>
-<p><img src="/2017/10/18/Linux/Linux守护进程4/0.jpg" alt=""></p>
-</li>
-<li>
-<p><strong>如何杀死test4-1 分裂出来的一个子进程？</strong></p>
-<pre><code>kill -9 pid
-</code></pre>
-</li>
-<li>
-<p><strong>如何快速杀死test4-1 分裂出来的全部子进程？</strong></p>
-<pre><code>ps -ef |grep test4-1 |grep -v grep|cut -c 9-15|xargs kill -9
-
-# 批量杀死包含关键字&quot;test4-1&quot;的进程
-# &quot;ps -ef&quot; ——查看所有进程
-# &quot;grep test4-1&quot; ——列出所有含有关键字&quot;test4-1&quot;的进程
-# &quot;grep -v grep&quot; ——在列出的进程中去除含有关键字&quot;grep&quot;的进程
-# &quot;cut -c 9-15&quot; ——截取输入行的第9个字符到第15个字符，而这正好是进程号PID
-# &quot;xargs kill -9&quot; ——xargs 命令是用来把前面命令的输出结果（PID）作为&quot;kill -9&quot;
-  命令的参数，并执行该命令。&quot;kill -9&quot;会强行杀掉指定进程。
-</code></pre>
-<p>测试截图：</p>
-<p><img src="/2017/10/18/Linux/Linux守护进程4/1.jpg" alt=""></p>
-</li>
-<li>
-<p><strong>如果杀死test4-1，其子进程会发生哪些变化？</strong></p>
-<p>子进程成为孤儿进程，被 pid=1 （RedHat7.4下名为systemd） 的进程收留，ppid成为1。</p>
-<p>测试截图：</p>
-<p><img src="/2017/10/18/Linux/Linux守护进程4/2.jpg" alt=""></p>
-</li>
-<li>
-<p><strong>写test4-2.c，要求与test4-1 相同，但是要求杀死test4-2 后，它的全部子进程自动退出</strong></p>
-<p>可以在父进程终止退出前，调用kill函数，kill函数相关用法如下:</p>
-<pre><code>#include &lt;sys/types.h&gt; 
-#include &lt;signal.h&gt;
-
-int kill(pid_t pid, int sig);
-
-作用：用于向任何进程组或进程发送信号。
-
-参数： 
-pid：可能选择有以下四种
-1. pid大于零时，pid是信号欲送往的进程的标识。
-2. pid等于零时，信号将送往所有与调用kill()的那个进程属同一个使用组的进程。
-3. pid等于-1时，信号将送往所有调用进程有权给其发送信号的进程，除了进程1(init)。
-4. pid小于-1时，信号将送往以-pid为组标识的进程。
-</code></pre>
-<p>需要在main函数中第一行添加<code>signal(SIGTERM, kill_child);</code>意在父进程退出时进入kill_child函数进行处理，kill_child函数如下：</p>
-<pre><code>void kill_child(int sig){
-	kill(0, SIGKILL);
-	int status;
-	while(waitpid(-1, &amp;status, WNOHANG)&gt;0)
-		;
-	exit(0);
-}
-</code></pre>
-<p>test4-2.c最终代码如下：</p>
-<pre><code>//test4-2.c
-
-#include &lt;unistd.h&gt;
-#include &lt;stdio.h&gt;
-#include &lt;stdlib.h&gt;
-#include &lt;sys/types.h&gt;
-#include &lt;signal.h&gt;
-#include &lt;errno.h&gt;
-#include &lt;sys/wait.h&gt;
-
-#define FORK_NUM 10
-#define FORK_SLEEP_TIME 3
-#define MAIN_SLEEP_TIME 5
-#define SUB_SLEEP_TIME 15
-
-int daemon_init(void){
-    pid_t pid;
-    if ((pid = fork()) &lt; 0)
-		return -1;
-	else if (pid)   
-		exit(0);	/* parent exit */
-
-	/* child continues */
-	setsid();	/* become session leader */
-    chdir(&quot;/&quot;);	/* change working directory */
-	umask(0);	/* clear file mode creation mask */
-	close(0);    /* close stdin stdout stderr */
-//	close(1);
-	close(2);
-	return 0;
-}
-
-void kill_child(int sig){
-	kill(0, SIGKILL);
-	int status;
-	while(waitpid(-1, &amp;status, WNOHANG)&gt;0)
-		;
-	exit(0);
-}
-
-int main(){
-	if (daemon_init() == -1){
-		printf(&quot;can't fork self\n&quot;);
-		exit(0);
-	}
-
-	signal(SIGTERM, kill_child);
-
-	pid_t pid;
-	int i;
-	for (i=0; i&lt;FORK_NUM; ++i)
-		if ((pid=fork()) &lt; 0){
-			perror(&quot;fork error&quot;);
-			exit(errno);
-		}
-		else if(pid==0)
-			//子进程退出
-			break;
-		else 
-			//父进程间隔3s
-			sleep(FORK_SLEEP_TIME);	
-	
-	pid_t selfid=getpid();
-	pid_t faid=getppid();
-	
-	if(pid){	//父进程
-		while(1){
-			printf(&quot;%d %d 1453381 main\n&quot;, faid, selfid);
-			sleep(MAIN_SLEEP_TIME);
-		}
-	}
-	else{		//子进程
-		while(1){
-			printf(&quot;%d %d 1453381 sub\n&quot;, faid, selfid);
-			sleep(SUB_SLEEP_TIME);
-		}
-	}
-	
-	return 0;
-}
-</code></pre>
-<p>最后需要说明的是，杀掉父进程时，需要用<code>kill -15 pid</code>结束，此时定义在main函数中的<code>signal(SIGTERM, kill_child)</code>才会生效，如果用<code>kill -9 pid</code>结束父进程，分裂的子进程父进程变为1，成为孤儿进程。</p>
-<p>测试截图：</p>
-<p><img src="/2017/10/18/Linux/Linux守护进程4/3.jpg" alt=""></p>
 </li>
 </ul>
 
@@ -3412,6 +3938,9 @@ end tell
             <hr>
 <p><strong>历史的进程还在继续...<br>
 Life is continuing...</strong></p>
+<h6>2017/10/22 11:22:57</h6>
+<p>不要强迫症，没有最完美的东西，绝对没有；
+知识和技能的学习才是根本目的，但也要和作业区分开来。</p>
 <h6>2017/10/14 13:40:18</h6>
 <p>一周一晃又过了，大部分时间都在这上边了，如何节约时间呢？本周总结几点：先易后难，先大部分再小细节，先重要后次要；有时卡壳个别题目可以先留着，有时候前后呼应，有所启发，理解的也深入一些；不要着急写文档，先可以写个60分的草稿。</p>
 <h6>2017/10/9 17:20:18</h6>
@@ -4082,7 +4611,7 @@ g++ [-选项1-] [-选项2-] .... [-选项n-] &lt;源文件名&gt;
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">17</span>
+                  <span class="site-state-item-count">19</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
