@@ -1,0 +1,852 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Linux," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="Linux守护进程1——程序前后台切换
+
+
+
+写test1-1.c/test1-2.c 两个程序，都是死循环操作，每5 秒打印一句话，写配套的makefile 文件，make 后可生成test1-1和test1-2 两个可执行文件
+//test1-1.c
+#include&amp;lt;stdio.h&amp;gt;
+#include&amp;lt;unistd.h&amp;gt;
+
+#define SLEEP_TIME 5">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Linux守护进程1">
+<meta property="og:url" content="http://yoursite.com/2017/10/18/Linux/Linux守护进程/Linux守护进程1/index.html">
+<meta property="og:site_name" content="BaiJiazm">
+<meta property="og:description" content="Linux守护进程1——程序前后台切换
+
+
+
+写test1-1.c/test1-2.c 两个程序，都是死循环操作，每5 秒打印一句话，写配套的makefile 文件，make 后可生成test1-1和test1-2 两个可执行文件
+//test1-1.c
+#include&amp;lt;stdio.h&amp;gt;
+#include&amp;lt;unistd.h&amp;gt;
+
+#define SLEEP_TIME 5">
+<meta property="og:image" content="http://yoursite.com/2017/10/18/Linux/Linux守护进程/Linux守护进程1/1.jpg">
+<meta property="og:image" content="http://yoursite.com/2017/10/18/Linux/Linux守护进程/Linux守护进程1/2.jpg">
+<meta property="og:image" content="http://yoursite.com/2017/10/18/Linux/Linux守护进程/Linux守护进程1/3.jpg">
+<meta property="og:image" content="http://yoursite.com/2017/10/18/Linux/Linux守护进程/Linux守护进程1/4.jpg">
+<meta property="og:image" content="http://yoursite.com/2017/10/18/Linux/Linux守护进程/Linux守护进程1/5.jpg">
+<meta property="og:updated_time" content="2017-10-18T11:46:43.213Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Linux守护进程1">
+<meta name="twitter:description" content="Linux守护进程1——程序前后台切换
+
+
+
+写test1-1.c/test1-2.c 两个程序，都是死循环操作，每5 秒打印一句话，写配套的makefile 文件，make 后可生成test1-1和test1-2 两个可执行文件
+//test1-1.c
+#include&amp;lt;stdio.h&amp;gt;
+#include&amp;lt;unistd.h&amp;gt;
+
+#define SLEEP_TIME 5">
+<meta name="twitter:image" content="http://yoursite.com/2017/10/18/Linux/Linux守护进程/Linux守护进程1/1.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/10/18/Linux/Linux守护进程/Linux守护进程1/"/>
+
+
+
+
+
+  <title>Linux守护进程1 | BaiJiazm</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">BaiJiazm</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">每一段路都是一种领悟</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/10/18/Linux/Linux守护进程/Linux守护进程1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="BaiJiazm">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="BaiJiazm">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Linux守护进程1</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-18T19:44:25+08:00">
+                2017-10-18
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <hr>
+<h4>Linux守护进程1——程序前后台切换</h4>
+<hr>
+<ul>
+<li>
+<p><strong>写test1-1.c/test1-2.c 两个程序，都是死循环操作，每5 秒打印一句话，写配套的makefile 文件，make 后可生成test1-1和test1-2 两个可执行文件</strong></p>
+<pre><code>//test1-1.c
+#include&lt;stdio.h&gt;
+#include&lt;unistd.h&gt;
+
+#define SLEEP_TIME 5
+
+int main(){
+        while(1){
+                printf(&quot;1453381\n&quot;);
+                sleep(SLEEP_TIME);
+        }
+        return 0;
+}
+
+//test1-2.c
+
+#include&lt;stdio.h&gt;
+#include&lt;unistd.h&gt;
+
+#define SLEEP_TIME 5
+
+int main(){
+        while(1){
+                printf(&quot;曾鸣\n&quot;);
+                sleep(SLEEP_TIME);
+        }
+        return 0;
+}
+</code></pre>
+<p>makefile ：</p>
+<pre><code>cc ?= gcc
+
+srcNames :=test1-1 test1-2
+
+all :
+	@for src in $(srcNames) ; \
+	do \
+		$(cc) -o $$src &quot;$$src&quot;.c ; \
+	done
+
+clean :
+	rm -f *.o $(srcNames)
+
+.PHONY : all clean
+</code></pre>
+</li>
+<li>
+<p><strong>用SecureCRT登录系统（简称控制台），然后./test1-1 运行test1-1 程序，控制台进入死循环，不再出现#或$提示符</strong></p>
+</li>
+<li>
+<p><strong>如何将test1-1 放入后台运行？</strong></p>
+<p>程序运行时在终端按下 [Ctrl] + z，使工作转入后台，但此时工作停止，需要使用 bg 来使之运行。</p>
+</li>
+<li>
+<p><strong>如何查看在后台的test1-1 程序的信息？</strong></p>
+<ul>
+<li>
+<p>jobs命令<br>
+功能：查看当前终端后台运行的任务<br>
+<code>jobs -l</code>选项可显示当前终端所有任务的PID，jobs的状态可以是running，stopped，Terminated。+ 号表示当前任务，- 号表示后一个任务。</p>
+</li>
+<li>
+<p>ps命令<br>
+功能：ps命令用于报告当前系统的进程状态<br>
+<code>ps -ef | grep &quot;test1-1&quot;</code><br>
+-a：显示所有终端机下执行的程序<br>
+-f：显示UID,PPIP,C与STIME栏位。</p>
+</li>
+</ul>
+<p>测试截图</p>
+<p><img src="/2017/10/18/Linux/Linux守护进程/Linux守护进程1/1.jpg" alt=""></p>
+</li>
+<li>
+<p><strong>如何使test1-1 重新切换到前台来？</strong></p>
+<p>fg 命令</p>
+</li>
+<li>
+<p><strong>再次将test1-1 放入后台，./test1-2 运行test1-2 程序，然后将test1-2 也放入后台如何控制将test1-1/test1-2 中的某一个切换到前台来？</strong></p>
+<p>fg + 工作序号。如 fg 2 会让 test1-2 回到前台。<br>
+同理，如果后台有多个工作停止，则使用 bg + 工作序号可以使指定工作开始后台运行。</p>
+<p><code>[1]- [2]+</code>，加号代表当前工作为<code>[2]</code>，减号代表当前工作的下一个工作为<code>[1]</code>。它们表明了工作执行的顺序，如果你使用不加序号的 fg 命令，则默认把带加号的工作提到前台。</p>
+<p>测试截图</p>
+<p><img src="/2017/10/18/Linux/Linux守护进程/Linux守护进程1/2.jpg" alt=""></p>
+</li>
+<li>
+<p><strong>test1-1/test1-2 的父进程标识是谁？如何查看？</strong></p>
+<pre><code>ps -ef | grep test1-1   #查看test1-1进程信息
+pstree pid  #查看pid进程树
+ps -ef | grep pid #筛选出包含与pid有关的进程，其中第二列为pid，第三列为ppid
+</code></pre>
+<p>测试截图</p>
+<p><img src="/2017/10/18/Linux/Linux守护进程/Linux守护进程1/3.jpg" alt=""><br>
+<img src="/2017/10/18/Linux/Linux守护进程/Linux守护进程1/4.jpg" alt=""></p>
+</li>
+<li>
+<p><strong>用SecureCRT 再登录一个控制台，用什么命令可以看到test1-1/test1-2 的信息？此时父进
+程标识是谁？如何查看？</strong></p>
+<p>同上，一样的命令可以查看，原进程pid及ppid不变，此时的bash进程pid不同。</p>
+</li>
+<li>
+<p><strong>当test1-1/test1-2 在后台运行时，如果CTRL+D 退出该控制台登录，在另一个控制台再查看test1-1/test1-2 的信息，此时父进程标识是谁？</strong></p>
+<p>父进程PID 是 1。</p>
+<p>测试截图</p>
+<p><img src="/2017/10/18/Linux/Linux守护进程/Linux守护进程1/5.jpg" alt=""></p>
+</li>
+<li>
+<p><strong>能否使test1-1/test1-2 在终端退出登录后继续运行（不是再次运行）？此时打印信息能否继续出现在新登录的终端上？</strong></p>
+<ol>
+<li>
+<p>setsid命令，用setsid来启动程序，使启动的进程在新的session中，并且终端关闭时，进程不退出。</p>
+<pre><code>setsid ./test1-1 &amp;
+setsid ./test1-2 &amp;
+</code></pre>
+</li>
+<li>
+<p>nohup命令，被nohup启动的程序会忽略SIGHUP信号。</p>
+<pre><code>nohup ./test1-1 &amp;
+nohup ./test1-2 &amp;
+</code></pre>
+<p>nohup命令可以将程序以忽略挂起信号的方式运行起来，被运行的程序的输出信息将不会显示到终端。 无论是否将 nohup 命令的输出重定向到终端，输出都将附加到当前目录的 nohup.out 文件中。如果当前目录的 nohup.out 文件不可写，输出重定向到$HOME/nohup.out文件中。</p>
+</li>
+<li>
+<p>对于jobs中的后台程序，通过disown命令</p>
+<pre><code>disown -h %id   #id表示jobs中的id
+</code></pre>
+</li>
+</ol>
+<p>打印信息不会继续出现在新的终端上。<br>
+会不会出现在新的终端上取决于新的 shell 的标准输出/错误输出的文件描述符是否与 test1-1 test1-2 进程相同。在原来终端未退出时，默认情况下（没有使用重定向）它们继承了父进程（即原来 shell）的文件描述符。在原来 shell 结束后，它们继承新的父进程的文件描述符，而新的文件描述符和原来文件描述符是不同的，所以不会。</p>
+<p>我们可以用重定向将输出重定向为指定设备。</p>
+<pre><code>tty #获取某个终端的控制台
+setsid ./test1-1 &gt;/dev/pts/1    #/dev/pts/1 是上面的结果
+</code></pre>
+</li>
+<li>
+<p><strong>如何将一个正常程序直接放入后台运行？（不要通过按键切换）</strong></p>
+<p>执行程序时，在命令后加上 &amp;，比如 <code>./test1-1 &amp;</code></p>
+</li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Linux/" rel="tag"># Linux</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/10/18/Linux/Linux守护进程/Linux守护进程4/" rel="next" title="Linux守护进程4">
+                <i class="fa fa-chevron-left"></i> Linux守护进程4
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/10/18/Linux/Linux守护进程/Linux守护进程5/" rel="prev" title="Linux守护进程5">
+                Linux守护进程5 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">BaiJiazm</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">31</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">1.</span> <span class="nav-text">Linux守护进程1——程序前后台切换</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">BaiJiazm</span>
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
