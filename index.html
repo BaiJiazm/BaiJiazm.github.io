@@ -248,6 +248,181 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/01/29/Nginx/Nginx代码风格/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="BaiJiazm">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/headPhoto.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="BaiJiazm">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/01/29/Nginx/Nginx代码风格/" itemprop="url">Nginx代码风格</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-29T16:20:48+08:00">
+                2018-01-29
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p><strong>一、基本原则</strong></p>
+<ul>
+<li>K&amp;R编码风格（偏BSD子类）。</li>
+<li>每行不能超过80列。</li>
+<li>不用TAB对齐，用空格。</li>
+<li>默认对齐单元是4个空格。</li>
+<li>除宏定义外，字母均为小写，单词间用下划线_间隔。</li>
+<li>使用C方式的注释，不得使用//形式注释。</li>
+<li>中缀运算符的前后须空一格，如3 + 2以及a &gt; 3。</li>
+<li>逗号后须空一格，如foo(a, b, c);</li>
+</ul>
+<p><strong>二、风格图示</strong></p>
+<p><img src="http://tengine.taobao.org/book/_images/code-style-1.JPG" alt="">
+1、	if/while/for/switch语句的左花括号和关键字在同一行上，和括号之间空一个空格。
+2、	else关键字和两个花括号在同一行上。
+<img src="http://tengine.taobao.org/book/_images/code-style-2.JPG" alt="">
+3、	文件开始的注释空一行。
+4、	较为完整的代码块间的距离为空两行。如函数声明、函数定义之间等。
+5、	函数声明或定义若一行显示不下，则函数原型空4个空格。
+6、	结构体数组的花括号和内容之间空一个空格。
+<img src="http://tengine.taobao.org/book/_images/code-style-3.JPG" alt="">
+7、	结构体数组的左花括号放在同一行上。
+8、	较大的结构体数组元素最开始空一行。
+9、	元素内容上下对齐。
+<img src="http://tengine.taobao.org/book/_images/code-style-4.JPG" alt="">
+10、注释上下对齐。
+<img src="http://tengine.taobao.org/book/_images/code-style-5.JPG" alt="">
+11、函数调用折行时，参数上下对齐。
+<img src="http://tengine.taobao.org/book/_images/code-style-6.JPG" alt="">
+12、函数定义时，类型单独一行。
+13、变量声明的类型上下排列按照从短到长的顺序。注意，最下面的变量的类型和名称间的空格为2-3个。一般情况下为2个，这是Nginx中最小的变量声明中类型和名称的距离。
+14、变量名称上下对齐——字母对齐，不包括指针的*号。
+<img src="http://tengine.taobao.org/book/_images/code-style-7.JPG" alt="">
+15、结构体内变量上下对齐（字母，不包括指针的的*号）。
+<img src="http://tengine.taobao.org/book/_images/code-style-8.JPG" alt="">
+16、单行注释格式为/* something */
+<img src="http://tengine.taobao.org/book/_images/code-style-9.JPG" alt="">
+17、多行注释的格式为：</p>
+<pre><code>/*
+ * something
+ */
+</code></pre>
+<p><img src="http://tengine.taobao.org/book/_images/code-style-10.JPG" alt="">
+18、函数定义的左花括号独占一行。
+19、switch语句中，switch和case关键字上下对齐。
+<img src="http://tengine.taobao.org/book/_images/code-style-11.JPG" alt="">
+20、当条件表达式过长需要折行时，关系运算符须位于下一行的行首，并与上一行的条件表达式的第一个字符对齐，同时右花括号须位于单独的一行，并与if/while等关键字对齐。
+<img src="http://tengine.taobao.org/book/_images/code-style-12.JPG" alt="">
+21、 else语句之前须空出一行。
+<img src="http://tengine.taobao.org/book/_images/code-style-13.JPG" alt="">
+22、在函数中，相同类型的变量声明放在一行上。</p>
+<hr>
+<p><strong>参考链接：</strong></p>
+<ul>
+<li><a href="http://tengine.taobao.org/book/appendix_a.html" target="_blank" rel="external">编码风格</a></li>
+</ul>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/10/29/OS/栈空间和堆空间/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -396,7 +571,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/10/08/Test/Markdown/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/10/08/Life/to be continued/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="BaiJiazm">
@@ -415,7 +590,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/10/08/Test/Markdown/" itemprop="url">未命名</a></h1>
+                <a class="post-title-link" href="/2017/10/08/Life/to be continued/" itemprop="url">To be continued ...</a></h1>
         
 
         <div class="post-meta">
@@ -427,7 +602,290 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-08T18:39:18+08:00">
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-08T13:47:40+08:00">
+                2017-10-08
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <hr>
+<p><strong>历史的进程还在继续...<br>
+Life is continuing...</strong></p>
+<h6>2018/1/29 16:01:07</h6>
+<p>我说过，这个博客我会一直写下去，好久不见，这个学期本来就比较繁忙，有经历了一些事情，前段时间历经网络Final作业和考试周的洗礼，现在终于放假了。It's show Time :)</p>
+<h6>2017/10/22 11:22:57</h6>
+<p>不要强迫症，没有最完美的东西，绝对没有；
+知识和技能的学习才是根本目的，但也要和作业区分开来。</p>
+<h6>2017/10/14 13:40:18</h6>
+<p>一周一晃又过了，大部分时间都在这上边了，如何节约时间呢？本周总结几点：先易后难，先大部分再小细节，先重要后次要；有时卡壳个别题目可以先留着，有时候前后呼应，有所启发，理解的也深入一些；不要着急写文档，先可以写个60分的草稿。</p>
+<h6>2017/10/9 17:20:18</h6>
+<p>听课后的小结</p>
+<ol>
+<li>在实际操作时，多想一下本质总是好的，比如安装Linux虚拟机时NAT模式、bridge、host only模式的区别是什么，选择任意模式连接虚拟机和宿主机时出现问题不懂，光看一些教程即使当时可能正确了，但是按部就班是没有任何收获的，多思考、多尝试非常重要。</li>
+<li>很多教程知识并不是完全适用你所在的环境的，比如Linux下有很多版本，光RedHat版本就有几种，同一系列下系统的一些配置命令、文件不同，还有MySQL与MariaDB等类似兼容软件名字不同等等，所以，要学会思考关键词，搜索才会有效率。</li>
+<li>对于未知的东西，都应该问为什么，思考、猜测、多尝试才会有收获，不要做一遍之后什么都忘得一干二净。</li>
+</ol>
+<h6>2017/10/8 13:57:49</h6>
+<p>今天算是我的个人博客的开篇吧，其实从小学、初中、高中、大学以来我都没有记笔记或者写作等等习惯，除了高中时期会有一些个人总结、心得感悟之类。一年以前这个博客已经搭建好，也是在国庆期间，发了三遍一般性文章就没有再怎么用到Hexo、GitHub等工具，一直搁到现在...</p>
+<p>这一年中，大部分时间其实都在刷数据结构和算法题，以前想写点什么，总是觉得没什么好写，其实完全可以把这一年做的大大小小的算法题目及解题心得放在博客上的，目前只是把部分的题解放在了GitHub中，等有时间回味和复习的时候，把一些比较好的题目整理再推送吧。</p>
+<p>希望能够把这个博客写下去，BaiJia Come on !</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/10/08/Test/MarkDown Test1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="BaiJiazm">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/headPhoto.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="BaiJiazm">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/10/08/Test/MarkDown Test1/" itemprop="url">MarkDown 语法测试1</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-08T10:07:49+08:00">
+                2017-10-08
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1>MarkDown 语法测试</h1>
+<hr>
+<p><strong>粗体</strong></p>
+<p><em>斜体</em></p>
+<blockquote>
+<p>引用</p>
+</blockquote>
+<p><code>代码块</code></p>
+<h1>标题1</h1>
+<h2>标题2</h2>
+<p><a href="http://BaiJiazm.github.io" title="超链接" target="_blank" rel="external">超链接 http://BaiJiazm.github.io</a></p>
+<ul>
+<li>1</li>
+<li>2</li>
+<li>3</li>
+</ul>
+<ol>
+<li>1</li>
+<li>2</li>
+<li>3</li>
+</ol>
+<hr>
+<p>水平标尺</p>
+<hr>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/10/08/Test/Markdown Test2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="BaiJiazm">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/headPhoto.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="BaiJiazm">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/10/08/Test/Markdown Test2/" itemprop="url">MarkDown 语法测试2</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-08T10:07:49+08:00">
                 2017-10-08
               </time>
             
@@ -563,7 +1021,7 @@ end tell
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/10/08/Life/to be continued/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/10/07/Other/命令行语法格式/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="BaiJiazm">
@@ -582,288 +1040,7 @@ end tell
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/10/08/Life/to be continued/" itemprop="url">to be continued ...</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-08T13:47:40+08:00">
-                2017-10-08
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <hr>
-<p><strong>历史的进程还在继续...<br>
-Life is continuing...</strong></p>
-<h6>2017/10/22 11:22:57</h6>
-<p>不要强迫症，没有最完美的东西，绝对没有；
-知识和技能的学习才是根本目的，但也要和作业区分开来。</p>
-<h6>2017/10/14 13:40:18</h6>
-<p>一周一晃又过了，大部分时间都在这上边了，如何节约时间呢？本周总结几点：先易后难，先大部分再小细节，先重要后次要；有时卡壳个别题目可以先留着，有时候前后呼应，有所启发，理解的也深入一些；不要着急写文档，先可以写个60分的草稿。</p>
-<h6>2017/10/9 17:20:18</h6>
-<p>听课后的小结</p>
-<ol>
-<li>在实际操作时，多想一下本质总是好的，比如安装Linux虚拟机时NAT模式、bridge、host only模式的区别是什么，选择任意模式连接虚拟机和宿主机时出现问题不懂，光看一些教程即使当时可能正确了，但是按部就班是没有任何收获的，多思考、多尝试非常重要。</li>
-<li>很多教程知识并不是完全适用你所在的环境的，比如Linux下有很多版本，光RedHat版本就有几种，同一系列下系统的一些配置命令、文件不同，还有MySQL与MariaDB等类似兼容软件名字不同等等，所以，要学会思考关键词，搜索才会有效率。</li>
-<li>对于未知的东西，都应该问为什么，思考、猜测、多尝试才会有收获，不要做一遍之后什么都忘得一干二净。</li>
-</ol>
-<h6>2017/10/8 13:57:49</h6>
-<p>今天算是我的个人博客的开篇吧，其实从小学、初中、高中、大学以来我都没有记笔记或者写作等等习惯，除了高中时期会有一些个人总结、心得感悟之类。一年以前这个博客已经搭建好，也是在国庆期间，发了三遍一般性文章就没有再怎么用到Hexo、GitHub等工具，一直搁到现在...</p>
-<p>这一年中，大部分时间其实都在刷数据结构和算法题，以前想写点什么，总是觉得没什么好写，其实完全可以把这一年做的大大小小的算法题目及解题心得放在博客上的，目前只是把部分的题解放在了GitHub中，等有时间回味和复习的时候，把一些比较好的题目整理再推送吧。</p>
-<p>希望能够把这个博客写下去，BaiJia Come on !</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/10/08/Test/MarkDown Test/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="BaiJiazm">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/headPhoto.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="BaiJiazm">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/10/08/Test/MarkDown Test/" itemprop="url">MarkDown 语法测试</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-08T10:07:49+08:00">
-                2017-10-08
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1>MarkDown 语法测试</h1>
-<hr>
-<p><strong>粗体</strong></p>
-<p><em>斜体</em></p>
-<blockquote>
-<p>引用</p>
-</blockquote>
-<p><code>代码块</code></p>
-<h1>标题1</h1>
-<h2>标题2</h2>
-<p><a href="http://BaiJiazm.github.io" title="超链接" target="_blank" rel="external">超链接 http://BaiJiazm.github.io</a></p>
-<ul>
-<li>1</li>
-<li>2</li>
-<li>3</li>
-</ul>
-<ol>
-<li>1</li>
-<li>2</li>
-<li>3</li>
-</ol>
-<hr>
-<p>水平标尺</p>
-<hr>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/10/07/命令行语法格式/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="BaiJiazm">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/headPhoto.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="BaiJiazm">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2016/10/07/命令行语法格式/" itemprop="url">命令行语法格式</a></h1>
+                <a class="post-title-link" href="/2016/10/07/Other/命令行语法格式/" itemprop="url">命令行语法格式</a></h1>
         
 
         <div class="post-meta">
@@ -1148,7 +1325,7 @@ Life is continuing...</strong></p>
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-count">7</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1161,7 +1338,7 @@ Life is continuing...</strong></p>
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-count">7</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
