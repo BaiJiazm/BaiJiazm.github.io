@@ -248,6 +248,299 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/02/02/Java/Java相关名词概念/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="BaiJiazm">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/headPhoto.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="BaiJiazm">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/02/02/Java/Java相关名词概念/" itemprop="url">Java移位运算</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-02-02T19:05:34+08:00">
+                2018-02-02
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>Java里面有很多名词，刚入门的新手肯定有很多名词不知道其意，这里简要总结，详细阐述见其它博客。</p>
+<p><strong>J2EE</strong>
+全称Java 2 Enterprise Edition，是Java的一种企业版，用于企业级应用开发。</p>
+<p><strong>J2SE</strong>
+全称Java 2 Standard Edition，是Java的标准版，用于标准应用开发，也是Java基础版本。</p>
+<p><strong>J2ME</strong>
+全称Java 2 Micro Edition，是Java的微型版，用于手机、PDA等嵌入式开发，针对手机开发，还有专门的J2ME Wireless Toolkit免费套件提供。</p>
+<p>总而言之，J2EE,J2SE,J2ME是java针对不同使用范畴提供不同的服务，也就是提供不同类型的类库。针对企业应用的J2EE（Java 2 Enterprise Edition）、针对普通PC应用的J2SE（Java 2 Standard Edition）和针对嵌入式设备及消费类电器的J2ME（Java 2 Micro Edition）三个版本。</p>
+<p><strong>EJB</strong>
+EJB是sun的JavaEE服务器端组件模型，设计目标与核心应用是部署分布式应用程序。简单来说就是把已经编写好的程序（即：类）打包放在服务器上执行。凭借java跨平台的优势，用EJB技术部署的分布式系统可以不限于特定的平台。EJB (Enterprise JavaBean)是J2EE(javaEE)的一部分，定义了一个用于开发基于组件的企业多重应用程序的标准。</p>
+<p><strong>SDK</strong>
+全称Software Develop Kit，软件开发工具包，用于帮助开发人员提高开发效率。各种不同类型的软件开发，都可以有自己的SDK。Windows有Windows SDK，DirectX 有 DirectX 9 SDK，.NET开发也有Microsoft .NET Framework SDK。JAVA开发当然也有自己的Java SDK。</p>
+<p><strong>JDK</strong>
+全称Java development toolkit，相当于是Java的库函数，是编译、运行java程序的工具包，是一切java应用程序的基础,所有java应用程序是构建在这个之上的。它是一组API，也可以说是一些java Class。JDK作为Java开发工具包，主要用于构建在Java平台上运行的应用程序、Applet 和组件等，目前ORACLE官网介绍看，JDK属于SDK的一部分，JDK和SDK一起发行的。</p>
+<p><strong>JRE</strong>
+全称Java Runtime Environment，Java运行环境，也就是Java平台。所有的Java程序都要在JRE下才能运行。JDK的工具也是Java程序，也需要JRE才能运行。为了保持JDK的独立性和完整性，在JDK的安装过程中，JRE也是安装的一部分。所以，目前ORACLE官网介绍看，JRE则属于JDK的一部分，如果不想开发，只是想跑跑JAVA程序，官网可以下载到单独的JRE包，但如果要开发，还是需安装上面的JDK。</p>
+<p><strong>JVM</strong>
+全称Java Virtual Machine，Java虚拟机，是JRE的一部分。它是一个虚构出来的计算机，是通过在实际的计算机上仿真模拟各种计算机功能来实现的。JVM有自己完 善的硬件架构，如处理器、堆栈、寄存器等，还具有相应的指令系统。Java语言最重要的特点就是跨平台运行。使用JVM就是为了支持与操作系统无关，实现跨平台。JAVA虚拟机JVM是属于JRE的，而现在我们安装JDK时也附带安装了JRE（当然也可以单独安装JRE）。</p>
+<p><strong>IoC</strong>
+控制反转（Inversion of Control，英文缩写为IoC）把创建对象的权利交给框架,是框架的重要特征，并非面向对象编程的专用术语。它包括依赖注入（Dependency Injection，简称DI）和依赖查找（Dependency Lookup）。IoC不是什么技术，而是一种设计思想。在Java开发中，Ioc意味着将你设计好的对象交给容器控制，而不是传统的在你的对象内部直接控制。</p>
+<p><strong>AOP</strong>
+在软件业，AOP为Aspect Oriented Programming的缩写，意为：面向切面编程，通过预编译方式和运行期动态代理实现程序功能的统一维护的一种技术。AOP是OOP的延续，是软件开发中的一个热点，也是Spring框架中的一个重要内容，是函数式编程的一种衍生范型。利用AOP可以对业务逻辑的各个部分进行隔离，从而使得业务逻辑各部分之间的耦合度降低，提高程序的可重用性，同时提高了开发的效率。</p>
+<p><strong>JavaBean</strong>
+JavaBean 是一种JAVA语言写成的可重用组件。为写成JavaBean，类必须是具体的和公共的，并且具有无参数的构造器。JavaBean 通过提供符合一致性设计模式的公共方法将内部域暴露成员属性，set和get方法获取。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/01/31/Java/Java移位运算符/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="BaiJiazm">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/headPhoto.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="BaiJiazm">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/01/31/Java/Java移位运算符/" itemprop="url">Java移位运算</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-31T11:30:45+08:00">
+                2018-01-31
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>JAVA 中有以上三种移位符号，那么下面的输出是什么呢？</p>
+<pre><code>System.out.println(0xff &gt;&gt;&gt; 7);
+
+System.out.println((((byte) 0xff) &gt;&gt;&gt; 7));
+
+System.out.println((byte) (((byte) 0xff) &gt;&gt;&gt; 7));
+</code></pre>
+<p>1、三种移位符号的意义是什么？</p>
+<pre><code>&gt;&gt; 是带符号右移，若左操作数是正数，则高位补“0”，若左操作数是负数，则高位补“1”.
+&lt;&lt; 将左操作数向左边移动，并且在低位补0.
+&gt;&gt;&gt; 是无符号右移，无论左操作数是正数还是负数，在高位都补“0”
+</code></pre>
+<p>2、三种移位符号作用的左操作数有五种：long,int,short,byte,char,但是在作用不同的操作数类型时，其具体过程不同, 遵循一下几个原则：</p>
+<p>a : int移位时，左边的操作数是32位的，此时的移位符号作用在32位bit上。如：1 &gt;&gt; 3, 是将00000000 00000000 00000000 00000001这32位向右边移动3位。</p>
+<p>b: long 移位时，左边的操作数是64位的，此时移位符号作用在64位bit上。如：1L &gt;&gt; 3。</p>
+<p>c: short, byte,char 在移位之前首先将数据转换为int，然后再移位，此时移位符号作用在32为bit上。如：(byte)0xff &gt;&gt;&gt; 7, 是将11111111 11111111 11111111 11111111向右边移动7位，得到00000001 11111111 11111111 11111111, 所以结果不是你所期望的1，呵呵。</p>
+<p>3、有1,2可知，当左操作数是long时，移位之后得到的类型是long，当左操作数是其它四中类型时，移位之后得到的类型是int，所以如果做操作数是byte,char,short 时，你用　&gt;&gt;=,&gt;&gt;&gt;=, &lt;&lt;= 其实是将得到的int 做低位截取得到的数值。这里往往容易犯错。</p>
+<p>４、三种移位符号除了对做操作数有操作规则外，其实对右操作数也有操作规则。如果左操作数（转换之后的）是int,那么右操作数只有低５位有效，为什么?因为int 总共就32位，如：23 &gt;&gt; 33, 结果与23 &gt;&gt;1是一样的，都是11；同理，如果左边操作数是long，那么右边操作数只有低6位有效。</p>
+<pre><code>System.out.println(0xff &gt;&gt;&gt; 7);
+</code></pre>
+<p>0xff 本身就是一个int，其bits为：00000000 00000000 00000000 11111111，无符号向右移动7位， 得到的bits当然为：00000000 00000000 00000000 00000001，</p>
+<pre><code>System.out.println((((byte) 0xff) &gt;&gt;&gt; 7));
+</code></pre>
+<p>(byte)0xff 是一个byte，bits为： 11111111， 首先转换为int，其bits为：11111111 11111111 11111111 11111111， 向右边无符号移动7为，得到的结果bits是：00000001 11111111 11111111 11111111。</p>
+<pre><code>System.out.println((byte) (((byte) 0xff) &gt;&gt;&gt; 7));
+</code></pre>
+<p>(byte) 0xff 是一个byte，bits为： 11111111， 首先转换为int，其bits为：11111111 11111111 11111111 11111111，向右边无符号移动7为，得到的结果bits是：00000001 11111111 11111111 11111111，然后转换为byte，低位截取得到bits: 11111111, 在输出的时候转换为int， 其bits为：11111111 11111111 11111111 11111111.</p>
+<p>上面三个的结果是：</p>
+<pre><code>1
+33554431
+-1</code></pre>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/01/30/Java/final关键字用法/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1762,7 +2055,7 @@ end tell
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">10</span>
+                  <span class="site-state-item-count">12</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1775,7 +2068,7 @@ end tell
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-count">9</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>

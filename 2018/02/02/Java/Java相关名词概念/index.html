@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Java," />
+  <meta name="keywords" content="Java,Java基本名词," />
 
 
 
@@ -79,43 +79,34 @@
 
 
 
-<meta name="description" content="1.修饰数据
-在java中，用final关键字修饰的变量，只能进行一次赋值操作，并且在生存期内不可以改变它的值。在针对基本类型和引用类型时，final关键字的效果存在细微差别。例子：
-class Value {
-    int v;
-    public Value(int v) {
-        this.v = v;
-    }
-}
-
-public class FinalTest {">
+<meta name="description" content="Java里面有很多名词，刚入门的新手肯定有很多名词不知道其意，这里简要总结，详细阐述见其它博客。
+J2EE
+全称Java 2 Enterprise Edition，是Java的一种企业版，用于企业级应用开发。
+J2SE
+全称Java 2 Standard Edition，是Java的标准版，用于标准应用开发，也是Java基础版本。
+J2ME
+全称Java 2 Micro Edition，是Java">
 <meta property="og:type" content="article">
-<meta property="og:title" content="final关键字用法">
-<meta property="og:url" content="http://yoursite.com/2018/01/30/Java/final关键字用法/index.html">
+<meta property="og:title" content="Java移位运算">
+<meta property="og:url" content="http://yoursite.com/2018/02/02/Java/Java相关名词概念/index.html">
 <meta property="og:site_name" content="BaiJiazm">
-<meta property="og:description" content="1.修饰数据
-在java中，用final关键字修饰的变量，只能进行一次赋值操作，并且在生存期内不可以改变它的值。在针对基本类型和引用类型时，final关键字的效果存在细微差别。例子：
-class Value {
-    int v;
-    public Value(int v) {
-        this.v = v;
-    }
-}
-
-public class FinalTest {">
-<meta property="og:updated_time" content="2018-01-30T16:01:10.917Z">
+<meta property="og:description" content="Java里面有很多名词，刚入门的新手肯定有很多名词不知道其意，这里简要总结，详细阐述见其它博客。
+J2EE
+全称Java 2 Enterprise Edition，是Java的一种企业版，用于企业级应用开发。
+J2SE
+全称Java 2 Standard Edition，是Java的标准版，用于标准应用开发，也是Java基础版本。
+J2ME
+全称Java 2 Micro Edition，是Java">
+<meta property="og:updated_time" content="2018-02-02T11:34:48.995Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="final关键字用法">
-<meta name="twitter:description" content="1.修饰数据
-在java中，用final关键字修饰的变量，只能进行一次赋值操作，并且在生存期内不可以改变它的值。在针对基本类型和引用类型时，final关键字的效果存在细微差别。例子：
-class Value {
-    int v;
-    public Value(int v) {
-        this.v = v;
-    }
-}
-
-public class FinalTest {">
+<meta name="twitter:title" content="Java移位运算">
+<meta name="twitter:description" content="Java里面有很多名词，刚入门的新手肯定有很多名词不知道其意，这里简要总结，详细阐述见其它博客。
+J2EE
+全称Java 2 Enterprise Edition，是Java的一种企业版，用于企业级应用开发。
+J2SE
+全称Java 2 Standard Edition，是Java的标准版，用于标准应用开发，也是Java基础版本。
+J2ME
+全称Java 2 Micro Edition，是Java">
 
 
 
@@ -145,13 +136,13 @@ public class FinalTest {">
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2018/01/30/Java/final关键字用法/"/>
+  <link rel="canonical" href="http://yoursite.com/2018/02/02/Java/Java相关名词概念/"/>
 
 
 
 
 
-  <title>final关键字用法 | BaiJiazm</title>
+  <title>Java移位运算 | BaiJiazm</title>
   
 
 
@@ -278,7 +269,7 @@ public class FinalTest {">
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/01/30/Java/final关键字用法/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/02/02/Java/Java相关名词概念/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="BaiJiazm">
@@ -295,7 +286,7 @@ public class FinalTest {">
 
         
         
-          <h1 class="post-title" itemprop="name headline">final关键字用法</h1>
+          <h1 class="post-title" itemprop="name headline">Java移位运算</h1>
         
 
         <div class="post-meta">
@@ -307,8 +298,8 @@ public class FinalTest {">
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-30T23:52:32+08:00">
-                2018-01-30
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-02-02T19:05:34+08:00">
+                2018-02-02
               </time>
             
 
@@ -345,60 +336,30 @@ public class FinalTest {">
       
 
       
-        <p>1.修饰数据</p>
-<p>在java中，用final关键字修饰的变量，只能进行一次赋值操作，并且在生存期内不可以改变它的值。在针对基本类型和引用类型时，final关键字的效果存在细微差别。例子：</p>
-<pre><code>class Value {
-    int v;
-    public Value(int v) {
-        this.v = v;
-    }
-}
-
-public class FinalTest {
-    
-    final int f1 = 1;
-    final int f2;
-    public FinalTest() {
-        f2 = 2;
-    }
-
-    public static void main(String[] args) {
-        final int value1 = 1;
-        // value1 = 4;
-        final double value2;
-        value2 = 2.0;
-        final Value value3 = new Value(1);
-        value3.v = 4;
-    }
-}
-</code></pre>
-<p>给value1赋初始值之后，我们无法再对value1的值进行修改，final关键字起到了常量的作用;从value2我们可以看到，final修饰的变量可以不在声明时赋值，即可以先声明，后赋值;value3时一个引用变量，final修饰引用变量时，只是限定了引用变量的引用不可改变，即不能将value3再次引用另一个Value对象，但是引用的对象的值是可以改变的。</p>
-<p>引用变量的值实际上是它所引用的对象的地址，该地址的值是不可改变的，实际引用的对象实际上是不受final关键字的影响的，所以它的值是可以改变的。因为final修饰的数据的值是不可改变的，所以我们必须确保在使用前就已经对成员变量赋值了。因此对于final修饰的成员变量，我们有且只有两个地方可以给它赋值，一个是声明该成员时赋值，另一个是在构造方法中赋值。</p>
-<p>2.修饰方法参数</p>
-<p>编写方法时，可以在参数前面添加final关键字，它表示在整个方法中，不能改变参数的值：</p>
-<pre><code>public class FinalTest {
-
-    /* ... */
-
-    public void finalFunc(final int i, final Value value) {
-        // i = 5; 不能改变i的值
-        // v = new Value(); 不能改变v的值
-        value.v = 5; // 可以改变引用对象的值
-    }
-}
-</code></pre>
-<p>3.修饰方法</p>
-<p>第三种方式，即用final关键字修饰方法，它表示该方法不能被覆盖。关于private和final关键字还有一点联系，这就是类中所有的private方法都隐式地指定为是final的，由于无法在类外使用private方法，所以也就无法覆盖它。</p>
-<p>4.修饰类</p>
-<p>用final修饰的类是无法被继承的。</p>
-<p>总结</p>
-<p>final关键字是我们经常使用的关键字之一，它的主要用法有以下四种：</p>
-<ul>
-<li>用来修饰数据，包括成员变量和局部变量，该变量只能被赋值一次且它的值无法被改变。对于成员变量来讲，我们必须在声明时或者构造方法中对它赋值；</li>
-<li>用来修饰方法参数，表示在变量的生存期中它的值不能被改变；</li>
-<li>修饰方法，表示该方法无法被重写；</li>
-<li>修饰类，表示该类无法被继承。</li>
-</ul>
+        <p>Java里面有很多名词，刚入门的新手肯定有很多名词不知道其意，这里简要总结，详细阐述见其它博客。</p>
+<p><strong>J2EE</strong>
+全称Java 2 Enterprise Edition，是Java的一种企业版，用于企业级应用开发。</p>
+<p><strong>J2SE</strong>
+全称Java 2 Standard Edition，是Java的标准版，用于标准应用开发，也是Java基础版本。</p>
+<p><strong>J2ME</strong>
+全称Java 2 Micro Edition，是Java的微型版，用于手机、PDA等嵌入式开发，针对手机开发，还有专门的J2ME Wireless Toolkit免费套件提供。</p>
+<p>总而言之，J2EE,J2SE,J2ME是java针对不同使用范畴提供不同的服务，也就是提供不同类型的类库。针对企业应用的J2EE（Java 2 Enterprise Edition）、针对普通PC应用的J2SE（Java 2 Standard Edition）和针对嵌入式设备及消费类电器的J2ME（Java 2 Micro Edition）三个版本。</p>
+<p><strong>EJB</strong>
+EJB是sun的JavaEE服务器端组件模型，设计目标与核心应用是部署分布式应用程序。简单来说就是把已经编写好的程序（即：类）打包放在服务器上执行。凭借java跨平台的优势，用EJB技术部署的分布式系统可以不限于特定的平台。EJB (Enterprise JavaBean)是J2EE(javaEE)的一部分，定义了一个用于开发基于组件的企业多重应用程序的标准。</p>
+<p><strong>SDK</strong>
+全称Software Develop Kit，软件开发工具包，用于帮助开发人员提高开发效率。各种不同类型的软件开发，都可以有自己的SDK。Windows有Windows SDK，DirectX 有 DirectX 9 SDK，.NET开发也有Microsoft .NET Framework SDK。JAVA开发当然也有自己的Java SDK。</p>
+<p><strong>JDK</strong>
+全称Java development toolkit，相当于是Java的库函数，是编译、运行java程序的工具包，是一切java应用程序的基础,所有java应用程序是构建在这个之上的。它是一组API，也可以说是一些java Class。JDK作为Java开发工具包，主要用于构建在Java平台上运行的应用程序、Applet 和组件等，目前ORACLE官网介绍看，JDK属于SDK的一部分，JDK和SDK一起发行的。</p>
+<p><strong>JRE</strong>
+全称Java Runtime Environment，Java运行环境，也就是Java平台。所有的Java程序都要在JRE下才能运行。JDK的工具也是Java程序，也需要JRE才能运行。为了保持JDK的独立性和完整性，在JDK的安装过程中，JRE也是安装的一部分。所以，目前ORACLE官网介绍看，JRE则属于JDK的一部分，如果不想开发，只是想跑跑JAVA程序，官网可以下载到单独的JRE包，但如果要开发，还是需安装上面的JDK。</p>
+<p><strong>JVM</strong>
+全称Java Virtual Machine，Java虚拟机，是JRE的一部分。它是一个虚构出来的计算机，是通过在实际的计算机上仿真模拟各种计算机功能来实现的。JVM有自己完 善的硬件架构，如处理器、堆栈、寄存器等，还具有相应的指令系统。Java语言最重要的特点就是跨平台运行。使用JVM就是为了支持与操作系统无关，实现跨平台。JAVA虚拟机JVM是属于JRE的，而现在我们安装JDK时也附带安装了JRE（当然也可以单独安装JRE）。</p>
+<p><strong>IoC</strong>
+控制反转（Inversion of Control，英文缩写为IoC）把创建对象的权利交给框架,是框架的重要特征，并非面向对象编程的专用术语。它包括依赖注入（Dependency Injection，简称DI）和依赖查找（Dependency Lookup）。IoC不是什么技术，而是一种设计思想。在Java开发中，Ioc意味着将你设计好的对象交给容器控制，而不是传统的在你的对象内部直接控制。</p>
+<p><strong>AOP</strong>
+在软件业，AOP为Aspect Oriented Programming的缩写，意为：面向切面编程，通过预编译方式和运行期动态代理实现程序功能的统一维护的一种技术。AOP是OOP的延续，是软件开发中的一个热点，也是Spring框架中的一个重要内容，是函数式编程的一种衍生范型。利用AOP可以对业务逻辑的各个部分进行隔离，从而使得业务逻辑各部分之间的耦合度降低，提高程序的可重用性，同时提高了开发的效率。</p>
+<p><strong>JavaBean</strong>
+JavaBean 是一种JAVA语言写成的可重用组件。为写成JavaBean，类必须是具体的和公共的，并且具有无参数的构造器。JavaBean 通过提供符合一致性设计模式的公共方法将内部域暴露成员属性，set和get方法获取。</p>
 
       
     </div>
@@ -418,6 +379,8 @@ public class FinalTest {
           
             <a href="/tags/Java/" rel="tag"># Java</a>
           
+            <a href="/tags/Java基本名词/" rel="tag"># Java基本名词</a>
+          
         </div>
       
 
@@ -429,8 +392,8 @@ public class FinalTest {
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/01/29/Nginx/Nginx基本概念/" rel="next" title="nginx基础概念">
-                <i class="fa fa-chevron-left"></i> nginx基础概念
+              <a href="/2018/01/31/Java/Java移位运算符/" rel="next" title="Java移位运算">
+                <i class="fa fa-chevron-left"></i> Java移位运算
               </a>
             
           </div>
@@ -438,10 +401,6 @@ public class FinalTest {
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/01/31/Java/Java移位运算符/" rel="prev" title="Java移位运算">
-                Java移位运算 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
