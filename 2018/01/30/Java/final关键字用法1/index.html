@@ -79,37 +79,43 @@
 
 
 
-<meta name="description" content="JAVA 中有以上三种移位符号，那么下面的输出是什么呢？
-System.out.println(0xff &amp;gt;&amp;gt;&amp;gt; 7);
+<meta name="description" content="1.修饰数据
+在java中，用final关键字修饰的变量，只能进行一次赋值操作，并且在生存期内不可以改变它的值。在针对基本类型和引用类型时，final关键字的效果存在细微差别。例子：
+class Value {
+    int v;
+    public Value(int v) {
+        this.v = v;
+    }
+}
 
-System.out.println((((byte) 0xff) &amp;gt;&amp;gt;&amp;gt; 7));
-
-System.out.println((byte) (((byte) 0xff) &amp;gt;&amp;gt;&amp;gt; 7));
-
-1、三种移位符号的意义是什么？">
+public class FinalTest {">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Java移位运算">
-<meta property="og:url" content="http://yoursite.com/2018/01/31/Java/Java移位运算符/index.html">
+<meta property="og:title" content="final关键字用法1">
+<meta property="og:url" content="http://yoursite.com/2018/01/30/Java/final关键字用法1/index.html">
 <meta property="og:site_name" content="BaiJiazm">
-<meta property="og:description" content="JAVA 中有以上三种移位符号，那么下面的输出是什么呢？
-System.out.println(0xff &amp;gt;&amp;gt;&amp;gt; 7);
+<meta property="og:description" content="1.修饰数据
+在java中，用final关键字修饰的变量，只能进行一次赋值操作，并且在生存期内不可以改变它的值。在针对基本类型和引用类型时，final关键字的效果存在细微差别。例子：
+class Value {
+    int v;
+    public Value(int v) {
+        this.v = v;
+    }
+}
 
-System.out.println((((byte) 0xff) &amp;gt;&amp;gt;&amp;gt; 7));
-
-System.out.println((byte) (((byte) 0xff) &amp;gt;&amp;gt;&amp;gt; 7));
-
-1、三种移位符号的意义是什么？">
-<meta property="og:updated_time" content="2018-01-31T03:34:41.063Z">
+public class FinalTest {">
+<meta property="og:updated_time" content="2018-02-03T01:40:05.872Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Java移位运算">
-<meta name="twitter:description" content="JAVA 中有以上三种移位符号，那么下面的输出是什么呢？
-System.out.println(0xff &amp;gt;&amp;gt;&amp;gt; 7);
+<meta name="twitter:title" content="final关键字用法1">
+<meta name="twitter:description" content="1.修饰数据
+在java中，用final关键字修饰的变量，只能进行一次赋值操作，并且在生存期内不可以改变它的值。在针对基本类型和引用类型时，final关键字的效果存在细微差别。例子：
+class Value {
+    int v;
+    public Value(int v) {
+        this.v = v;
+    }
+}
 
-System.out.println((((byte) 0xff) &amp;gt;&amp;gt;&amp;gt; 7));
-
-System.out.println((byte) (((byte) 0xff) &amp;gt;&amp;gt;&amp;gt; 7));
-
-1、三种移位符号的意义是什么？">
+public class FinalTest {">
 
 
 
@@ -139,13 +145,13 @@ System.out.println((byte) (((byte) 0xff) &amp;gt;&amp;gt;&amp;gt; 7));
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2018/01/31/Java/Java移位运算符/"/>
+  <link rel="canonical" href="http://yoursite.com/2018/01/30/Java/final关键字用法1/"/>
 
 
 
 
 
-  <title>Java移位运算 | BaiJiazm</title>
+  <title>final关键字用法1 | BaiJiazm</title>
   
 
 
@@ -272,7 +278,7 @@ System.out.println((byte) (((byte) 0xff) &amp;gt;&amp;gt;&amp;gt; 7));
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/01/31/Java/Java移位运算符/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/01/30/Java/final关键字用法1/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="BaiJiazm">
@@ -289,7 +295,7 @@ System.out.println((byte) (((byte) 0xff) &amp;gt;&amp;gt;&amp;gt; 7));
 
         
         
-          <h1 class="post-title" itemprop="name headline">Java移位运算</h1>
+          <h1 class="post-title" itemprop="name headline">final关键字用法1</h1>
         
 
         <div class="post-meta">
@@ -301,8 +307,8 @@ System.out.println((byte) (((byte) 0xff) &amp;gt;&amp;gt;&amp;gt; 7));
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-31T11:30:45+08:00">
-                2018-01-31
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-30T23:52:32+08:00">
+                2018-01-30
               </time>
             
 
@@ -339,37 +345,60 @@ System.out.println((byte) (((byte) 0xff) &amp;gt;&amp;gt;&amp;gt; 7));
       
 
       
-        <p>JAVA 中有以上三种移位符号，那么下面的输出是什么呢？</p>
-<pre><code>System.out.println(0xff &gt;&gt;&gt; 7);
+        <p>1.修饰数据</p>
+<p>在java中，用final关键字修饰的变量，只能进行一次赋值操作，并且在生存期内不可以改变它的值。在针对基本类型和引用类型时，final关键字的效果存在细微差别。例子：</p>
+<pre><code>class Value {
+    int v;
+    public Value(int v) {
+        this.v = v;
+    }
+}
 
-System.out.println((((byte) 0xff) &gt;&gt;&gt; 7));
+public class FinalTest {
+    
+    final int f1 = 1;
+    final int f2;
+    public FinalTest() {
+        f2 = 2;
+    }
 
-System.out.println((byte) (((byte) 0xff) &gt;&gt;&gt; 7));
+    public static void main(String[] args) {
+        final int value1 = 1;
+        // value1 = 4;
+        final double value2;
+        value2 = 2.0;
+        final Value value3 = new Value(1);
+        value3.v = 4;
+    }
+}
 </code></pre>
-<p>1、三种移位符号的意义是什么？</p>
-<pre><code>&gt;&gt; 是带符号右移，若左操作数是正数，则高位补“0”，若左操作数是负数，则高位补“1”.
-&lt;&lt; 将左操作数向左边移动，并且在低位补0.
-&gt;&gt;&gt; 是无符号右移，无论左操作数是正数还是负数，在高位都补“0”
+<p>给value1赋初始值之后，我们无法再对value1的值进行修改，final关键字起到了常量的作用;从value2我们可以看到，final修饰的变量可以不在声明时赋值，即可以先声明，后赋值;value3时一个引用变量，final修饰引用变量时，只是限定了引用变量的引用不可改变，即不能将value3再次引用另一个Value对象，但是引用的对象的值是可以改变的。</p>
+<p>引用变量的值实际上是它所引用的对象的地址，该地址的值是不可改变的，实际引用的对象实际上是不受final关键字的影响的，所以它的值是可以改变的。因为final修饰的数据的值是不可改变的，所以我们必须确保在使用前就已经对成员变量赋值了。因此对于final修饰的成员变量，我们有且只有两个地方可以给它赋值，一个是声明该成员时赋值，另一个是在构造方法中赋值。</p>
+<p>2.修饰方法参数</p>
+<p>编写方法时，可以在参数前面添加final关键字，它表示在整个方法中，不能改变参数的值：</p>
+<pre><code>public class FinalTest {
+
+    /* ... */
+
+    public void finalFunc(final int i, final Value value) {
+        // i = 5; 不能改变i的值
+        // v = new Value(); 不能改变v的值
+        value.v = 5; // 可以改变引用对象的值
+    }
+}
 </code></pre>
-<p>2、三种移位符号作用的左操作数有五种：long,int,short,byte,char,但是在作用不同的操作数类型时，其具体过程不同, 遵循一下几个原则：</p>
-<p>a : int移位时，左边的操作数是32位的，此时的移位符号作用在32位bit上。如：1 &gt;&gt; 3, 是将00000000 00000000 00000000 00000001这32位向右边移动3位。</p>
-<p>b: long 移位时，左边的操作数是64位的，此时移位符号作用在64位bit上。如：1L &gt;&gt; 3。</p>
-<p>c: short, byte,char 在移位之前首先将数据转换为int，然后再移位，此时移位符号作用在32为bit上。如：(byte)0xff &gt;&gt;&gt; 7, 是将11111111 11111111 11111111 11111111向右边移动7位，得到00000001 11111111 11111111 11111111, 所以结果不是你所期望的1，呵呵。</p>
-<p>3、有1,2可知，当左操作数是long时，移位之后得到的类型是long，当左操作数是其它四中类型时，移位之后得到的类型是int，所以如果做操作数是byte,char,short 时，你用　&gt;&gt;=,&gt;&gt;&gt;=, &lt;&lt;= 其实是将得到的int 做低位截取得到的数值。这里往往容易犯错。</p>
-<p>４、三种移位符号除了对做操作数有操作规则外，其实对右操作数也有操作规则。如果左操作数（转换之后的）是int,那么右操作数只有低５位有效，为什么?因为int 总共就32位，如：23 &gt;&gt; 33, 结果与23 &gt;&gt;1是一样的，都是11；同理，如果左边操作数是long，那么右边操作数只有低6位有效。</p>
-<pre><code>System.out.println(0xff &gt;&gt;&gt; 7);
-</code></pre>
-<p>0xff 本身就是一个int，其bits为：00000000 00000000 00000000 11111111，无符号向右移动7位， 得到的bits当然为：00000000 00000000 00000000 00000001，</p>
-<pre><code>System.out.println((((byte) 0xff) &gt;&gt;&gt; 7));
-</code></pre>
-<p>(byte)0xff 是一个byte，bits为： 11111111， 首先转换为int，其bits为：11111111 11111111 11111111 11111111， 向右边无符号移动7为，得到的结果bits是：00000001 11111111 11111111 11111111。</p>
-<pre><code>System.out.println((byte) (((byte) 0xff) &gt;&gt;&gt; 7));
-</code></pre>
-<p>(byte) 0xff 是一个byte，bits为： 11111111， 首先转换为int，其bits为：11111111 11111111 11111111 11111111，向右边无符号移动7为，得到的结果bits是：00000001 11111111 11111111 11111111，然后转换为byte，低位截取得到bits: 11111111, 在输出的时候转换为int， 其bits为：11111111 11111111 11111111 11111111.</p>
-<p>上面三个的结果是：</p>
-<pre><code>1
-33554431
--1</code></pre>
+<p>3.修饰方法</p>
+<p>第三种方式，即用final关键字修饰方法，它表示该方法不能被覆盖。关于private和final关键字还有一点联系，这就是类中所有的private方法都隐式地指定为是final的，由于无法在类外使用private方法，所以也就无法覆盖它。</p>
+<p>4.修饰类</p>
+<p>用final修饰的类是无法被继承的。</p>
+<p>总结</p>
+<p>final关键字是我们经常使用的关键字之一，它的主要用法有以下四种：</p>
+<ul>
+<li>用来修饰数据，包括成员变量和局部变量，该变量只能被赋值一次且它的值无法被改变。对于成员变量来讲，我们必须在声明时或者构造方法中对它赋值；</li>
+<li>用来修饰方法参数，表示在变量的生存期中它的值不能被改变；</li>
+<li>修饰方法，表示该方法无法被重写；</li>
+<li>修饰类，表示该类无法被继承。</li>
+</ul>
 
       
     </div>
@@ -400,8 +429,8 @@ System.out.println((byte) (((byte) 0xff) &gt;&gt;&gt; 7));
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/01/30/Java/final关键字用法1/" rel="next" title="final关键字用法1">
-                <i class="fa fa-chevron-left"></i> final关键字用法1
+              <a href="/2018/01/29/Nginx/Nginx基本概念/" rel="next" title="nginx基础概念">
+                <i class="fa fa-chevron-left"></i> nginx基础概念
               </a>
             
           </div>
@@ -410,7 +439,7 @@ System.out.println((byte) (((byte) 0xff) &gt;&gt;&gt; 7));
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2018/02/02/Java/Java相关名词概念/" rel="prev" title="Java移位运算">
+              <a href="/2018/01/31/Java/Java移位运算符/" rel="prev" title="Java移位运算">
                 Java移位运算 <i class="fa fa-chevron-right"></i>
               </a>
             
