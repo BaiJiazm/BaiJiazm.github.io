@@ -248,6 +248,147 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/02/22/C++/C++常见语法错误：cannot have cv-qualifier/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="BaiJiazm">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/headPhoto.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="BaiJiazm">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/02/22/C++/C++常见语法错误：cannot have cv-qualifier/" itemprop="url">C++常见语法错误：cannot have cv-qualifier</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-02-22T19:22:39+08:00">
+                2018-02-22
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>在C++中CV指const和volatile</p>
+<ol>
+<li>
+<p>非成员函数不能有CV限定，友元函数不是类的成员函数声明友元函数不能用const限定。
+friend voin fun(classname &amp;ref)const;
+//编译器会给错误error: non-member function ‘xxxxxxxxx’ cannot have cv-qualifier</p>
+</li>
+<li>
+<p>静态成员函数不能有CV限定</p>
+</li>
+</ol>
+<h4>在C++中，非成员函数不能含有CV限定，即const和volatile限定</h4>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></div><div class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">double</span> <span class="title">getArea</span><span class="params">()</span> <span class="keyword">const</span> </span>&#123;</div><div class="line">	<span class="keyword">return</span> <span class="number">0.0</span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> arg,<span class="keyword">char</span> *argv[])</span> </span>&#123;</div><div class="line">	<span class="built_in">cout</span> &lt;&lt; getArea() &lt;&lt; <span class="built_in">endl</span>;</div><div class="line">	<span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>编译产生错误:</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">test.cpp	[Error] non-member function 'double getArea()'</div><div class="line">cannot have cv-qualifier//不能有CV限定，非成员函数不能有cv限定符。</div></pre></td></tr></table></figure>
+<h4>在C++中，静态成员函数不能有CV限定，即const和volatile限定</h4>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></div><div class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</div><div class="line"></div><div class="line"><span class="keyword">class</span> CStatic &#123;</div><div class="line">	<span class="keyword">private</span>:</div><div class="line">		<span class="keyword">static</span> <span class="keyword">int</span> static_value;</div><div class="line"></div><div class="line">	<span class="keyword">public</span>:</div><div class="line">		<span class="function"><span class="keyword">static</span> <span class="keyword">int</span> <span class="title">get_static_value</span><span class="params">()</span> <span class="keyword">const</span></span>;</div><div class="line">		<span class="comment">//当不是static方法时，可以用const进行限定。</span></div><div class="line">&#125;;</div><div class="line"></div><div class="line"><span class="keyword">int</span> CStatic::get_static_value() <span class="keyword">const</span> &#123;</div><div class="line">	<span class="keyword">return</span> static_value;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">int</span> CStatic::static_value = <span class="number">1</span>;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc,<span class="keyword">char</span> *argv[])</span> </span>&#123;</div><div class="line">	<span class="built_in">cout</span> &lt;&lt; CStatic::get_static_value()&lt;&lt;<span class="built_in">endl</span>;</div><div class="line">	<span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>编译出现的错误:</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[Error] static member function 'static int CStatic::get_static_value()' </div><div class="line">cannot have cv-qualifier</div></pre></td></tr></table></figure>
+<h4>友元函数同普通函数一样</h4>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;iostream&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;string&gt;</span></span></div><div class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</div><div class="line"></div><div class="line"><span class="keyword">class</span> Animal &#123;</div><div class="line">	<span class="keyword">public</span>:</div><div class="line">		<span class="function"><span class="keyword">friend</span> <span class="keyword">void</span> <span class="title">showRes</span><span class="params">(Animal &amp;ref)</span><span class="keyword">const</span></span>;</div><div class="line">		<span class="comment">//这行编译器会给错误non-member function ‘void showRes(Animal&amp;)’</span></div><div class="line">		<span class="comment">//cannot have cv-qualifier</span></div><div class="line"></div><div class="line">	<span class="keyword">private</span>:</div><div class="line">		<span class="keyword">int</span> age;</div><div class="line">		<span class="built_in">string</span> name;</div><div class="line">&#125;;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">showRes</span><span class="params">(Animal &amp;ref)</span> </span>&#123;</div><div class="line">	ref.age=<span class="number">15</span>;</div><div class="line">	ref.name=<span class="string">"panda"</span>;</div><div class="line">	<span class="built_in">cout</span> &lt;&lt; ref.age &lt;&lt; ref.name &lt;&lt; <span class="built_in">endl</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>编译出现的错误:</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[Error] non-member function 'void showRes(Animal&amp;)' cannot have cv-qualifier</div></pre></td></tr></table></figure>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/02/10/Other/正则表达式/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -3612,7 +3753,7 @@ end tell
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">19</span>
+                  <span class="site-state-item-count">20</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -3625,7 +3766,7 @@ end tell
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">15</span>
+                  <span class="site-state-item-count">16</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
