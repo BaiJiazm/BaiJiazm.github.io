@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Linux," />
+  <meta name="keywords" content="TCP,Review," />
 
 
 
@@ -79,28 +79,28 @@
 
 
 
-<meta name="description" content="背景：有一个部署在Linux虚拟机中的web应用，但是虚拟机没有安装图形界面只有字符界面，Linux作为服务器部署web应用，但是不能通过其自身localhost访问，不方便调试，如何能够让主机通过访问Linux虚拟机的局域网IP+端口访问web应用呢？
-步骤如下：
-Linux虚拟机为NAT或桥接模式，确保主机能够ping通；
-# vi /etc/hosts
-  127.0.0.1   local">
+<meta name="description" content="参考以下博文：
+
+TCP\IP三次握手连接，四次握手断开分析
+TCP三次握手与四次挥手
+TCP连接的建立与终止">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Linux 局域网localhost">
-<meta property="og:url" content="http://yoursite.com/2018/02/05/Linux/Linux 局域网localhost/index.html">
+<meta property="og:title" content="TCP三次握手与四次挥手分析">
+<meta property="og:url" content="http://yoursite.com/2018/03/04/Review/TCP三次握手与四次挥手分析/index.html">
 <meta property="og:site_name" content="BaiJiazm">
-<meta property="og:description" content="背景：有一个部署在Linux虚拟机中的web应用，但是虚拟机没有安装图形界面只有字符界面，Linux作为服务器部署web应用，但是不能通过其自身localhost访问，不方便调试，如何能够让主机通过访问Linux虚拟机的局域网IP+端口访问web应用呢？
-步骤如下：
-Linux虚拟机为NAT或桥接模式，确保主机能够ping通；
-# vi /etc/hosts
-  127.0.0.1   local">
-<meta property="og:updated_time" content="2018-02-05T08:10:22.128Z">
+<meta property="og:description" content="参考以下博文：
+
+TCP\IP三次握手连接，四次握手断开分析
+TCP三次握手与四次挥手
+TCP连接的建立与终止">
+<meta property="og:updated_time" content="2018-03-04T06:53:13.454Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Linux 局域网localhost">
-<meta name="twitter:description" content="背景：有一个部署在Linux虚拟机中的web应用，但是虚拟机没有安装图形界面只有字符界面，Linux作为服务器部署web应用，但是不能通过其自身localhost访问，不方便调试，如何能够让主机通过访问Linux虚拟机的局域网IP+端口访问web应用呢？
-步骤如下：
-Linux虚拟机为NAT或桥接模式，确保主机能够ping通；
-# vi /etc/hosts
-  127.0.0.1   local">
+<meta name="twitter:title" content="TCP三次握手与四次挥手分析">
+<meta name="twitter:description" content="参考以下博文：
+
+TCP\IP三次握手连接，四次握手断开分析
+TCP三次握手与四次挥手
+TCP连接的建立与终止">
 
 
 
@@ -130,13 +130,13 @@ Linux虚拟机为NAT或桥接模式，确保主机能够ping通；
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2018/02/05/Linux/Linux 局域网localhost/"/>
+  <link rel="canonical" href="http://yoursite.com/2018/03/04/Review/TCP三次握手与四次挥手分析/"/>
 
 
 
 
 
-  <title>Linux 局域网localhost | BaiJiazm</title>
+  <title>TCP三次握手与四次挥手分析 | BaiJiazm</title>
   
 
 
@@ -263,7 +263,7 @@ Linux虚拟机为NAT或桥接模式，确保主机能够ping通；
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/02/05/Linux/Linux 局域网localhost/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/03/04/Review/TCP三次握手与四次挥手分析/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="BaiJiazm">
@@ -280,7 +280,7 @@ Linux虚拟机为NAT或桥接模式，确保主机能够ping通；
 
         
         
-          <h1 class="post-title" itemprop="name headline">Linux 局域网localhost</h1>
+          <h1 class="post-title" itemprop="name headline">TCP三次握手与四次挥手分析</h1>
         
 
         <div class="post-meta">
@@ -292,8 +292,8 @@ Linux虚拟机为NAT或桥接模式，确保主机能够ping通；
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-02-05T16:01:29+08:00">
-                2018-02-05
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-04T14:50:17+08:00">
+                2018-03-04
               </time>
             
 
@@ -330,20 +330,12 @@ Linux虚拟机为NAT或桥接模式，确保主机能够ping通；
       
 
       
-        <p>背景：有一个部署在Linux虚拟机中的web应用，但是虚拟机没有安装图形界面只有字符界面，Linux作为服务器部署web应用，但是不能通过其自身localhost访问，不方便调试，如何能够让主机通过访问Linux虚拟机的局域网IP+端口访问web应用呢？</p>
-<p>步骤如下：</p>
-<p>Linux虚拟机为NAT或桥接模式，确保主机能够ping通；</p>
-<pre><code># vi /etc/hosts
-  127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4  
-  ::1         localhost localhost.localdomain localhost6 localhost6.localdomain6
-</code></pre>
-<p>修改为：</p>
-<pre><code>  192.168.80.21   localhost localhost.localdomain localhost4 localhost4.localdomain4
-  ::1         localhost localhost.localdomain localhost6 localhost6.localdomain6
-</code></pre>
-<p>其中192.168.80.21是Linux虚拟机的局域网IP;</p>
-<p>将web应用部署在localhost中；</p>
-<p>打开主机浏览器，输入192.168.80.21:端口 即可访问；</p>
+        <h4>参考以下博文：</h4>
+<ul>
+<li><a href="http://www.cnblogs.com/kesal/p/3285415.html" target="_blank" rel="external">TCP\IP三次握手连接，四次握手断开分析</a></li>
+<li><a href="http://www.cnblogs.com/tonyluis/p/5729531.html" target="_blank" rel="external">TCP三次握手与四次挥手</a></li>
+<li><a href="http://www.cnblogs.com/newwy/p/3234536.html" target="_blank" rel="external">TCP连接的建立与终止</a></li>
+</ul>
 
       
     </div>
@@ -361,7 +353,9 @@ Linux虚拟机为NAT或桥接模式，确保主机能够ping通；
       
         <div class="post-tags">
           
-            <a href="/tags/Linux/" rel="tag"># Linux</a>
+            <a href="/tags/TCP/" rel="tag"># TCP</a>
+          
+            <a href="/tags/Review/" rel="tag"># Review</a>
           
         </div>
       
@@ -374,8 +368,8 @@ Linux虚拟机为NAT或桥接模式，确保主机能够ping通；
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/02/05/Linux/Linux shell 脚本参数传递/" rel="next" title="Linux shell 脚本参数传递">
-                <i class="fa fa-chevron-left"></i> Linux shell 脚本参数传递
+              <a href="/2018/02/22/C++/C++常见语法错误：cannot have cv-qualifier/" rel="next" title="C++常见语法错误：cannot have cv-qualifier">
+                <i class="fa fa-chevron-left"></i> C++常见语法错误：cannot have cv-qualifier
               </a>
             
           </div>
@@ -383,10 +377,6 @@ Linux虚拟机为NAT或桥接模式，确保主机能够ping通；
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/02/07/Java/Spring MVC 常用注解/" rel="prev" title="Spring MVC 常用注解">
-                Spring MVC 常用注解 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -438,8 +428,17 @@ Linux虚拟机为NAT或桥接模式，确保主机能够ping通；
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -510,6 +509,22 @@ Linux虚拟机为NAT或桥接模式，确保主机能够ping通；
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">1.</span> <span class="nav-text">参考以下博文：</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
