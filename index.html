@@ -248,6 +248,260 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/03/07/C++/C++ STL 自定义比较函数(排序 优先队列)/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="BaiJiazm">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/headPhoto.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="BaiJiazm">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/03/07/C++/C++ STL 自定义比较函数(排序 优先队列)/" itemprop="url">C++ STL 自定义比较函数(排序 优先队列)</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-07T11:25:52+08:00">
+                2018-03-07
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h4>以priority_queue的用法为例</h4>
+<h5>方法一</h5>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//********************************方法一</span></div><div class="line"><span class="keyword">struct</span> Node &#123;</div><div class="line">	<span class="keyword">int</span> x,y;</div><div class="line">	<span class="keyword">bool</span> <span class="keyword">operator</span> &lt;(Node a) <span class="keyword">const</span>  &#123;	<span class="comment">//必须加const</span></div><div class="line">		<span class="keyword">return</span> y &lt; a.y;</div><div class="line">	&#125;</div><div class="line">	<span class="keyword">bool</span> <span class="keyword">operator</span> &gt;(Node a) <span class="keyword">const</span>  &#123;	<span class="comment">//必须加const</span></div><div class="line">		<span class="keyword">return</span> y &gt; a.y;</div><div class="line">	&#125;</div><div class="line">&#125;;</div><div class="line"><span class="comment">//	priority_queue&lt;Node&gt; A;   //默认	大根堆</span></div><div class="line">priority_queue&lt;Node, <span class="built_in">vector</span>&lt;Node&gt;, less&lt;Node&gt;&gt;A;	<span class="comment">//大根堆</span></div><div class="line">priority_queue&lt;Node, <span class="built_in">vector</span>&lt;Node&gt;, greater&lt;Node&gt; &gt; B;    <span class="comment">//小根堆</span></div></pre></td></tr></table></figure>
+<h5>类似方法一</h5>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//********************************类似方式法一</span></div><div class="line"><span class="keyword">struct</span> Node &#123;</div><div class="line">	<span class="keyword">int</span> x;</div><div class="line">	<span class="keyword">int</span> y;</div><div class="line">	<span class="keyword">friend</span>  <span class="keyword">bool</span> <span class="keyword">operator</span>&lt;(<span class="keyword">const</span> Node &amp;a,<span class="keyword">const</span> Node &amp;b) &#123;</div><div class="line">		<span class="keyword">return</span>  a.x &lt; b.x;	<span class="comment">//大顶堆</span></div><div class="line">	&#125;</div><div class="line">	<span class="keyword">friend</span>  <span class="keyword">bool</span> <span class="keyword">operator</span>&gt;(<span class="keyword">const</span> Node &amp;a,<span class="keyword">const</span> Node &amp;b) &#123;</div><div class="line">		<span class="keyword">return</span>  a.x &gt; b.x;	<span class="comment">//小顶堆</span></div><div class="line">	&#125;</div><div class="line">&#125;;</div><div class="line"></div><div class="line">priority_queue&lt;Node&gt; A;   <span class="comment">//默认	大根堆</span></div><div class="line">priority_queue&lt;Node, <span class="built_in">vector</span>&lt;Node&gt;, greater&lt;Node&gt; &gt; B;    <span class="comment">//小根堆</span></div></pre></td></tr></table></figure>
+<h5>方法二</h5>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//********************************方法二：</span></div><div class="line"><span class="keyword">struct</span> Node &#123;</div><div class="line">	<span class="keyword">int</span> x;</div><div class="line">	<span class="keyword">int</span> y;</div><div class="line">&#125;;</div><div class="line"></div><div class="line"><span class="keyword">bool</span> <span class="keyword">operator</span>&lt;(<span class="keyword">const</span> Node &amp;a, <span class="keyword">const</span> Node &amp;b) &#123;</div><div class="line">	<span class="keyword">return</span> a.x&lt;b.x;			 <span class="comment">//大顶堆</span></div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">bool</span> <span class="keyword">operator</span>&gt;(<span class="keyword">const</span> Node &amp;a, <span class="keyword">const</span> Node &amp;b) &#123;</div><div class="line">	<span class="keyword">return</span> a.x&gt;b.x;			<span class="comment">//小顶堆</span></div><div class="line">&#125;</div><div class="line"></div><div class="line">priority_queue&lt;Node,<span class="built_in">vector</span>&lt;Node&gt;,less&lt;Node&gt; &gt; A;   	<span class="comment">//大根堆</span></div><div class="line">priority_queue&lt;Node, <span class="built_in">vector</span>&lt;Node&gt;, greater&lt;Node&gt; &gt; B;    <span class="comment">//小根堆</span></div></pre></td></tr></table></figure>
+<h5>方法三</h5>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//********************************方法三：</span></div><div class="line"><span class="keyword">struct</span> Node &#123;</div><div class="line">	<span class="keyword">int</span> x;</div><div class="line">	<span class="keyword">int</span> y;</div><div class="line">&#125;;</div><div class="line"></div><div class="line"><span class="keyword">struct</span> cmp &#123;</div><div class="line">	<span class="function"><span class="keyword">bool</span> <span class="title">operator</span><span class="params">()</span><span class="params">(Node a,Node b)</span> </span>&#123;</div><div class="line">		<span class="keyword">return</span>  a.x &gt; b.x;	<span class="comment">//小顶堆</span></div><div class="line">	&#125;</div><div class="line">&#125;;</div><div class="line"></div><div class="line"><span class="keyword">struct</span> cmp1 &#123;</div><div class="line">	<span class="function"><span class="keyword">bool</span> <span class="title">operator</span><span class="params">()</span><span class="params">(Node a,Node b)</span> </span>&#123;</div><div class="line">		<span class="keyword">return</span>  a.x &lt; b.x;	<span class="comment">//大顶堆</span></div><div class="line">	&#125;</div><div class="line">&#125;;</div><div class="line"></div><div class="line">priority_queue&lt;Node,<span class="built_in">vector</span>&lt;Node&gt;,cmp1 &gt; A;   	<span class="comment">//大根堆</span></div><div class="line">priority_queue&lt;Node, <span class="built_in">vector</span>&lt;Node&gt;, cmp &gt; B;    <span class="comment">//小根堆</span></div></pre></td></tr></table></figure>
+<h5>队列节点是指针</h5>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//当队列节点是指针时，用法不同</span></div><div class="line"><span class="keyword">struct</span> Node &#123;</div><div class="line">	<span class="keyword">int</span> x;</div><div class="line">	<span class="keyword">int</span> y;</div><div class="line">&#125;;</div><div class="line"><span class="keyword">struct</span> cmp &#123;</div><div class="line">	<span class="function"><span class="keyword">bool</span> <span class="title">operator</span> <span class="params">()</span> <span class="params">(Node <span class="keyword">const</span> *n1, Node <span class="keyword">const</span> *n2)</span> </span>&#123;</div><div class="line">		<span class="keyword">return</span> n1-&gt;x&lt;n2-&gt;x;		<span class="comment">//大顶推</span></div><div class="line">	&#125;</div><div class="line">&#125;;</div><div class="line"><span class="keyword">struct</span> cmp1 &#123;</div><div class="line">	<span class="function"><span class="keyword">bool</span> <span class="title">operator</span> <span class="params">()</span> <span class="params">(Node <span class="keyword">const</span> *n1, Node <span class="keyword">const</span> *n2)</span> </span>&#123;</div><div class="line">		<span class="keyword">return</span> n1-&gt;x&gt;n2-&gt;x;		<span class="comment">//小顶推</span></div><div class="line">	&#125;</div><div class="line">&#125;;</div><div class="line"></div><div class="line">priority_queue&lt;Node*, <span class="built_in">vector</span>&lt;Node*&gt;, cmp &gt; A;	<span class="comment">//大根堆</span></div><div class="line">priority_queue&lt;Node*, <span class="built_in">vector</span>&lt;Node*&gt;, cmp1 &gt; B;  <span class="comment">//小根堆</span></div></pre></td></tr></table></figure>
+<h5>统一测试</h5>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div></pre></td><td class="code"><pre><div class="line">ostream &amp; <span class="keyword">operator</span> &lt;&lt;(ostream &amp;out,<span class="keyword">const</span> <span class="keyword">struct</span> Node&amp; n) &#123;</div><div class="line">	out&lt;&lt;<span class="string">"n.x="</span>&lt;&lt;n.x&lt;&lt;<span class="string">"    n.y="</span>&lt;&lt;n.y&lt;&lt;<span class="built_in">endl</span>;</div><div class="line">	<span class="keyword">return</span> out;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">const</span> <span class="built_in">vector</span>&lt;Node&gt;tn= &#123;&#123;<span class="number">1</span>,<span class="number">1</span>&#125;,&#123;<span class="number">2</span>,<span class="number">2</span>&#125;,&#123;<span class="number">3</span>,<span class="number">3</span>&#125;,&#123;<span class="number">4</span>,<span class="number">4</span>&#125;,&#123;<span class="number">5</span>,<span class="number">5</span>&#125;&#125;;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">test</span><span class="params">()</span> </span>&#123;</div><div class="line">	<span class="keyword">for</span> (<span class="keyword">auto</span> &amp;a:tn) &#123;</div><div class="line">		A.push(a);</div><div class="line">		B.push(a);</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	<span class="built_in">cout</span>&lt;&lt;<span class="string">"A:"</span>&lt;&lt;<span class="built_in">endl</span>;</div><div class="line">	<span class="keyword">while</span>(!A.empty()) &#123;</div><div class="line">		<span class="built_in">cout</span>&lt;&lt;A.top();</div><div class="line">		A.pop();</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	<span class="built_in">cout</span>&lt;&lt;<span class="string">"B:"</span>&lt;&lt;<span class="built_in">endl</span>;</div><div class="line">	<span class="keyword">while</span>(!B.empty()) &#123;</div><div class="line">		<span class="built_in">cout</span>&lt;&lt;B.top();</div><div class="line">		B.pop();</div><div class="line">	&#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</div><div class="line">	test();</div><div class="line">	<span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/03/06/Review/C++ inline 内联函数/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="BaiJiazm">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/headPhoto.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="BaiJiazm">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/03/06/Review/C++ inline 内联函数/" itemprop="url">C++ inline 内联函数</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-06T23:21:55+08:00">
+                2018-03-06
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h4>参考以下博文：</h4>
+<ul>
+<li><a href="http://www.cnblogs.com/QG-whz/p/4641479.html" target="_blank" rel="external">C++ 内联函数</a></li>
+</ul>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/03/05/Review/C、C++从右向左处理参数/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -4771,7 +5025,7 @@ end tell
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">28</span>
+                  <span class="site-state-item-count">30</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
