@@ -79,64 +79,37 @@
 
 
 
-<meta name="description" content="BAT经典面试题：
-实现一个Memcpy函数
+<meta name="description" content="简述C++虚函数作用及底层实现原理
 
-实现memcpy函数  代码较好，基本正确
-实现一个Memcpy函数  评论中有一个按照int 字节拷贝，效率提升，值得借鉴。
+C/C++杂记：虚函数的实现的基本原理
+C++虚函数实现多态原理
 
-100亿个整数，内存足够，如何找到中位数？内存不足，如何找到中位数？
+内联函数、构造函数、静态成员函数可以是虚函数吗？
 
-参考答案
-
-请简述智能指针原理，并实现一个简单的智能指针
-
-参考答案
-C++ 引用计数技术及智能指针的简单实现
-C++智能指针简单剖析
-
-123456">
+都不可以。内联函数需要在编译阶段展开，而虚函数是运行时动态绑定的，编译时无法展开； 构造函数在进行调用时还不存在父类和子类的概念，父类只会调用父类的构造函数，子类调用子类的，因此不存在动态绑定的概念；静态成员函数是以类为单位的函数，与具体对象">
 <meta property="og:type" content="article">
 <meta property="og:title" content="BAT经典面试题">
 <meta property="og:url" content="http://yoursite.com/2018/03/08/Review/BAT经典面试题/BAT经典面试题/index.html">
 <meta property="og:site_name" content="BaiJiazm">
-<meta property="og:description" content="BAT经典面试题：
-实现一个Memcpy函数
+<meta property="og:description" content="简述C++虚函数作用及底层实现原理
 
-实现memcpy函数  代码较好，基本正确
-实现一个Memcpy函数  评论中有一个按照int 字节拷贝，效率提升，值得借鉴。
+C/C++杂记：虚函数的实现的基本原理
+C++虚函数实现多态原理
 
-100亿个整数，内存足够，如何找到中位数？内存不足，如何找到中位数？
+内联函数、构造函数、静态成员函数可以是虚函数吗？
 
-参考答案
-
-请简述智能指针原理，并实现一个简单的智能指针
-
-参考答案
-C++ 引用计数技术及智能指针的简单实现
-C++智能指针简单剖析
-
-123456">
-<meta property="og:updated_time" content="2018-03-09T00:58:12.784Z">
+都不可以。内联函数需要在编译阶段展开，而虚函数是运行时动态绑定的，编译时无法展开； 构造函数在进行调用时还不存在父类和子类的概念，父类只会调用父类的构造函数，子类调用子类的，因此不存在动态绑定的概念；静态成员函数是以类为单位的函数，与具体对象">
+<meta property="og:updated_time" content="2018-03-15T15:50:28.145Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="BAT经典面试题">
-<meta name="twitter:description" content="BAT经典面试题：
-实现一个Memcpy函数
+<meta name="twitter:description" content="简述C++虚函数作用及底层实现原理
 
-实现memcpy函数  代码较好，基本正确
-实现一个Memcpy函数  评论中有一个按照int 字节拷贝，效率提升，值得借鉴。
+C/C++杂记：虚函数的实现的基本原理
+C++虚函数实现多态原理
 
-100亿个整数，内存足够，如何找到中位数？内存不足，如何找到中位数？
+内联函数、构造函数、静态成员函数可以是虚函数吗？
 
-参考答案
-
-请简述智能指针原理，并实现一个简单的智能指针
-
-参考答案
-C++ 引用计数技术及智能指针的简单实现
-C++智能指针简单剖析
-
-123456">
+都不可以。内联函数需要在编译阶段展开，而虚函数是运行时动态绑定的，编译时无法展开； 构造函数在进行调用时还不存在父类和子类的概念，父类只会调用父类的构造函数，子类调用子类的，因此不存在动态绑定的概念；静态成员函数是以类为单位的函数，与具体对象">
 
 
 
@@ -366,16 +339,63 @@ C++智能指针简单剖析
       
 
       
-        <h4>BAT经典面试题：</h4>
+        <h5>简述C++虚函数作用及底层实现原理</h5>
+<ul>
+<li><a href="https://www.cnblogs.com/malecrab/p/5572730.html" target="_blank" rel="external">C/C++杂记：虚函数的实现的基本原理</a></li>
+<li><a href="https://www.cnblogs.com/jiayayao/p/6279483.html" target="_blank" rel="external">C++虚函数实现多态原理</a></li>
+</ul>
+<h5>内联函数、构造函数、静态成员函数可以是虚函数吗？</h5>
+<ul>
+<li>都不可以。内联函数需要在编译阶段展开，而虚函数是运行时动态绑定的，编译时无法展开； 构造函数在进行调用时还不存在父类和子类的概念，父类只会调用父类的构造函数，子类调用子类的，因此不存在动态绑定的概念；静态成员函数是以类为单位的函数，与具体对象无关，虚函数是与对象动态绑定的，因此是两个不冲突的概念；</li>
+</ul>
+<h5>构造函数中可以调用虚函数吗？</h5>
+<ul>
+<li>可以，但是没有动态绑定的效果，父类构造函数中调用的仍然是父类版本的函数，子类中调用的仍然是子类版本的函数</li>
+</ul>
+<h5>简述C++中虚继承的作用及底层实现原理?</h5>
+<ul>
+<li>虚继承用于解决多继承条件下的菱形继承问题，底层实现原理与编译器相关，一般通过虚基类指针实现，即各对象中只保存一份父类的对象，多继承时通过虚基类指针引用该公共对象，从而避免菱形继承中的二义性问题。</li>
+<li><a href="http://www.oschina.net/translate/cpp-virtual-inheritance" target="_blank" rel="external">C++ 多继承和虚继承的内存布局</a></li>
+</ul>
+<h5>C++空类占用一字节</h5>
+<ul>
+<li><a href="http://blog.csdn.net/xiong452980729/article/details/71077144" target="_blank" rel="external">C++中空类占一字节原因详解</a></li>
+</ul>
+<h5>结构体大小</h5>
+<ul>
+<li><a href="https://baijiazm.github.io/2018/03/05/Review/C%E8%AF%AD%E8%A8%80%E7%9A%84%E5%AD%97%E8%8A%82%E5%AF%B9%E9%BD%90/" target="_blank" rel="external">C语言的字节对齐</a></li>
+</ul>
+<p>注意：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">struct</span> A &#123;</div><div class="line">	<span class="keyword">char</span> a;</div><div class="line">	<span class="keyword">char</span> b;</div><div class="line">	<span class="keyword">char</span> c;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+<p>A的大小是3,结构体中每个成员的起始地址是<code>min(成员类型大小,pack)</code>的整数倍，整个结构体大小是最大成员大小的整数倍。</p>
+<h5>Struct和Class的区别</h5>
+<ul>
+<li><a href="http://blog.csdn.net/yuliu0552/article/details/6717915" target="_blank" rel="external">Struct和Class的区别</a></li>
+</ul>
+<h5>C++中成员函数能够同时用static和const进行修饰？</h5>
+<ul>
+<li>否，因为static表⽰示该函数为静态成员函数，为类所有；而const是用于修饰成员函数的，两者相矛盾。<code>[Error] static member function 'static void Test::fun()' cannot have cv-qualifier</code></li>
+</ul>
+<h5>C++中包含哪几种强制类型转换？他们有什么区别和联系？</h5>
+<p><a href="https://www.nowcoder.com/ta/nine-chapter/review?page=19" target="_blank" rel="external">参考答案</a>
+<a href="http://blog.jobbole.com/107033/" target="_blank" rel="external">C++ 的强制类型转换</a></p>
+<h5>简述Linux内存分配--伙伴系统 原理</h5>
+<p>参考答案：伙伴系统，其思想是：把内存块分成不同的组(1,2,4,8,16,32....)；分配内存时找到能够满足条件 的最小的块；如果找不到，就找大的块，然后一分为2，分配一块，留一块；回收时：如果有相邻的同样大小的块，则合并</p>
+<h5>使用mmap读写文件为什么比普通读写函数要快？</h5>
+<ul>
+<li><a href="http://blog.csdn.net/kai8wei/article/details/77980201" target="_blank" rel="external">mmap为什么比read/write快</a></li>
+</ul>
 <h5>实现一个Memcpy函数</h5>
 <ul>
-<li><a href="https://my.oschina.net/renhc/blog/36345" target="_blank" rel="external">实现memcpy函数</a>  代码较好，基本正确</li>
-<li><a href="https://www.nowcoder.com/questionTerminal/9602083ec8d749999d86adf8a725b4f7" target="_blank" rel="external">实现一个Memcpy函数</a>  评论中有一个按照int 字节拷贝，效率提升，值得借鉴。</li>
+<li><a href="https://my.oschina.net/renhc/blog/36345" target="_blank" rel="external">实现memcpy函数</a>（代码较好，基本正确）</li>
+<li><a href="https://www.nowcoder.com/questionTerminal/9602083ec8d749999d86adf8a725b4f7" target="_blank" rel="external">实现一个Memcpy函数</a>（评论中有一个按照int 字节拷贝，效率提升，值得借鉴。）</li>
 </ul>
 <h5>100亿个整数，内存足够，如何找到中位数？内存不足，如何找到中位数？</h5>
 <ul>
 <li><a href="https://www.nowcoder.com/ta/nine-chapter/review?page=5" target="_blank" rel="external">参考答案</a></li>
 </ul>
+<h5>设计并实现一个LRU Cache</h5>
+<p><a href="https://songlee24.github.io/2015/05/10/design-LRU-Cache/" target="_blank" rel="external">设计并实现一个LRU Cache</a></p>
 <h5>请简述智能指针原理，并实现一个简单的智能指针</h5>
 <ul>
 <li><a href="https://www.nowcoder.com/ta/nine-chapter/review?page=6" target="_blank" rel="external">参考答案</a></li>
@@ -383,32 +403,6 @@ C++智能指针简单剖析
 <li><a href="http://www.cnblogs.com/lanxuezaipiao/p/4132096.html" target="_blank" rel="external">C++智能指针简单剖析</a></li>
 </ul>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">class</span> SmartPointer;</div><div class="line"></div><div class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div><div class="line"><span class="keyword">class</span> Counter &#123;</div><div class="line">		<span class="keyword">friend</span> <span class="keyword">class</span> SmartPointer&lt;T&gt;;</div><div class="line">	<span class="keyword">private</span>:</div><div class="line">		T* ptr;</div><div class="line">		<span class="keyword">int</span> cnt;</div><div class="line">	<span class="keyword">public</span>:</div><div class="line">		Counter() &#123;</div><div class="line">			ptr = <span class="literal">NULL</span>;</div><div class="line">			cnt = <span class="number">0</span>;</div><div class="line">		&#125;</div><div class="line">		Counter(T* p) &#123;</div><div class="line">			ptr = p;</div><div class="line">			cnt = <span class="number">1</span>;</div><div class="line">		&#125;</div><div class="line">		~Counter() &#123;</div><div class="line">			<span class="keyword">delete</span> ptr;</div><div class="line">		&#125;</div><div class="line">&#125;;</div><div class="line"></div><div class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</div><div class="line"><span class="keyword">class</span> SmartPointer &#123;</div><div class="line">	<span class="keyword">private</span>:</div><div class="line">		Counter* ptr_counter;</div><div class="line">	<span class="keyword">public</span>:</div><div class="line">		SmartPointer(T* p) &#123;</div><div class="line">			ptr_counter = <span class="keyword">new</span> Counter(p);</div><div class="line">		&#125;</div><div class="line">		SmartPointer(<span class="keyword">const</span> SmartPointer &amp;sp) &#123;</div><div class="line">			ptr_counter = sp.ptr_counter;</div><div class="line">			++ptr_count-&gt;cnt;</div><div class="line">		&#125;</div><div class="line">		SmartPointer&amp; <span class="keyword">operator</span>=(<span class="keyword">const</span> SmartPointer &amp;sp) &#123;</div><div class="line">			++sp.ptr_counter-&gt;cnt;</div><div class="line">			--ptr_counter-&gt;cnt;</div><div class="line">			<span class="keyword">if</span> (ptr_counter-&gt;cnt == <span class="number">0</span>) &#123;</div><div class="line">				<span class="keyword">delete</span> ptr_counter;</div><div class="line">			&#125;</div><div class="line">			ptr_counter = sp.ptr_counter;</div><div class="line">		&#125;</div><div class="line">		~SmartPointer() &#123;</div><div class="line">			--ptr_counter-&gt;cnt;</div><div class="line">			<span class="keyword">if</span> (ptr_counter-&gt;cnt == <span class="number">0</span>) &#123;</div><div class="line">				<span class="keyword">delete</span> ptr_counter;</div><div class="line">			&#125;</div><div class="line">		&#125;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
-<h5>如何定义一个只能在堆上（栈上）生成对象的类?</h5>
-<h5>结构体大小</h5>
-<p>注意：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">struct</span> A &#123;</div><div class="line">	<span class="keyword">char</span> a;</div><div class="line">	<span class="keyword">char</span> b;</div><div class="line">	<span class="keyword">char</span> c;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
-<p>A的大小是3<br>
-结构体中每个成员的起始地址是<code>min(成员类型大小,pack)</code>的整数倍，整个结构体大小是最大成员大小的整数倍。</p>
-<h5>C++中成员函数能够同时用static和const进行修饰？</h5>
-<p>否，因为static表⽰示该函数为静态成员函数，为类所有；而const是用于修饰成员函数的，两者相矛盾。
-<code>[Error] static member function 'static void Test::fun()' cannot have cv-qualifier</code></p>
-<h5>C++中包含哪几种强制类型转换？他们有什么区别和联系？</h5>
-<p><a href="https://www.nowcoder.com/ta/nine-chapter/review?page=19" target="_blank" rel="external">参考答案</a>
-<a href="http://blog.jobbole.com/107033/" target="_blank" rel="external">C++ 的强制类型转换</a></p>
-<h5>简述C++虚函数作用及底层实现原理</h5>
-<p><a href="https://www.nowcoder.com/ta/nine-chapter/review?page=21" target="_blank" rel="external">参考答案</a></p>
-<h5>内联函数、构造函数、静态成员函数可以是虚函数吗？</h5>
-<p><a href="https://www.nowcoder.com/ta/nine-chapter/review?page=24" target="_blank" rel="external">参考答案</a></p>
-<h5>构造函数中可以调用虚函数吗？</h5>
-<p>参考答案：可以，但是没有动态绑定的效果，父类构造函数中调用的仍然是父类版本的函数，子类中调用的仍然是子类版本的函数</p>
-<h5>简述C++中虚继承的作用及底层实现原理?</h5>
-<p>参考答案：虚继承用于解决多继承条件下的菱形继承问题，底层实现原理与编译器相关，一般通过虚基类 指针实现，即各对象中只保存一份父类的对象，多继承时通过虚基类指针引用该公共对象，从而避 免菱形继承中的二义性问题。</p>
-<h5>简述Linux内存分配--伙伴系统 原理</h5>
-<p>参考答案：伙伴系统，其思想是：把内存块分成不同的组(1,2,4,8,16,32....)；分配内存时找到能够满足条件 的最小的块；如果找不到，就找大的块，然后一分为2，分配一块，留一块；回收时：如果有相邻的同样大小的块，则合并</p>
-<h5>使用mmap读写文件为什么比普通读写函数要快？</h5>
-<h5>设计并实现一个LRU Cache</h5>
-<p><a href="https://songlee24.github.io/2015/05/10/design-LRU-Cache/" target="_blank" rel="external">设计并实现一个LRU Cache</a></p>
-
       
     </div>
     
@@ -447,6 +441,10 @@ C++智能指针简单剖析
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/03/14/Review/临时总结/" rel="prev" title="临时总结">
+                临时总结 <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -527,7 +525,7 @@ C++智能指针简单剖析
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">56</span>
+                  <span class="site-state-item-count">57</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -589,7 +587,7 @@ C++智能指针简单剖析
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">1.</span> <span class="nav-text">BAT经典面试题：</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#undefined"><span class="nav-number">1.1.</span> <span class="nav-text">实现一个Memcpy函数</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#undefined"><span class="nav-number">1.2.</span> <span class="nav-text">100亿个整数，内存足够，如何找到中位数？内存不足，如何找到中位数？</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#undefined"><span class="nav-number">1.3.</span> <span class="nav-text">请简述智能指针原理，并实现一个简单的智能指针</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#undefined"><span class="nav-number">1.4.</span> <span class="nav-text">如何定义一个只能在堆上（栈上）生成对象的类?</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#undefined"><span class="nav-number">1.5.</span> <span class="nav-text">结构体大小</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#undefined"><span class="nav-number">1.6.</span> <span class="nav-text">C++中成员函数能够同时用static和const进行修饰？</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#undefined"><span class="nav-number">1.7.</span> <span class="nav-text">C++中包含哪几种强制类型转换？他们有什么区别和联系？</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#undefined"><span class="nav-number">1.8.</span> <span class="nav-text">简述C++虚函数作用及底层实现原理</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#undefined"><span class="nav-number">1.9.</span> <span class="nav-text">内联函数、构造函数、静态成员函数可以是虚函数吗？</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#undefined"><span class="nav-number">1.10.</span> <span class="nav-text">构造函数中可以调用虚函数吗？</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#undefined"><span class="nav-number">1.11.</span> <span class="nav-text">简述C++中虚继承的作用及底层实现原理?</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#undefined"><span class="nav-number">1.12.</span> <span class="nav-text">简述Linux内存分配--伙伴系统 原理</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#undefined"><span class="nav-number">1.13.</span> <span class="nav-text">使用mmap读写文件为什么比普通读写函数要快？</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#undefined"><span class="nav-number">1.14.</span> <span class="nav-text">设计并实现一个LRU Cache</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-5"><a class="nav-link" href="#undefined"><span class="nav-number">1.</span> <span class="nav-text">简述C++虚函数作用及底层实现原理</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#undefined"><span class="nav-number">2.</span> <span class="nav-text">内联函数、构造函数、静态成员函数可以是虚函数吗？</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#undefined"><span class="nav-number">3.</span> <span class="nav-text">构造函数中可以调用虚函数吗？</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#undefined"><span class="nav-number">4.</span> <span class="nav-text">简述C++中虚继承的作用及底层实现原理?</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#undefined"><span class="nav-number">5.</span> <span class="nav-text">C++空类占用一字节</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#undefined"><span class="nav-number">6.</span> <span class="nav-text">结构体大小</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#undefined"><span class="nav-number">7.</span> <span class="nav-text">Struct和Class的区别</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#undefined"><span class="nav-number">8.</span> <span class="nav-text">C++中成员函数能够同时用static和const进行修饰？</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#undefined"><span class="nav-number">9.</span> <span class="nav-text">C++中包含哪几种强制类型转换？他们有什么区别和联系？</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#undefined"><span class="nav-number">10.</span> <span class="nav-text">简述Linux内存分配--伙伴系统 原理</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#undefined"><span class="nav-number">11.</span> <span class="nav-text">使用mmap读写文件为什么比普通读写函数要快？</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#undefined"><span class="nav-number">12.</span> <span class="nav-text">实现一个Memcpy函数</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#undefined"><span class="nav-number">13.</span> <span class="nav-text">100亿个整数，内存足够，如何找到中位数？内存不足，如何找到中位数？</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#undefined"><span class="nav-number">14.</span> <span class="nav-text">设计并实现一个LRU Cache</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#undefined"><span class="nav-number">15.</span> <span class="nav-text">请简述智能指针原理，并实现一个简单的智能指针</span></a></li></ol></div>
             
 
           </div>
