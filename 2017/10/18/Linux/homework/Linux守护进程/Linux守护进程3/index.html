@@ -1,0 +1,908 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Linux," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="Linux守护进程3 —— 守护进程分裂子进程
+
+
+
+在03 子目录下写test3-1.c，循环10 次，每隔3 秒产生一个子进程，循环完成后，自己进入
+死循环操作，每5 秒打印&amp;quot;父进程号+自己的进程号+你的学号+main&amp;quot;信息即可；分裂出的子进
+程要求每25 秒打印&amp;quot;父进程号+自己的进程号+你的学号+sub&amp;quot;，打印三次后子进程退出；写配
+套的makefi">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Linux守护进程3">
+<meta property="og:url" content="http://yoursite.com/2017/10/18/Linux/homework/Linux守护进程/Linux守护进程3/index.html">
+<meta property="og:site_name" content="BaiJiazm">
+<meta property="og:description" content="Linux守护进程3 —— 守护进程分裂子进程
+
+
+
+在03 子目录下写test3-1.c，循环10 次，每隔3 秒产生一个子进程，循环完成后，自己进入
+死循环操作，每5 秒打印&amp;quot;父进程号+自己的进程号+你的学号+main&amp;quot;信息即可；分裂出的子进
+程要求每25 秒打印&amp;quot;父进程号+自己的进程号+你的学号+sub&amp;quot;，打印三次后子进程退出；写配
+套的makefi">
+<meta property="og:image" content="http://yoursite.com/2017/10/18/Linux/homework/Linux守护进程/Linux守护进程3/1.jpg">
+<meta property="og:image" content="http://yoursite.com/2017/10/18/Linux/homework/Linux守护进程/Linux守护进程3/2.jpg">
+<meta property="og:image" content="http://yoursite.com/2017/10/18/Linux/homework/Linux守护进程/Linux守护进程3/3.jpg">
+<meta property="og:updated_time" content="2017-10-18T11:47:09.405Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Linux守护进程3">
+<meta name="twitter:description" content="Linux守护进程3 —— 守护进程分裂子进程
+
+
+
+在03 子目录下写test3-1.c，循环10 次，每隔3 秒产生一个子进程，循环完成后，自己进入
+死循环操作，每5 秒打印&amp;quot;父进程号+自己的进程号+你的学号+main&amp;quot;信息即可；分裂出的子进
+程要求每25 秒打印&amp;quot;父进程号+自己的进程号+你的学号+sub&amp;quot;，打印三次后子进程退出；写配
+套的makefi">
+<meta name="twitter:image" content="http://yoursite.com/2017/10/18/Linux/homework/Linux守护进程/Linux守护进程3/1.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.3',
+    sidebar: {"position":"right","display":"hide","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/10/18/Linux/homework/Linux守护进程/Linux守护进程3/"/>
+
+
+
+
+
+  <title>Linux守护进程3 | BaiJiazm</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">BaiJiazm</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">每一段路都是一种领悟:)</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/10/18/Linux/homework/Linux守护进程/Linux守护进程3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="BaiJiazm">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/headPhoto.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="BaiJiazm">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Linux守护进程3</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-18T19:44:25+08:00">
+                2017-10-18
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <hr>
+<h4>Linux守护进程3 —— 守护进程分裂子进程</h4>
+<hr>
+<ul>
+<li>
+<p><strong>在03 子目录下写test3-1.c，循环10 次，每隔3 秒产生一个子进程，循环完成后，自己进入
+死循环操作，每5 秒打印&quot;父进程号+自己的进程号+你的学号+main&quot;信息即可；分裂出的子进
+程要求每25 秒打印&quot;父进程号+自己的进程号+你的学号+sub&quot;，打印三次后子进程退出；写配
+套的makefile 文件，make 后可生成test3-1 可执行文件</strong></p>
+<pre><code>//test3-1.c
+
+#include &lt;unistd.h&gt;
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;sys/types.h&gt;
+#include &lt;signal.h&gt;
+#include &lt;errno.h&gt;
+#include &lt;sys/wait.h&gt;
+
+#define FORK_NUM 10
+#define SUB_NUM 3
+#define MAIN_SLEEP_TIME 5
+#define SUB_SLEEP_TIME 25
+
+int daemon_init(void){
+    pid_t pid;
+    if ((pid = fork()) &lt; 0)
+		return -1;
+	else if (pid)   
+		exit(0);	/* parent exit */
+
+	/* child continues */
+	setsid();	/* become session leader */
+    chdir(&quot;/&quot;);	/* change working directory */
+	umask(0);	/* clear file mode creation mask */
+	close(0);    /* close stdin stdout stderr */
+//	close(1);
+	close(2);
+	return 0;
+}
+
+int main(){
+	if (daemon_init() == -1){
+		printf(&quot;can't fork self\n&quot;);
+		exit(0);
+	}
+
+	pid_t pid;
+	int i;
+	for (i=0; i&lt;FORK_NUM; ++i)
+		if ((pid=fork()) &lt; 0){
+			perror(&quot;fork error&quot;);
+			exit(errno);
+		}
+		else if(pid==0)
+			break;
+	
+	if(pid){
+		while(1){
+			printf(&quot;%5d %5d 1453381 main\n&quot;, getppid(), getpid());
+			sleep(MAIN_SLEEP_TIME);
+		}
+	}
+	else{
+		for (i=1; i&lt;=SUB_NUM; ++i){
+			printf(&quot;%5d %5d 1453381 sub\n&quot;, getppid(), getpid());
+			sleep(SUB_SLEEP_TIME);
+		}
+	}
+	
+	return 0;
+}
+</code></pre>
+<p>测试截图：</p>
+<p><img src="/2017/10/18/Linux/homework/Linux守护进程/Linux守护进程3/1.jpg" alt=""></p>
+</li>
+<li>
+<p><strong>分裂出的子进程和守护进程之间的进程id 有何关联？</strong></p>
+<p>子进程的ppid为父进程的pid。</p>
+<p>测试截图：</p>
+<p><img src="/2017/10/18/Linux/homework/Linux守护进程/Linux守护进程3/2.jpg" alt=""></p>
+</li>
+<li>
+<p><strong>什么叫僵尸进程？僵尸进程的产生原因？</strong></p>
+<p><strong>僵尸进程：</strong> 一个进程使用fork创建子进程，如果子进程退出，而父进程并没有调用wait或waitpid获取子进程的状态信息，那么子进程的进程描述符仍然保存在系统中。这种进程称之为僵死进程。</p>
+<p><strong>原因：</strong> 在Linux进程的状态中，僵尸进程是非常特殊的一种，它需要它的父进程来为它收尸，如果他的父进程没安装SIGCHLD信号处理函数调用wait或waitpid（）等待子进程结束，又没有显式忽略该信号，那么它就一直保持僵尸状态，如果这时父进程结束了，那么init进程自动会接手这个子进程，为它收尸，它还是能被清除的。但是如果父进程是一个循环，不会结束，那么子进程就会一直保持僵尸状态，这就是为什么系统中有时会有很多的僵尸进程。</p>
+</li>
+<li>
+<p><strong>如何杀死僵尸进程？</strong></p>
+<p>一般杀掉进程可用 <code>kill -9 pid</code>命令，但是有些僵尸进程通过此命令不行。可以通过杀掉父进程结束。</p>
+<p>测试截图：</p>
+<p><img src="/2017/10/18/Linux/homework/Linux守护进程/Linux守护进程3/3.jpg" alt=""></p>
+</li>
+<li>
+<p><strong>写test3-2.c，要求同test3-1，但是子进程退出后不能存在僵尸进程</strong></p>
+<p><strong>僵尸进程解决办法</strong></p>
+<p>（1）通过信号机制<br>
+子进程退出时向父进程发送SIGCHILD信号，父进程处理SIGCHILD信号。在信号处理函数中调用wait进行处理僵尸进程。</p>
+<pre><code>//test3-2.c 新增函数
+void sig_child(int signo){
+	int status;
+	pid_t pid;
+	while((pid=waitpid(-1, &amp;status, WNOHANG))&gt;0)
+		;
+}
+
+//在main函数第一行添加
+signal(SIGCHLD, sig_child);
+</code></pre>
+<p>在Linux下 可以简单地将 SIGCHLD信号的操作设为SIG_IGN。</p>
+<pre><code>signal(SIGCHLD,SIG_IGN);
+</code></pre>
+<p>（2）fork两次<br>
+原理是将子进程成为孤儿进程，从而其的父进程变为init进程，通过init进程可以处理僵尸进程。</p>
+<p>基于第一种方法实现：</p>
+<pre><code>//test3-2.c
+
+#include &lt;unistd.h&gt;
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;sys/types.h&gt;
+#include &lt;signal.h&gt;
+#include &lt;errno.h&gt;
+#include &lt;sys/wait.h&gt;
+
+#define FORK_NUM 10
+#define SUB_NUM 3
+#define MAIN_SLEEP_TIME 5
+#define SUB_SLEEP_TIME 25
+
+int daemon_init(void){
+    pid_t pid;
+    if ((pid = fork()) &lt; 0)
+		return -1;
+	else if (pid)   
+		exit(0);	/* parent exit */
+
+	/* child continues */
+	setsid();	/* become session leader */
+    chdir(&quot;/&quot;);	/* change working directory */
+	umask(0);	/* clear file mode creation mask */
+	close(0);    /* close stdin stdout stderr */
+//	close(1);
+	close(2);
+	return 0;
+}
+
+void sig_child(int signo){
+	int status;
+	pid_t pid;
+	while((pid=waitpid(-1, &amp;status, WNOHANG))&gt;0)
+		;
+}
+
+int main(){
+	if (daemon_init() == -1){
+		printf(&quot;can't fork self\n&quot;);
+		exit(0);
+	}
+	
+	signal(SIGCHLD, sig_child);
+
+	pid_t pid;
+	int i;
+	
+	for (i=0; i&lt;FORK_NUM; ++i)
+		if ((pid=fork()) &lt; 0){
+			perror(&quot;fork error&quot;);
+			exit(errno);
+		}
+		else if(pid==0)
+			break;
+	
+	if(pid){
+		while(1){
+			printf(&quot;%5d %5d 1453381 main\n&quot;, getppid(), getpid());
+			sleep(MAIN_SLEEP_TIME);
+		}
+	}
+	else{
+		for (i=1; i&lt;=SUB_NUM; ++i){
+			printf(&quot;%5d %5d 1453381 sub\n&quot;, getppid(), getpid());
+			sleep(SUB_SLEEP_TIME);
+		}
+	}
+	
+	return 0;
+}
+</code></pre>
+</li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Linux/" rel="tag"># Linux</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/10/18/Linux/homework/Linux守护进程/Linux守护进程0/" rel="next" title="Linux守护进程0">
+                <i class="fa fa-chevron-left"></i> Linux守护进程0
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/10/18/Linux/homework/Linux守护进程/Linux守护进程4/" rel="prev" title="Linux守护进程4">
+                Linux守护进程4 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/headPhoto.png"
+                alt="BaiJiazm" />
+            
+              <p class="site-author-name" itemprop="name">BaiJiazm</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">59</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">24</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/BaiJiazm" target="_blank" title="GitHub">
+                    
+                      <i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="mailto:b110011@qq.com" target="_blank" title="E-Mail">
+                    
+                      <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">1.</span> <span class="nav-text">Linux守护进程3 —— 守护进程分裂子进程</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">BaiJiazm</span>
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
