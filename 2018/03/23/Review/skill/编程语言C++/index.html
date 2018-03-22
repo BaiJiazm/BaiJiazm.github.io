@@ -1,0 +1,867 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="C++,Review," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="编程语言C++
+类的大小
+
+深度探索C++对象模型：类的大小
+C++ 空类的大小及相关继承类的大小
+
+12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758596061626364656667686970717273747576777879">
+<meta property="og:type" content="article">
+<meta property="og:title" content="编程语言C++">
+<meta property="og:url" content="http://yoursite.com/2018/03/23/Review/skill/编程语言C++/index.html">
+<meta property="og:site_name" content="BaiJiazm">
+<meta property="og:description" content="编程语言C++
+类的大小
+
+深度探索C++对象模型：类的大小
+C++ 空类的大小及相关继承类的大小
+
+12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758596061626364656667686970717273747576777879">
+<meta property="og:updated_time" content="2018-03-22T16:06:43.782Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="编程语言C++">
+<meta name="twitter:description" content="编程语言C++
+类的大小
+
+深度探索C++对象模型：类的大小
+C++ 空类的大小及相关继承类的大小
+
+12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758596061626364656667686970717273747576777879">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.3',
+    sidebar: {"position":"right","display":"hide","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/03/23/Review/skill/编程语言C++/"/>
+
+
+
+
+
+  <title>编程语言C++ | BaiJiazm</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">BaiJiazm</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">每一段路都是一种领悟:)</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/03/23/Review/skill/编程语言C++/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="BaiJiazm">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/headPhoto.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="BaiJiazm">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">编程语言C++</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-23T00:06:43+08:00">
+                2018-03-23
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2>编程语言C++</h2>
+<h3>类的大小</h3>
+<ul>
+<li><a href="http://glgjing.github.io/blog/2015/03/23/shen-du-tan-suo-c-plus-plus-dui-xiang-mo-xing-:lei-de-da-xiao/" target="_blank" rel="external">深度探索C++对象模型：类的大小</a></li>
+<li><a href="http://blog.csdn.net/u010921682/article/details/43529305" target="_blank" rel="external">C++ 空类的大小及相关继承类的大小</a></li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div><div class="line">113</div><div class="line">114</div><div class="line">115</div><div class="line">116</div><div class="line">117</div><div class="line">118</div><div class="line">119</div><div class="line">120</div><div class="line">121</div><div class="line">122</div><div class="line">123</div><div class="line">124</div><div class="line">125</div><div class="line">126</div><div class="line">127</div><div class="line">128</div><div class="line">129</div><div class="line">130</div><div class="line">131</div><div class="line">132</div><div class="line">133</div><div class="line">134</div><div class="line">135</div><div class="line">136</div><div class="line">137</div><div class="line">138</div><div class="line">139</div><div class="line">140</div><div class="line">141</div><div class="line">142</div><div class="line">143</div><div class="line">144</div><div class="line">145</div><div class="line">146</div><div class="line">147</div><div class="line">148</div><div class="line">149</div><div class="line">150</div><div class="line">151</div><div class="line">152</div><div class="line">153</div><div class="line">154</div><div class="line">155</div><div class="line">156</div><div class="line">157</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//以下测试环境为GCC 32bit-Release模式</span></div><div class="line"></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;iostream&gt;</span></span></div><div class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</div><div class="line"></div><div class="line"><span class="keyword">class</span> A &#123;&#125;;</div><div class="line"><span class="keyword">class</span> B &#123;&#125;;</div><div class="line"><span class="keyword">class</span> C : <span class="keyword">public</span> A &#123;</div><div class="line">		<span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">c_fun</span><span class="params">()</span></span>=<span class="number">0</span>;</div><div class="line">&#125;;</div><div class="line"><span class="keyword">class</span> D : <span class="keyword">public</span> B, <span class="keyword">public</span> C &#123;&#125;;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</div><div class="line">	<span class="built_in">cout</span>&lt;&lt;<span class="string">"sizeof(A):"</span>&lt;&lt;<span class="keyword">sizeof</span>(A)&lt;&lt;<span class="built_in">endl</span>;</div><div class="line">	<span class="built_in">cout</span>&lt;&lt;<span class="string">"sizeof(B):"</span>&lt;&lt;<span class="keyword">sizeof</span>(B)&lt;&lt;<span class="built_in">endl</span>;</div><div class="line">	<span class="built_in">cout</span>&lt;&lt;<span class="string">"sizeof(C):"</span>&lt;&lt;<span class="keyword">sizeof</span>(C)&lt;&lt;<span class="built_in">endl</span>;</div><div class="line">	<span class="built_in">cout</span>&lt;&lt;<span class="string">"sizeof(D):"</span>&lt;&lt;<span class="keyword">sizeof</span>(D)&lt;&lt;<span class="built_in">endl</span>;</div><div class="line">	<span class="keyword">return</span>  <span class="number">0</span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">/*</span></div><div class="line"> * 结果为： 1	1	4	4</div><div class="line"> * 最后一个可能与编译器有关，可能8</div><div class="line"> */</div><div class="line"></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;iostream&gt;</span></span></div><div class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</div><div class="line"></div><div class="line"><span class="keyword">class</span> A &#123;</div><div class="line">	<span class="keyword">private</span>:</div><div class="line">		<span class="keyword">int</span> data;</div><div class="line">&#125;;</div><div class="line"></div><div class="line"><span class="keyword">class</span> B &#123;</div><div class="line">	<span class="keyword">private</span>:</div><div class="line">		<span class="keyword">int</span> data;</div><div class="line">		<span class="keyword">static</span> <span class="keyword">int</span> data1;</div><div class="line">&#125;;</div><div class="line"><span class="keyword">int</span> B::data1=<span class="number">0</span>;</div><div class="line"></div><div class="line"><span class="comment">//注：void main()会编译报错</span></div><div class="line">main() &#123;</div><div class="line">	<span class="built_in">cout</span>&lt;&lt;<span class="string">"sizeof(A) = "</span>&lt;&lt; <span class="keyword">sizeof</span>(A) &lt;&lt;<span class="built_in">endl</span>;</div><div class="line">	<span class="built_in">cout</span>&lt;&lt;<span class="string">"sizeof(B) = "</span>&lt;&lt; <span class="keyword">sizeof</span>(B) &lt;&lt;<span class="built_in">endl</span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">/*</span></div><div class="line"> * 结果为： 4	4</div><div class="line"> */</div><div class="line"></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;iostream&gt;</span></span></div><div class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</div><div class="line"></div><div class="line"><span class="keyword">class</span> A &#123;</div><div class="line">	<span class="keyword">public</span> :</div><div class="line">		A(<span class="keyword">int</span> a) &#123;</div><div class="line">			a=x;</div><div class="line">		&#125;</div><div class="line">		<span class="function"><span class="keyword">void</span> <span class="title">f</span><span class="params">(<span class="keyword">int</span> x)</span> </span>&#123;</div><div class="line">			<span class="built_in">cout</span>&lt;&lt;x&lt;&lt;<span class="built_in">endl</span>;</div><div class="line">		&#125;</div><div class="line">		~A() &#123;&#125;</div><div class="line"></div><div class="line">	<span class="keyword">private</span>:</div><div class="line">		<span class="keyword">int</span> x;</div><div class="line">		<span class="keyword">int</span> g;</div><div class="line">&#125;;</div><div class="line"><span class="keyword">class</span> B &#123;</div><div class="line">	<span class="keyword">public</span>:</div><div class="line">	<span class="keyword">private</span>:</div><div class="line">		<span class="keyword">int</span> data;</div><div class="line">		<span class="keyword">int</span> data2;</div><div class="line">		<span class="keyword">static</span> <span class="keyword">int</span> xs;</div><div class="line">&#125;;</div><div class="line"><span class="keyword">int</span> B::xs=<span class="number">0</span>;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</div><div class="line">	<span class="function">A <span class="title">s</span><span class="params">(<span class="number">10</span>)</span></span>;</div><div class="line">	s.f(<span class="number">10</span>);</div><div class="line">	<span class="built_in">cout</span> &lt;&lt; <span class="string">"sizeof(a): "</span>&lt;&lt; <span class="keyword">sizeof</span>(A) &lt;&lt; <span class="built_in">endl</span>;</div><div class="line">	<span class="built_in">cout</span> &lt;&lt; <span class="string">"sizeof(b): "</span>&lt;&lt; <span class="keyword">sizeof</span>(B) &lt;&lt; <span class="built_in">endl</span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">/*</span></div><div class="line"> * 结果为： 8	8</div><div class="line"> */</div><div class="line"></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;iostream&gt;</span></span></div><div class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</div><div class="line"></div><div class="line"><span class="keyword">class</span> X &#123;&#125;;</div><div class="line"><span class="keyword">class</span> Y : <span class="keyword">public</span> <span class="keyword">virtual</span> X &#123;&#125;;</div><div class="line"><span class="keyword">class</span> Z : <span class="keyword">public</span> <span class="keyword">virtual</span> X &#123;&#125;;</div><div class="line"><span class="keyword">class</span> A : <span class="keyword">public</span> Y, <span class="keyword">public</span> Z &#123;&#125;;</div><div class="line"><span class="comment">// 上述为经典的钻石继承</span></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</div><div class="line">	<span class="built_in">cout</span> &lt;&lt; <span class="string">"sizeof(X): "</span> &lt;&lt; <span class="keyword">sizeof</span>(X) &lt;&lt; <span class="built_in">endl</span>;</div><div class="line">	<span class="built_in">cout</span> &lt;&lt; <span class="string">"sizeof(Y): "</span> &lt;&lt; <span class="keyword">sizeof</span>(Y) &lt;&lt; <span class="built_in">endl</span>;</div><div class="line">	<span class="built_in">cout</span> &lt;&lt; <span class="string">"sizeof(Z): "</span> &lt;&lt; <span class="keyword">sizeof</span>(Z) &lt;&lt; <span class="built_in">endl</span>;</div><div class="line">	<span class="built_in">cout</span> &lt;&lt; <span class="string">"sizeof(A): "</span> &lt;&lt; <span class="keyword">sizeof</span>(A) &lt;&lt; <span class="built_in">endl</span>;</div><div class="line"></div><div class="line">	<span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">/*</span></div><div class="line"> * 结果为： 1	4	4	8</div><div class="line"> */</div><div class="line"></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;iostream&gt;</span></span></div><div class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</div><div class="line"></div><div class="line"><span class="keyword">class</span> X &#123;</div><div class="line">		<span class="keyword">int</span> a;</div><div class="line">&#125;;</div><div class="line"><span class="keyword">class</span> Y : <span class="keyword">public</span> <span class="keyword">virtual</span> X &#123;&#125;;</div><div class="line"><span class="keyword">class</span> Z : <span class="keyword">public</span> <span class="keyword">virtual</span> X &#123;&#125;;</div><div class="line"><span class="keyword">class</span> A : <span class="keyword">public</span> Y, <span class="keyword">public</span> Z &#123;&#125;;</div><div class="line"><span class="comment">// 上述为经典的钻石继承</span></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</div><div class="line">	<span class="built_in">cout</span> &lt;&lt; <span class="string">"sizeof(X): "</span> &lt;&lt; <span class="keyword">sizeof</span>(X) &lt;&lt; <span class="built_in">endl</span>;</div><div class="line">	<span class="built_in">cout</span> &lt;&lt; <span class="string">"sizeof(Y): "</span> &lt;&lt; <span class="keyword">sizeof</span>(Y) &lt;&lt; <span class="built_in">endl</span>;</div><div class="line">	<span class="built_in">cout</span> &lt;&lt; <span class="string">"sizeof(Z): "</span> &lt;&lt; <span class="keyword">sizeof</span>(Z) &lt;&lt; <span class="built_in">endl</span>;</div><div class="line">	<span class="built_in">cout</span> &lt;&lt; <span class="string">"sizeof(A): "</span> &lt;&lt; <span class="keyword">sizeof</span>(A) &lt;&lt; <span class="built_in">endl</span>;</div><div class="line"></div><div class="line">	<span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">/*</span></div><div class="line"> * 结果为： 4	8	8	12</div><div class="line"> */</div><div class="line"></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;iostream&gt;</span></span></div><div class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</div><div class="line"></div><div class="line"><span class="keyword">class</span> X &#123;</div><div class="line">		<span class="keyword">int</span> a;</div><div class="line">		<span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">fun</span><span class="params">()</span></span>=<span class="number">0</span>;</div><div class="line">&#125;;</div><div class="line"><span class="keyword">class</span> Y : <span class="keyword">public</span> <span class="keyword">virtual</span> X &#123;&#125;;</div><div class="line"><span class="keyword">class</span> Z : <span class="keyword">public</span> <span class="keyword">virtual</span> X &#123;&#125;;</div><div class="line"><span class="keyword">class</span> A : <span class="keyword">public</span> Y, <span class="keyword">public</span> Z &#123;&#125;;</div><div class="line"><span class="comment">// 上述为经典的钻石继承</span></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</div><div class="line">	<span class="built_in">cout</span> &lt;&lt; <span class="string">"sizeof(X): "</span> &lt;&lt; <span class="keyword">sizeof</span>(X) &lt;&lt; <span class="built_in">endl</span>;</div><div class="line">	<span class="built_in">cout</span> &lt;&lt; <span class="string">"sizeof(Y): "</span> &lt;&lt; <span class="keyword">sizeof</span>(Y) &lt;&lt; <span class="built_in">endl</span>;</div><div class="line">	<span class="built_in">cout</span> &lt;&lt; <span class="string">"sizeof(Z): "</span> &lt;&lt; <span class="keyword">sizeof</span>(Z) &lt;&lt; <span class="built_in">endl</span>;</div><div class="line">	<span class="built_in">cout</span> &lt;&lt; <span class="string">"sizeof(A): "</span> &lt;&lt; <span class="keyword">sizeof</span>(A) &lt;&lt; <span class="built_in">endl</span>;</div><div class="line"></div><div class="line">	<span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">/*</span></div><div class="line"> * 结果为： 8	12	12	16</div><div class="line"> */</div></pre></td></tr></table></figure>
+<h3>C/C++内存对齐</h3>
+<ul>
+<li><a href="https://songlee24.github.io/2014/09/20/memory-alignment/" target="_blank" rel="external">C/C++内存对齐</a></li>
+<li><a href="http://blog.csdn.net/yusiguyuan/article/details/44564333" target="_blank" rel="external">C语言的字节对齐</a></li>
+</ul>
+<h3>C++空类占用一字节</h3>
+<ul>
+<li><a href="http://blog.csdn.net/xiong452980729/article/details/71077144" target="_blank" rel="external">C++中空类占一字节原因详解</a></li>
+</ul>
+<h3>结构体大小</h3>
+<ul>
+<li><a href="https://baijiazm.github.io/2018/03/05/Review/C%E8%AF%AD%E8%A8%80%E7%9A%84%E5%AD%97%E8%8A%82%E5%AF%B9%E9%BD%90/" target="_blank" rel="external">C语言的字节对齐</a></li>
+</ul>
+<p>注意：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">struct</span> A &#123;</div><div class="line">	<span class="keyword">char</span> a;</div><div class="line">	<span class="keyword">char</span> b;</div><div class="line">	<span class="keyword">char</span> c;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+<p>A的大小是3,结构体中每个成员的起始地址是<code>min(成员类型大小,pack)</code>的整数倍，整个结构体大小是最大成员大小的整数倍。</p>
+<h3>C++虚函数作用及底层实现原理</h3>
+<ul>
+<li><a href="https://www.cnblogs.com/malecrab/p/5572730.html" target="_blank" rel="external">C/C++杂记：虚函数的实现的基本原理</a></li>
+<li><a href="https://www.cnblogs.com/jiayayao/p/6279483.html" target="_blank" rel="external">C++虚函数实现多态原理</a></li>
+</ul>
+<h3>C++中虚继承的作用及底层实现原理</h3>
+<ul>
+<li>虚继承用于解决多继承条件下的菱形继承问题，底层实现原理与编译器相关，一般通过虚基类指针实现，即各对象中只保存一份父类的对象，多继承时通过虚基类指针引用该公共对象，从而避免菱形继承中的二义性问题。</li>
+<li><a href="http://www.oschina.net/translate/cpp-virtual-inheritance" target="_blank" rel="external">C++ 多继承和虚继承的内存布局</a></li>
+</ul>
+<h3>Struct和Class的区别</h3>
+<ul>
+<li><a href="http://blog.csdn.net/yuliu0552/article/details/6717915" target="_blank" rel="external">Struct和Class的区别</a></li>
+</ul>
+<h3>C++中包含哪几种强制类型转换？他们有什么区别和联系？</h3>
+<p><a href="https://www.nowcoder.com/ta/nine-chapter/review?page=19" target="_blank" rel="external">牛客网链接</a>
+<a href="http://blog.jobbole.com/107033/" target="_blank" rel="external">C++ 的强制类型转换</a></p>
+<h3>请简述智能指针原理，并实现一个简单的智能指针</h3>
+<ul>
+<li><a href="https://www.nowcoder.com/ta/nine-chapter/review?page=6" target="_blank" rel="external">参考答案</a></li>
+<li><a href="http://www.cnblogs.com/QG-whz/p/4777312.html" target="_blank" rel="external">C++ 引用计数技术及智能指针的简单实现</a></li>
+<li><a href="http://www.cnblogs.com/lanxuezaipiao/p/4132096.html" target="_blank" rel="external">C++智能指针简单剖析</a></li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">class</span> SmartPointer;</div><div class="line"></div><div class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div><div class="line"><span class="keyword">class</span> Counter &#123;</div><div class="line">		<span class="keyword">friend</span> <span class="keyword">class</span> SmartPointer&lt;T&gt;;</div><div class="line">	<span class="keyword">private</span>:</div><div class="line">		T* ptr;</div><div class="line">		<span class="keyword">int</span> cnt;</div><div class="line">	<span class="keyword">public</span>:</div><div class="line">		Counter() &#123;</div><div class="line">			ptr = <span class="literal">NULL</span>;</div><div class="line">			cnt = <span class="number">0</span>;</div><div class="line">		&#125;</div><div class="line">		Counter(T* p) &#123;</div><div class="line">			ptr = p;</div><div class="line">			cnt = <span class="number">1</span>;</div><div class="line">		&#125;</div><div class="line">		~Counter() &#123;</div><div class="line">			<span class="keyword">delete</span> ptr;</div><div class="line">		&#125;</div><div class="line">&#125;;</div><div class="line"></div><div class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</div><div class="line"><span class="keyword">class</span> SmartPointer &#123;</div><div class="line">	<span class="keyword">private</span>:</div><div class="line">		Counter* ptr_counter;</div><div class="line">	<span class="keyword">public</span>:</div><div class="line">		SmartPointer(T* p) &#123;</div><div class="line">			ptr_counter = <span class="keyword">new</span> Counter(p);</div><div class="line">		&#125;</div><div class="line">		SmartPointer(<span class="keyword">const</span> SmartPointer &amp;sp) &#123;</div><div class="line">			ptr_counter = sp.ptr_counter;</div><div class="line">			++ptr_count-&gt;cnt;</div><div class="line">		&#125;</div><div class="line">		SmartPointer&amp; <span class="keyword">operator</span>=(<span class="keyword">const</span> SmartPointer &amp;sp) &#123;</div><div class="line">			++sp.ptr_counter-&gt;cnt;</div><div class="line">			--ptr_counter-&gt;cnt;</div><div class="line">			<span class="keyword">if</span> (ptr_counter-&gt;cnt == <span class="number">0</span>) &#123;</div><div class="line">				<span class="keyword">delete</span> ptr_counter;</div><div class="line">			&#125;</div><div class="line">			ptr_counter = sp.ptr_counter;</div><div class="line">		&#125;</div><div class="line">		~SmartPointer() &#123;</div><div class="line">			--ptr_counter-&gt;cnt;</div><div class="line">			<span class="keyword">if</span> (ptr_counter-&gt;cnt == <span class="number">0</span>) &#123;</div><div class="line">				<span class="keyword">delete</span> ptr_counter;</div><div class="line">			&#125;</div><div class="line">		&#125;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+<h2>Part2</h2>
+<h3>内联函数、构造函数、静态成员函数可以是虚函数吗？</h3>
+<ul>
+<li>都不可以。内联函数需要在编译阶段展开，而虚函数是运行时动态绑定的，编译时无法展开； 构造函数在进行调用时还不存在父类和子类的概念，父类只会调用父类的构造函数，子类调用子类的，因此不存在动态绑定的概念；静态成员函数是以类为单位的函数，与具体对象无关，虚函数是与对象动态绑定的，因此是两个不冲突的概念；</li>
+</ul>
+<h3>构造函数中可以调用虚函数吗？</h3>
+<ul>
+<li>可以，但是没有动态绑定的效果，父类构造函数中调用的仍然是父类版本的函数，子类中调用的仍然是子类版本的函数</li>
+</ul>
+<h3>C++中成员函数能够同时用static和const进行修饰？</h3>
+<ul>
+<li>否，因为static表⽰示该函数为静态成员函数，为类所有；而const是用于修饰成员函数的，两者相矛盾。<code>[Error] static member function 'static void Test::fun()' cannot have cv-qualifier</code></li>
+</ul>
+<h2>C++ 内联函数</h2>
+<ul>
+<li><a href="http://www.cnblogs.com/QG-whz/p/4641479.html" target="_blank" rel="external">C++ 内联函数</a></li>
+</ul>
+<h2>C/C++参数传递顺序</h2>
+<ul>
+<li><a href="http://blog.sina.com.cn/s/blog_5ed3e6210100ceiu.html" target="_blank" rel="external">C或C++为什么被设计成是从右向左处理参数?</a></li>
+</ul>
+<h3>volatile有什么作用？</h3>
+<ul>
+<li>volatile定义变量的值是易变的，每次用到这个变量的值的时候都要去重新读取这个变量的值，而不是读寄存器内的备份。</li>
+<li>多线程中被几个任务共享的变量需要定义为volatile类型。</li>
+</ul>
+<h3>delete和delete[]区别？</h3>
+<ul>
+<li>delete只会调用一次析构函数。</li>
+<li>delete[]会调用数组中每个元素的析构函数。</li>
+</ul>
+<h3>面向对象三大特性？</h3>
+<ul>
+<li>封装性：数据和代码捆绑在一起，避免外界干扰和不确定性访问。</li>
+<li>继承性：让某种类型对象获得另一个类型对象的属性和方法。</li>
+<li>多态性：同一事物表现出不同事物的能力，即向不同对象发送同一消息，不同的对象在接收时会产生不同的行为（重载实现编译时多态，虚函数实现运行时多态）。</li>
+</ul>
+<h3>构造函数能否为虚函数，析构函数呢？</h3>
+<ul>
+<li>析构函数：
+<ul>
+<li>析构函数可以为虚函数，并且一般情况下基类析构函数要定义为虚函数。</li>
+<li>只有在基类析构函数定义为虚函数时，调用操作符delete销毁指向对象的基类指针时，才能准确调用派生类的析构函数（从该级向上按序调用虚函数），才能准确销毁数据。</li>
+<li>析构函数可以是纯虚函数，含有纯虚函数的类是抽象类，此时不能被实例化。但派生类中可以根据自身需求重新改写基类中的纯虚函数。</li>
+</ul>
+</li>
+<li>构造函数：
+<ul>
+<li>构造函数不能定义为虚函数，不仅如此，构造函数中还不能调用虚函数。因为那样实际执行的是父类对应的函数，因为自己还没有构造好（构造顺序先基类再派生类）。</li>
+</ul>
+</li>
+</ul>
+<h2>Part3</h2>
+<h3>static作用是什么？在C和C++中有何区别？</h3>
+<ul>
+<li>static可以修饰局部变量（静态局部变量）、全局变量（静态全局变量）和函数，被修饰的变量存储位置在静态区。对于静态局部变量，相对于一般局部变量其生命周期长，直到程序运行结束而非函数调用结束，且只在第一次被调用时定义；对于静态全局变量，相对于全局变量其可见范围被缩小，只能在本文件中可见；修饰函数时作用和修饰全局变量相同，都是为了限定访问域。</li>
+<li>C++的static除了上述两种用途，还可以修饰类成员（静态成员变量和静态成员函数），静态成员变量和静态成员函数不属于任何一个对象，是所有类实例所共有。</li>
+<li>static的数据记忆性可以满足函数在不同调用期的通信，也可以满足同一个类的多个实例间的通信。</li>
+<li>未初始化时，static变量默认值为0。</li>
+</ul>
+<h3>malloc和new的区别？</h3>
+<ul>
+<li>malloc和free是标准库函数，支持覆盖；new和delete是运算符，并且支持重载。</li>
+<li>malloc仅仅分配内存空间，free仅仅回收空间，不具备调用构造函数和析构函数功能，用malloc分配空间存储类的对象存在风险；new和delete除了分配回收功能外，还会调用构造函数和析构函数。</li>
+<li>malloc和free返回的是void类型指针（必须进行类型转换），new和delete返回的是具体类型指针。</li>
+</ul>
+<h3>指针和引用区别？</h3>
+<ul>
+<li>引用只是别名，不占用具体存储空间，只有声明没有定义；指针是具体变量，需要占用存储空间。</li>
+<li>引用在声明时必须初始化为另一变量，一旦出现必须为typename refname &amp;varname形式；指针声明和定义可以分开，可以先只声明指针变量而不初始化，等用到时再指向具体变量。</li>
+<li>引用一旦初始化之后就不可以再改变（变量可以被引用为多次，但引用只能作为一个变量引用）；指针变量可以重新指向别的变量。</li>
+<li>不存在指向空值的引用，必须有具体实体；但是存在指向空值的指针。</li>
+</ul>
+<h3>构造函数调用顺序，析构函数呢？</h3>
+<ul>
+<li>基类的构造函数：如果有多个基类，先调用纵向上最上层基类构造函数，如果横向继承了多个类，调用顺序为派生表从左到右顺序。</li>
+<li>成员类对象的构造函数：如果类的变量中包含其他类（类的组合），需要在调用本类构造函数前先调用成员类对象的构造函数，调用顺序遵照在类中被声明的顺序。</li>
+<li>派生类的构造函数。</li>
+<li>析构函数与之相反。</li>
+</ul>
+<h3>虚函数和纯虚函数区别？</h3>
+<ul>
+<li>虚函数是为了实现动态编联产生的，目的是通过基类类型的指针指向不同对象时，自动调用相应的、和基类同名的函数（使用同一种调用形式，既能调用派生类又能调用基类的同名函数）。虚函数需要在基类中加上virtual修饰符修饰，因为virtual会被隐式继承，所以子类中相同函数都是虚函数。当一个成员函数被声明为虚函数之后，其派生类中同名函数自动成为虚函数，在派生类中重新定义此函数时要求函数名、返回值类型、参数个数和类型全部与基类函数相同。</li>
+<li>纯虚函数只是相当于一个接口名，但含有纯虚函数的类不能够实例化。</li>
+</ul>
+<h3>覆盖、重载和隐藏的区别？</h3>
+<ul>
+<li>覆盖是派生类中重新定义的函数，其函数名、参数列表（个数、类型和顺序）、返回值类型和父类完全相同，只有函数体有区别。派生类虽然继承了基类的同名函数，但用派生类对象调用该函数时会根据对象类型调用相应的函数。覆盖只能发生在类的成员函数中。</li>
+<li>隐藏是指派生类函数屏蔽了与其同名的函数，这里仅要求基类和派生类函数同名即可。其他状态同覆盖。可以说隐藏比覆盖涵盖的范围更宽泛，毕竟参数不加限定。</li>
+<li>重载是具有相同函数名但参数列表不同（个数、类型或顺序）的两个函数（不关心返回值），当调用函数时根据传递的参数列表来确定具体调用哪个函数。重载可以是同一个类的成员函数也可以是类外函数。</li>
+</ul>
+<h3>在main执行之前执行的代码可能是什么？</h3>
+<ul>
+<li>全局对象的构造函数。</li>
+</ul>
+<h3>构造函数和析构函数调用时机？</h3>
+<ul>
+<li>全局范围中的对象：构造函数在所有函数调用之前执行，在主函数执行完调用析构函数。</li>
+<li>局部自动对象：建立对象时调用构造函数，函数结束时调用析构函数。</li>
+<li>动态分配的对象：建立对象时调用构造函数，调用释放时调用析构函数。</li>
+<li>静态局部变量对象：建立时调用一次构造函数，主函数结束时调用析构函数。</li>
+</ul>
+<hr>
+<h2>STL部分</h2>
+<h3>STL中的迭代器失效问题</h3>
+<ul>
+<li><a href="https://blog.csdn.net/tian_110/article/details/43190627" target="_blank" rel="external">STL迭代器及迭代器失效问题</a></li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/C/" rel="tag"># C++</a>
+          
+            <a href="/tags/Review/" rel="tag"># Review</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/03/20/Linux/Linux RedHat 7.4 安装Docker/" rel="next" title="Linux RedHat 7.4 安装Docker">
+                <i class="fa fa-chevron-left"></i> Linux RedHat 7.4 安装Docker
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/03/23/Review/skill/操作系统/" rel="prev" title="操作系统">
+                操作系统 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/headPhoto.png"
+                alt="BaiJiazm" />
+            
+              <p class="site-author-name" itemprop="name">BaiJiazm</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">67</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">28</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/BaiJiazm" target="_blank" title="GitHub">
+                    
+                      <i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="mailto:b110011@qq.com" target="_blank" title="E-Mail">
+                    
+                      <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#undefined"><span class="nav-number">1.</span> <span class="nav-text">编程语言C++</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-number">1.1.</span> <span class="nav-text">类的大小</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-number">1.2.</span> <span class="nav-text">C/C++内存对齐</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-number">1.3.</span> <span class="nav-text">C++空类占用一字节</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-number">1.4.</span> <span class="nav-text">结构体大小</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-number">1.5.</span> <span class="nav-text">C++虚函数作用及底层实现原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-number">1.6.</span> <span class="nav-text">C++中虚继承的作用及底层实现原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-number">1.7.</span> <span class="nav-text">Struct和Class的区别</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-number">1.8.</span> <span class="nav-text">C++中包含哪几种强制类型转换？他们有什么区别和联系？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-number">1.9.</span> <span class="nav-text">请简述智能指针原理，并实现一个简单的智能指针</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#undefined"><span class="nav-number">2.</span> <span class="nav-text">Part2</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-number">2.1.</span> <span class="nav-text">内联函数、构造函数、静态成员函数可以是虚函数吗？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-number">2.2.</span> <span class="nav-text">构造函数中可以调用虚函数吗？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-number">2.3.</span> <span class="nav-text">C++中成员函数能够同时用static和const进行修饰？</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#undefined"><span class="nav-number">3.</span> <span class="nav-text">C++ 内联函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#undefined"><span class="nav-number">4.</span> <span class="nav-text">C/C++参数传递顺序</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-number">4.1.</span> <span class="nav-text">volatile有什么作用？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-number">4.2.</span> <span class="nav-text">delete和delete[]区别？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-number">4.3.</span> <span class="nav-text">面向对象三大特性？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-number">4.4.</span> <span class="nav-text">构造函数能否为虚函数，析构函数呢？</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#undefined"><span class="nav-number">5.</span> <span class="nav-text">Part3</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-number">5.1.</span> <span class="nav-text">static作用是什么？在C和C++中有何区别？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-number">5.2.</span> <span class="nav-text">malloc和new的区别？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-number">5.3.</span> <span class="nav-text">指针和引用区别？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-number">5.4.</span> <span class="nav-text">构造函数调用顺序，析构函数呢？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-number">5.5.</span> <span class="nav-text">虚函数和纯虚函数区别？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-number">5.6.</span> <span class="nav-text">覆盖、重载和隐藏的区别？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-number">5.7.</span> <span class="nav-text">在main执行之前执行的代码可能是什么？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-number">5.8.</span> <span class="nav-text">构造函数和析构函数调用时机？</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#undefined"><span class="nav-number">6.</span> <span class="nav-text">STL部分</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-number">6.1.</span> <span class="nav-text">STL中的迭代器失效问题</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">BaiJiazm</span>
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
