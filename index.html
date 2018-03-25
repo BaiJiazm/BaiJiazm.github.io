@@ -836,7 +836,7 @@
       
         
           
-            <h2>网络编程及知识</h2>
+            <h2>网络编程</h2>
 <h3>select、poll和epoll编程</h3>
 <ul>
 <li>linux内核源码分析epoll的实现</li>
@@ -853,6 +853,9 @@
 <li><a href="https://blog.csdn.net/PROGRAM_anywhere/article/details/71408708" target="_blank" rel="external">epoll读到一半又有新事件来了怎么办？</a></li>
 <li><a href="http://www.voidcn.com/article/p-kxwjnibc-bmd.html" target="_blank" rel="external">EPOLLONESHOT事件</a></li>
 </ul>
+<h3>Linux相关cpu内存网络相关指令</h3>
+<hr>
+<h2>网络知识</h2>
 <h3>TCP三次握手与四次挥手</h3>
 <ul>
 <li><a href="http://www.cnblogs.com/kesal/p/3285415.html" target="_blank" rel="external">TCP\IP三次握手连接，四次握手断开分析</a></li>
@@ -860,18 +863,17 @@
 <li><a href="http://www.cnblogs.com/newwy/p/3234536.html" target="_blank" rel="external">TCP连接的建立与终止</a></li>
 </ul>
 <h3>TCP三次握手，最后一次ACK包可以携带数据吗？有什么东西控制吗？什么时候携带数据？</h3>
+<ul>
+<li>RFC793文档里带有SYN标志的过程包是不可以携带数据的，也就是说三次握手的前两次是不可以携带数据的（逻辑上看，连接还没建立，携带数据好像也有点说不过去）。TCP协议建立连接的三次握手过程中的第三次握手允许携带数据。</li>
+<li><a href="http://0xffffff.org/2015/04/15/36-The-TCP-three-way-handshake-with-data/" target="_blank" rel="external">TCP连接建立的三次握手过程可以携带数据吗？</a></li>
+</ul>
 <h3>TCP四次挥手，为什么要有TIME_WAIT？如果有大量的TIME_WAIT怎么解决？</h3>
 <ul>
-<li>
-<ol>
-<li>A不能保证最后的ACK能达到B， 所以， 还应该观望一段时间， 护送一段时间。 如果最后的ACK丢失， 那么B显然收不到,  B于是发起了重传FIN的操作， 此时如果A处于CLOSED的状态， 就没办法给对端发ACK了（实际是发RST）， 呜呼哀哉。 所以A应该等一段时间， 这段时间就是所谓的TIME_WAIT， 比如， 等待一个RTT的时间（实际上， 考虑到如下的理由之二就知道， RTT可能不够， 用2MSL更靠谱）。TIME_WAIT存在的理由之一是尽可能护送最后的ACK达到对端。</li>
-</ol>
-</li>
-<li>
-<ol start="2">
-<li>假设tcp连接是： A(1.2.3.4:8888)------B(6.7.8.9:9999), 这就是一个tcp四元组。 当tcp连接关闭后， 四元组释放。 后面的新连接可能会重用到这个四元组（有这个可能性）。所以， 可以考虑这样一个机制： 让旧四元组对应的所有网络包都消失后（等一段时间）， 才允许新四元组建立， 颇有点锁的味道。 TIME_WAIT存在的理由之二是新旧四元组互不干扰。</li>
-</ol>
-</li>
+<li>原因一：保证TCP协议的全双工连接能够可靠关闭</li>
+<li>原因二：保证这次连接的重复数据段从网络中消失</li>
+<li>第一点，如果Client直接CLOSED了，那么由于IP协议的不可靠性或者是其它网络原因，导致Server没有收到Client最后回复的ACK。那么Server就会在超时之后继续发送FIN，此时由于Client已经CLOSED了，就找不到与重发的FIN对应的连接，最后Server就会收到RST而不是ACK，Server就会以为是连接错误把问题报告给高层。这样的情况虽然不会造成数据丢失，但是却导致TCP协议不符合可靠连接的要求。所以，Client不是直接进入CLOSED，而是要保持TIME_WAIT，当再次收到FIN的时候，能够保证对方收到ACK，最后正确的关闭连接。</li>
+<li>第二点，如果Client直接CLOSED，然后又再向Server发起一个新连接，我们不能保证这个新连接与刚关闭的连接的端口号是不同的。也就是说有可能新连接和老连接的端口号是相同的。一般来说不会发生什么问题，但是还是有特殊情况出现：假设新连接和已经关闭的老连接端口号是一样的，如果前一次连接的某些数据仍然滞留在网络中，这些延迟数据在建立新连接之后才到达Server，由于新连接和老连接的端口号是一样的，又因为TCP协议判断不同连接的依据是socket pair，于是，TCP协议就认为那个延迟的数据是属于新连接的，这样就和真正的新连接的数据包发生混淆了。所以TCP连接还要在TIME_WAIT状态等待2倍MSL，这样可以保证本次连接的所有数据都从网络中消失。</li>
+<li><a href="http://www.cnblogs.com/Jessy/p/3535612.html" target="_blank" rel="external">更多了解</a></li>
 </ul>
 <h3>http状态码及报文格式</h3>
 <ul>
@@ -890,7 +892,11 @@
 <li><a href="https://my.oschina.net/ososchina/blog/371468" target="_blank" rel="external">Http 206 文件断点续传下载原理</a></li>
 <li><a href="http://blog.csdn.net/liang19890820/article/details/53215087" target="_blank" rel="external">HTTP 断点续传（分块传输）</a></li>
 </ul>
-<h3>tcp和udp的区别，tcp是怎么做错误处理的？</h3>
+<h3>TCP和UDP的区别</h3>
+<ul>
+<li><a href="https://blog.csdn.net/lzuacm/article/details/50945225" target="_blank" rel="external">网络面试题：TCP和UDP的9个区别是什么</a></li>
+<li><a href="https://blog.csdn.net/qq_18425655/article/details/51955674" target="_blank" rel="external">面试题：TCP协议与UDP协议的区别</a></li>
+</ul>
 <h3>TCP和UDP应用协议范围</h3>
 <p><img src="https://i.imgur.com/AUHCePc.png" alt="TCP和UDP应用协议范围"></p>
 <h3>运行在TCP协议上的协议：</h3>
@@ -915,15 +921,47 @@
 <li>ARP（Address Resolution Protocol，地址解析协议），用于动态解析以太网硬件的地址。</li>
 </ul>
 <h3>TCP/IP协议栈中协议的层级：</h3>
-<pre><code>7	应用层   application layer	例如HTTP、SMTP、SNMP、FTP、Telnet、SIP、SSH、NFS、RTSP、XMPP、Whois、ENRP
-6	表示层   presentation layer	例如XDR、ASN.1、SMB、AFP、NCP
-5	会话层   session layer	例如ASAP、SSH、ISO 8327 / CCITT X.225、RPC、NetBIOS、ASP、IGMP、Winsock、BSD sockets
-4	传输层   transport layer	例如TCP、UDP、TLS、RTP、SCTP、SPX、ATP、IL
-3	网络层   network layer	例如IP、ICMP、IPX、BGP、OSPF、RIP、IGRP、EIGRP、ARP、RARP、X.25
-2	数据链路层 data link layer	例如以太网、令牌环、HDLC、帧中继、ISDN、ATM、IEEE 802.11、FDDI、PPP
-1	物理层   physical layer	例如线路、无线电、光纤
-</code></pre>
-<p>Linux相关cpu内存网络相关指令</p>
+<p>|层次|层名|name|协议|
+|:-|:-|:-|:-|
+|7	|应用层   |application layer	|例如HTTP、SMTP、SNMP、FTP、Telnet、SIP、SSH、NFS、RTSP、XMPP、Whois、ENRP|
+|6	|表示层   |presentation layer	|例如XDR、ASN.1、SMB、AFP、NCP|
+|5	|会话层   |session layer	|例如ASAP、SSH、ISO 8327 / CCITT X.225、RPC、NetBIOS、ASP、IGMP、Winsock、BSD sockets|
+|4	|传输层   |transport layer	|例如TCP、UDP、TLS、RTP、SCTP、SPX、ATP、IL|
+|3	|网络层   |network layer	|例如IP、ICMP、IPX、BGP、OSPF、RIP、IGRP、EIGRP、ARP、RARP、X.25|
+|2	|数据链路层 |data link layer	|例如以太网、令牌环、HDLC、帧中继、ISDN、ATM、IEEE 802.11、FDDI、PPP|
+|1	|物理层   |physical layer	|例如线路、无线电、光纤|</p>
+<h3>流量控制原理</h3>
+<ul>
+<li>目的是接收方通过TCP头窗口字段告知发送方本方可接收的最大数据量，用以解决发送速率过快导致接收方不能接收的问题。所以流量控制是点对点控制。</li>
+<li>TCP是双工协议，双方可以同时通信，所以发送方接收方各自维护一个发送窗和接收窗。</li>
+<li>发送窗：用来限制发送方可以发送的数据大小，其中发送窗口的大小由接收端返回的TCP报文段中窗口字段来控制，接收方通过此字段告知发送方自己的缓冲（受系统、硬件等限制）大小。</li>
+<li>接收窗：用来标记可以接收的数据大小。</li>
+<li>TCP是流数据，发送出去的数据流可以被分为以下四部分：已发送且被确认部分 | 已发送未被确认部分 | 未发送但可发送部分 | 不可发送部分，其中发送窗 = 已发送未确认部分 + 未发但可发送部分。接收到的数据流可分为：已接收 | 未接收但准备接收 | 未接收不准备接收。接收窗 = 未接收但准备接收部分。</li>
+<li>发送窗内数据只有当接收到接收端某段发送数据的ACK响应时才移动发送窗，左边缘紧贴刚被确认的数据。接收窗也只有接收到数据且最左侧连续时才移动接收窗口。</li>
+</ul>
+<h3>拥塞控制原理</h3>
+<ul>
+<li>拥塞控制目的是防止数据被过多注网络中导致网络资源（路由器、交换机等）过载。因为拥塞控制涉及网络链路全局，所以属于全局控制。控制拥塞使用拥塞窗口。</li>
+<li>TCP拥塞控制算法：</li>
+<li>慢开始 &amp; 拥塞避免：先试探网络拥塞程度再逐渐增大拥塞窗口。每次收到确认后拥塞窗口翻倍，直到达到阀值ssthresh，这部分是慢开始过程。达到阀值后每次以一个MSS为单位增长拥塞窗口大小，当发生拥塞（超时未收到确认），将阀值减为原先一半，继续执行线性增加，这个过程为拥塞避免。</li>
+<li>快速重传 &amp; 快速恢复：略。</li>
+<li>最终拥塞窗口会收敛于稳定值。</li>
+</ul>
+<h3>如何区分流量控制和拥塞控制</h3>
+<ul>
+<li>流量控制属于通信双方协商；拥塞控制涉及通信链路全局。</li>
+<li>流量控制需要通信双方各维护一个发送窗、一个接收窗，对任意一方，接收窗大小由自身决定，发送窗大小由接收方响应的TCP报文段中窗口值确定；拥塞控制的拥塞窗口大小变化由试探性发送一定数据量数据探查网络状况后而自适应调整。</li>
+<li>实际最终发送窗口 = min{流控发送窗口，拥塞窗口}。</li>
+</ul>
+<h3>TCP如何提供可靠数据传输</h3>
+<ul>
+<li>建立连接（标志位）：通信前确认通信实体存在。</li>
+<li>序号机制（序号、确认号）：确保了数据是按序、完整到达。</li>
+<li>数据校验（校验和）：CRC校验全部数据。</li>
+<li>超时重传（定时器）：保证因链路故障未能到达数据能够被多次重发。</li>
+<li>窗口机制（窗口）：提供流量控制，避免过量发送。</li>
+<li>拥塞控制：同上。</li>
+</ul>
 
           
         
@@ -1048,6 +1086,14 @@
 <ul>
 <li><a href="https://www.nowcoder.com/ta/nine-chapter/review?page=5" target="_blank" rel="external">参考答案</a></li>
 </ul>
+<h3>平衡二叉树、B树、B+树、B*树基本概念</h3>
+<ul>
+<li><a href="https://zhuanlan.zhihu.com/p/27700617" target="_blank" rel="external">平衡二叉树、B树、B+树、B*树</a></li>
+</ul>
+<h3>红黑树概念</h3>
+<ul>
+<li><a href="https://github.com/julycoding/The-Art-Of-Programming-By-July/blob/master/ebook/zh/03.01.md" target="_blank" rel="external">教你透彻了解红黑树</a></li>
+</ul>
 
           
         
@@ -1170,7 +1216,61 @@
             <h2>操作系统</h2>
 <h3>Linux进程间通讯方式及编程知识</h3>
 <ul>
-<li>见总结文档及demo程序</li>
+<li>见文档linux-ipc.pdf及相应demo程序</li>
+</ul>
+<h3>Linux多线程pthread编程知识</h3>
+<ul>
+<li><a href="https://blog.csdn.net/ithomer/article/details/5920936" target="_blank" rel="external">linux多线程pthread</a></li>
+</ul>
+<h3>进程线程的区别</h3>
+<ul>
+<li>见文档G-linux-thread.pdf及相应demo程序</li>
+</ul>
+<h3>进程线程面试题总结</h3>
+<ul>
+<li><a href="https://blog.csdn.net/wujiafei_njgcxy/article/details/77098977" target="_blank" rel="external">进程线程面试题总结</a></li>
+</ul>
+<h3>归纳进程线程的相同点</h3>
+<ul>
+<li>无论是进程还是线程，都是用来实现多任务并发的技术手段；</li>
+<li>二者都可以独立调度，因此在多任务环境下，功能上并无差异；</li>
+<li>二者都具有各自的实体，是系统独立管理的对象个体。所以在系统层面，都可以通过技术手段实现二者的控制；</li>
+<li>二者所具有的状态都非常相似；</li>
+<li>在多任务程序中，子进程(子线程)的调度一般与父进程(父线程)平等竞争。</li>
+</ul>
+<h3>归纳进程线程的不同点</h3>
+<h4>基本概念角度</h4>
+<ul>
+<li>进程是资源分配的基本单位，线程是调度的基本单位。</li>
+</ul>
+<h4>系统实现角度</h4>
+<ul>
+<li>进程的实现是调用fork系统调用；线程的实现是调用clone系统调用。</li>
+</ul>
+<p>|  进程原语	|线程原语 	      |描述|
+|:-|:-|:-|
+|  fork	    |pthread_create   |创建新的控制流|
+|  exit	    |pthread_exit	  |从现有的控制流退出|
+|  waitpid	|pthread_join	  |从控制流中得到退出状态|
+|  aexit	|pthread_clean_push|注册在退出控制流时执行的函数|
+|  getpid	|pthread_self	  |获得控制流ID|
+|  abort	|pthread_cancel	  |请求控制流的非正常退出|</p>
+<h4>实体间(进程间，线程间，进线程间)通信方式的不同</h4>
+<ul>
+<li>进程间的通信方式有这样几种：A.共享内存 B.消息队列 C.信号量 D.有名管道   E.无名管道 F.信号 G.文件 H.socket</li>
+<li>线程间的通信方式上述进程间的方式都可沿用，且还有自己独特的几种：A.互斥量      B.自旋锁 C.条件变量  D.读写锁  E.线程信号 G.全局变量</li>
+<li>值得注意的是，线程间通信用的信号不能采用进程间的信号，因为信号是基于进程为单位的，而线程是共属于同一进程空间的。故而要采用线程信号。综上，进程间通信手段有8种。线程间通信手段有13种。</li>
+<li>进程间采用的通信方式要么需要切换内核上下文，要么要与外设访问(有名管道，文件)。所以速度会比较慢。而线程采用自己特有的通信方式的话，基本都在自己的进程空间内完成，不存在切换，所以通信速度会较快。也就是说，进程间与线程间分别采用的通信方式，除了种类的区别外，还有速度上的区别。</li>
+</ul>
+<h4>个体间辈分关系的迥异</h4>
+<ul>
+<li>进程的备份关系森严，在父进程没有结束前，所有的子进程都尊从父子关系，也就是说A创建了B，则A与B是父子关系，B又创建了C，则B与C也是父子关系，A与C构成爷孙关系，也就是说C是A的孙子进程。在系统上使用pstree命令打印进程树，可以清晰看到辈分关系。</li>
+<li>多线程间的关系没有那么严格，不管是父线程还是子线程创建了新的线程，都是共享父线程的资源，所以，都可以说是父线程的子线程，也就是只存在一个父线程，其余线程都是父线程的子线程。</li>
+</ul>
+<h4>其他方面</h4>
+<ul>
+<li>可靠性：进程间不会互相影响；一个线程挂掉将导致整个进程挂掉。</li>
+<li>分布式：进程适应于多核、多机分布式，如果一台机器不够，扩展到多台机器比较简单；线程适应于多核分布式。</li>
 </ul>
 <h3>多个进程同时写共享内存，如何防止内容乱？</h3>
 <ul>
@@ -1179,10 +1279,6 @@
 <h3>多线程访问共享内存的不加锁实现方式</h3>
 <ul>
 <li><a href="http://blog.csdn.net/ywh147/article/details/8675532" target="_blank" rel="external">多线程访问共享内存的不加锁实现方式</a></li>
-</ul>
-<h3>进程线程的区别</h3>
-<ul>
-<li>见总结文档及demo程序</li>
 </ul>
 <h3>同步和异步、阻塞与非阻塞</h3>
 <ul>
@@ -1203,15 +1299,10 @@
 <li>非剥夺条件（Nopre-emption）：已经分配的资源不能从相应的进程中被强制地剥夺。</li>
 <li>循环等待条件（ Circularwait ）：系统中若干进程组成环路，该环路中每个进程都在等待相 邻进程正占用的资源。</li>
 </ul>
-<p>Linux内核的内存管理机制,</p>
-<p>就把Linux内核的物理内存管理(numa,uma架构,ZONE,PAGE,伙伴算法,SLAB机制,</p>
-<p>冷热页缓冲机制基于LRU,OOM内存溢出机制,struct page跟物理内存的映射,page   cache,还有swap分区等等),</p>
-<p>虚拟内存管理,高端映射,(进程pcb中的mm_struct结构指向整个进程的虚拟内存空间,vm_area_struct结构.堆栈,数据段,代码段什么的,malloc实现机制,mmap映射)</p>
 <h3>使用mmap读写文件为什么比普通读写函数要快？</h3>
 <ul>
 <li><a href="http://blog.csdn.net/kai8wei/article/details/77980201" target="_blank" rel="external">mmap为什么比read/write快</a></li>
 </ul>
-<p>堆和栈的区别？</p>
 
           
         
@@ -1953,7 +2044,7 @@ This system is not registered with an entitlement server. You can use subscripti
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/03/08/Review/BAT经典面试题/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/03/08/Review/skill/BAT经典面试题/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="BaiJiazm">
@@ -1972,7 +2063,7 @@ This system is not registered with an entitlement server. You can use subscripti
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/03/08/Review/BAT经典面试题/" itemprop="url">BAT经典面试题</a></h1>
+                <a class="post-title-link" href="/2018/03/08/Review/skill/BAT经典面试题/" itemprop="url">BAT经典面试题</a></h1>
         
 
         <div class="post-meta">
