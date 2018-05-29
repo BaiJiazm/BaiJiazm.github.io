@@ -87,10 +87,17 @@
 平衡二叉树、B树、B+树、B*树基本概念
 
 平衡二叉树、B树、B+树、B*树
+从B树、B+树、B*树谈到R 树
 
 红黑树概念
 
-教你透彻了解红黑树">
+教你透彻了解红黑树
+
+二叉查找树，红黑树，AVL树，B/B+树，伸展树——优缺点及比较
+
+二叉查找树，红黑树，AVL树，B/B+树，伸展树——优缺点及比较
+
+AVL树，红黑">
 <meta property="og:type" content="article">
 <meta property="og:title" content="数据结构和算法">
 <meta property="og:url" content="http://yoursite.com/2018/03/23/Review/skill/数据结构和算法/index.html">
@@ -103,11 +110,18 @@
 平衡二叉树、B树、B+树、B*树基本概念
 
 平衡二叉树、B树、B+树、B*树
+从B树、B+树、B*树谈到R 树
 
 红黑树概念
 
-教你透彻了解红黑树">
-<meta property="og:updated_time" content="2018-03-24T03:21:32.687Z">
+教你透彻了解红黑树
+
+二叉查找树，红黑树，AVL树，B/B+树，伸展树——优缺点及比较
+
+二叉查找树，红黑树，AVL树，B/B+树，伸展树——优缺点及比较
+
+AVL树，红黑">
+<meta property="og:updated_time" content="2018-05-29T08:53:51.600Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="数据结构和算法">
 <meta name="twitter:description" content="数据结构和算法
@@ -118,10 +132,17 @@
 平衡二叉树、B树、B+树、B*树基本概念
 
 平衡二叉树、B树、B+树、B*树
+从B树、B+树、B*树谈到R 树
 
 红黑树概念
 
-教你透彻了解红黑树">
+教你透彻了解红黑树
+
+二叉查找树，红黑树，AVL树，B/B+树，伸展树——优缺点及比较
+
+二叉查找树，红黑树，AVL树，B/B+树，伸展树——优缺点及比较
+
+AVL树，红黑">
 
 
 
@@ -359,11 +380,40 @@
 <h3>平衡二叉树、B树、B+树、B*树基本概念</h3>
 <ul>
 <li><a href="https://zhuanlan.zhihu.com/p/27700617" target="_blank" rel="external">平衡二叉树、B树、B+树、B*树</a></li>
+<li><a href="https://blog.csdn.net/v_JULY_v/article/details/6530142/" target="_blank" rel="external">从B树、B+树、B*树谈到R 树</a></li>
 </ul>
 <h3>红黑树概念</h3>
 <ul>
 <li><a href="https://github.com/julycoding/The-Art-Of-Programming-By-July/blob/master/ebook/zh/03.01.md" target="_blank" rel="external">教你透彻了解红黑树</a></li>
 </ul>
+<h3>二叉查找树，红黑树，AVL树，B/B+树，伸展树——优缺点及比较</h3>
+<ul>
+<li><a href="https://blog.csdn.net/bytxl/article/details/40920165" target="_blank" rel="external">二叉查找树，红黑树，AVL树，B/B+树，伸展树——优缺点及比较</a></li>
+</ul>
+<h3>AVL树，红黑树，B树，B+树，Trie树应用场景</h3>
+<ul>
+<li><a href="https://www.zhihu.com/question/30527705" target="_blank" rel="external">AVL树，红黑树，B树，B+树，Trie树应用场景</a></li>
+</ul>
+<h3>B树和B+树区别？</h3>
+<p>一颗m阶的B+树和m阶的B_树的差异在于：</p>
+<ol>
+<li>有n棵子树的结点中含有n个关键字；(而B树是n棵子树有n-1个关键字)</li>
+<li>所有的叶子结点中包含了全部关键字的信息，及指向含有这些关键字记录的指针，且叶子结点本身依关键字的大小自小而大的顺序链接。(而B树的叶子节点并没有包括全部需要查找的信息)</li>
+<li>所有的非终端结点可以看成是索引部分，结点中仅含有其子树根结点中最大（或最小）关键字。 (而B树的非终节点也包含需要查找的有效信息)</li>
+</ol>
+<h3>为什么说B+树比B树更适合操作系统的文件索引和数据库索引？</h3>
+<ol>
+<li>
+<p>B+-tree的磁盘读写代价更低
+B+-tree的内部结点并没有指向关键字具体信息的指针。因此其内部结点相对B 树更小。如果把所有同一内部结点的关键字存放在同一盘块中，那么盘块所能容纳的关键字数量也越多。一次性读入内存中的需要查找的关键字也就越多。相对来说IO读写次数也就降低了。举个例子，假设磁盘中的一个盘块容纳16bytes，而一个关键字2bytes，一个关键字具体信息指针2bytes。一棵9阶B-tree(一个结点最多8个关键字)的内部结点需要2个盘快。而B+ 树内部结点只需要1个盘快。当需要把内部结点读入内存中的时候，B 树就比B+ 树多一次盘块查找时间(在磁盘中就是盘片旋转的时间)。
+也可以考虑直接将非叶子节点索引结构读入内存，速度快很多。</p>
+</li>
+<li>
+<p>B+-tree的查询效率更加稳定
+由于非终结点并不是最终指向文件内容的结点，而只是叶子结点中关键字的索引。所以任何关键字的查找必须走一条从根结点到叶子结点的路。所有关键字查询的路径长度相同，导致每一个数据的查询效率相当。
+数据库索引采用B+树的主要原因是 B树在提高了磁盘IO性能的同时并没有解决元素遍历的效率低下的问题。正是为了解决这个问题，B+树应运而生。B+树只要遍历叶子节点就可以实现整棵树的遍历。而且在数据库中基于范围的查询是非常频繁的，而B树不支持这样的操作（或者说效率太低）。</p>
+</li>
+</ol>
 
       
     </div>
@@ -489,7 +539,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">67</span>
+                  <span class="site-state-item-count">68</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -551,7 +601,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#undefined"><span class="nav-number">1.</span> <span class="nav-text">数据结构和算法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-number">1.1.</span> <span class="nav-text">100亿个整数，内存足够，如何找到中位数？内存不足，如何找到中位数？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-number">1.2.</span> <span class="nav-text">平衡二叉树、B树、B+树、B*树基本概念</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-number">1.3.</span> <span class="nav-text">红黑树概念</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#undefined"><span class="nav-number">1.</span> <span class="nav-text">数据结构和算法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-number">1.1.</span> <span class="nav-text">100亿个整数，内存足够，如何找到中位数？内存不足，如何找到中位数？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-number">1.2.</span> <span class="nav-text">平衡二叉树、B树、B+树、B*树基本概念</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-number">1.3.</span> <span class="nav-text">红黑树概念</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-number">1.4.</span> <span class="nav-text">二叉查找树，红黑树，AVL树，B/B+树，伸展树——优缺点及比较</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-number">1.5.</span> <span class="nav-text">AVL树，红黑树，B树，B+树，Trie树应用场景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-number">1.6.</span> <span class="nav-text">B树和B+树区别？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-number">1.7.</span> <span class="nav-text">为什么说B+树比B树更适合操作系统的文件索引和数据库索引？</span></a></li></ol></li></ol></div>
             
 
           </div>

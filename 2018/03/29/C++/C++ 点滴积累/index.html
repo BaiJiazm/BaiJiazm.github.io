@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="C++," />
 
 
 
@@ -79,13 +79,25 @@
 
 
 
-<meta property="og:type" content="website">
-<meta property="og:title" content="tags">
-<meta property="og:url" content="http://yoursite.com/tags/index.html">
+<meta name="description" content="emplace_back() 和 push_back 的区别
+C++ 11 左值，右值，左值引用，右值引用，std::move, std::foward
+STL源码学习----lower_bound和upper_bound算法
+C++奇奇怪怪的题目之构造析构顺序">
+<meta property="og:type" content="article">
+<meta property="og:title" content="C++ 点滴积累">
+<meta property="og:url" content="http://yoursite.com/2018/03/29/C++/C++ 点滴积累/index.html">
 <meta property="og:site_name" content="BaiJiazm">
-<meta property="og:updated_time" content="2017-10-07T15:56:11.100Z">
+<meta property="og:description" content="emplace_back() 和 push_back 的区别
+C++ 11 左值，右值，左值引用，右值引用，std::move, std::foward
+STL源码学习----lower_bound和upper_bound算法
+C++奇奇怪怪的题目之构造析构顺序">
+<meta property="og:updated_time" content="2018-03-29T14:41:49.512Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="tags">
+<meta name="twitter:title" content="C++ 点滴积累">
+<meta name="twitter:description" content="emplace_back() 和 push_back 的区别
+C++ 11 左值，右值，左值引用，右值引用，std::move, std::foward
+STL源码学习----lower_bound和upper_bound算法
+C++奇奇怪怪的题目之构造析构顺序">
 
 
 
@@ -115,13 +127,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/tags/"/>
+  <link rel="canonical" href="http://yoursite.com/2018/03/29/C++/C++ 点滴积累/"/>
 
 
 
 
 
-  <title>tags | BaiJiazm</title>
+  <title>C++ 点滴积累 | BaiJiazm</title>
   
 
 
@@ -236,40 +248,149 @@
 
   <div id="posts" class="posts-expand">
     
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/03/29/C++/C++ 点滴积累/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="BaiJiazm">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/headPhoto.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="BaiJiazm">
+    </span>
+
     
-    
-    <div class="post-block page">
       <header class="post-header">
 
-	<h1 class="post-title" itemprop="name headline">tags</h1>
-
-
-
-</header>
-
-      
-      
-      
-      <div class="post-body">
         
         
-          <div class="tag-cloud">
-            <div class="tag-cloud-title">
-                目前共计 28 个标签
-            </div>
-            <div class="tag-cloud-tags">
-              <a href="/tags/Algorithm/" style="font-size: 12px; color: #ccc">Algorithm</a> <a href="/tags/C/" style="font-size: 18px; color: #8e8e8e">C</a> <a href="/tags/C/" style="font-size: 24px; color: #4f4f4f">C++</a> <a href="/tags/DataStructure/" style="font-size: 12px; color: #ccc">DataStructure</a> <a href="/tags/Docker/" style="font-size: 12px; color: #ccc">Docker</a> <a href="/tags/Github/" style="font-size: 12px; color: #ccc">Github</a> <a href="/tags/Java/" style="font-size: 21px; color: #6f6f6f">Java</a> <a href="/tags/Java基本名词/" style="font-size: 12px; color: #ccc">Java基本名词</a> <a href="/tags/Life/" style="font-size: 15px; color: #adadad">Life</a> <a href="/tags/Linux/" style="font-size: 30px; color: #111">Linux</a> <a href="/tags/Linux-gcc-g/" style="font-size: 12px; color: #ccc">Linux gcc g++</a> <a href="/tags/MVC/" style="font-size: 12px; color: #ccc">MVC</a> <a href="/tags/MYSQL/" style="font-size: 15px; color: #adadad">MYSQL</a> <a href="/tags/MarkDown/" style="font-size: 15px; color: #adadad">MarkDown</a> <a href="/tags/Network/" style="font-size: 12px; color: #ccc">Network</a> <a href="/tags/Nginx/" style="font-size: 18px; color: #8e8e8e">Nginx</a> <a href="/tags/OS/" style="font-size: 15px; color: #adadad">OS</a> <a href="/tags/Review/" style="font-size: 27px; color: #303030">Review</a> <a href="/tags/Shell/" style="font-size: 12px; color: #ccc">Shell</a> <a href="/tags/Spring/" style="font-size: 12px; color: #ccc">Spring</a> <a href="/tags/TCP/" style="font-size: 15px; color: #adadad">TCP</a> <a href="/tags/TCP-IP协议/" style="font-size: 12px; color: #ccc">TCP/IP协议</a> <a href="/tags/Test/" style="font-size: 15px; color: #adadad">Test</a> <a href="/tags/UDP/" style="font-size: 12px; color: #ccc">UDP</a> <a href="/tags/regex/" style="font-size: 12px; color: #ccc">regex</a> <a href="/tags/命令格式/" style="font-size: 12px; color: #ccc">命令格式</a> <a href="/tags/数据库/" style="font-size: 15px; color: #adadad">数据库</a> <a href="/tags/编码风格/" style="font-size: 12px; color: #ccc">编码风格</a>
-            </div>
-          </div>
+          <h1 class="post-title" itemprop="name headline">C++ 点滴积累</h1>
         
-      </div>
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-29T19:44:38+08:00">
+                2018-03-29
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
       
       
+
+      
+        <ul>
+<li><a href="https://blog.csdn.net/xiaolewennofollow/article/details/52559364" target="_blank" rel="external">emplace_back() 和 push_back 的区别</a></li>
+<li><a href="https://blog.csdn.net/xiaolewennofollow/article/details/52559306" target="_blank" rel="external">C++ 11 左值，右值，左值引用，右值引用，std::move, std::foward</a></li>
+<li><a href="https://www.cnblogs.com/cobbliu/archive/2012/05/21/2512249.html" target="_blank" rel="external">STL源码学习----lower_bound和upper_bound算法</a></li>
+<li><a href="http://gaocegege.com/Blog/cpp/cppclass" target="_blank" rel="external">C++奇奇怪怪的题目之构造析构顺序</a></li>
+</ul>
+
       
     </div>
     
     
     
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/C/" rel="tag"># C++</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/03/23/Review/skill/其它知识/" rel="next" title="其它知识">
+                <i class="fa fa-chevron-left"></i> 其它知识
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
   </div>
 
 
