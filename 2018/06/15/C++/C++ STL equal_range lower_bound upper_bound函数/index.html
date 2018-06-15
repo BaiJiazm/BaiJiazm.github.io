@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="CPlusPlus,STL," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="//所有容器适用(O(log(n)))    已序区间查找算法
+lower_bound()        //找第一个符合的元素，返回位置迭代器,返回val出现的第一个位置
+upper_bound()        //找最后一个符合的元素，返回位置迭代器，返回Val出现的最后一个位置的下一个位置
+equal_range()       //找一对迭代器pair(&amp;lt;&amp;gt;,&amp;lt;&amp;gt;">
+<meta property="og:type" content="article">
+<meta property="og:title" content="C++ STL equal_range lower_bound upper_bound函数">
+<meta property="og:url" content="http://yoursite.com/2018/06/15/C++/C++ STL equal_range lower_bound upper_bound函数/index.html">
+<meta property="og:site_name" content="BaiJiazm">
+<meta property="og:description" content="//所有容器适用(O(log(n)))    已序区间查找算法
+lower_bound()        //找第一个符合的元素，返回位置迭代器,返回val出现的第一个位置
+upper_bound()        //找最后一个符合的元素，返回位置迭代器，返回Val出现的最后一个位置的下一个位置
+equal_range()       //找一对迭代器pair(&amp;lt;&amp;gt;,&amp;lt;&amp;gt;">
+<meta property="og:updated_time" content="2018-06-15T03:12:11.361Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="C++ STL equal_range lower_bound upper_bound函数">
+<meta name="twitter:description" content="//所有容器适用(O(log(n)))    已序区间查找算法
+lower_bound()        //找第一个符合的元素，返回位置迭代器,返回val出现的第一个位置
+upper_bound()        //找最后一个符合的元素，返回位置迭代器，返回Val出现的最后一个位置的下一个位置
+equal_range()       //找一对迭代器pair(&amp;lt;&amp;gt;,&amp;lt;&amp;gt;">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.3',
+    sidebar: {"position":"right","display":"hide","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/06/15/C++/C++ STL equal_range lower_bound upper_bound函数/"/>
+
+
+
+
+
+  <title>C++ STL equal_range lower_bound upper_bound函数 | BaiJiazm</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">BaiJiazm</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">每一段路都是一种领悟:)</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/06/15/C++/C++ STL equal_range lower_bound upper_bound函数/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="BaiJiazm">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/headPhoto.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="BaiJiazm">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">C++ STL equal_range lower_bound upper_bound函数</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-06-15T11:03:07+08:00">
+                2018-06-15
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>//所有容器适用<code>(O(log(n)))</code>    已序区间查找算法</p>
+<p><code>lower_bound()</code>        //找第一个符合的元素，返回位置迭代器,返回val出现的第一个位置</p>
+<p><code>upper_bound()</code>        //找最后一个符合的元素，返回位置迭代器，返回Val出现的最后一个位置的下一个位置</p>
+<p><code>equal_range()</code>       //找一对迭代器pair(&lt;&gt;,&lt;&gt;)，等效于lower_bound()和upper_bound().关联式容器有等效的成员函数，性能更佳</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div><div class="line">113</div><div class="line">114</div><div class="line">115</div><div class="line">116</div><div class="line">117</div><div class="line">118</div><div class="line">119</div><div class="line">120</div><div class="line">121</div><div class="line">122</div><div class="line">123</div><div class="line">124</div><div class="line">125</div><div class="line">126</div><div class="line">127</div><div class="line">128</div><div class="line">129</div><div class="line">130</div><div class="line">131</div><div class="line">132</div><div class="line">133</div><div class="line">134</div><div class="line">135</div><div class="line">136</div><div class="line">137</div><div class="line">138</div><div class="line">139</div><div class="line">140</div><div class="line">141</div><div class="line">142</div><div class="line">143</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;iostream&gt;</span>  </span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;cstdio&gt;</span>  </span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;cstring&gt;</span>  </span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;vector&gt;</span>  </span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;algorithm&gt;</span>  </span></div><div class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;  </div><div class="line">  </div><div class="line"><span class="comment">/************************************************************************************* </span></div><div class="line">std::lower_bound                 所有排序容器适用                           algorithm </div><div class="line">-------------------------------------------------------------------------------------- </div><div class="line">template &lt;class ForwardIterator, class T&gt; </div><div class="line">  ForwardIterator lower_bound ( ForwardIterator first, ForwardIterator last, </div><div class="line">                                const T&amp; value ); </div><div class="line"> </div><div class="line">template &lt;class ForwardIterator, class T, class Compare&gt; </div><div class="line">  ForwardIterator lower_bound ( ForwardIterator first, ForwardIterator last, </div><div class="line">                                const T&amp; value, Compare comp ); </div><div class="line"> </div><div class="line">//eg： </div><div class="line">template &lt;class ForwardIterator, class T&gt; </div><div class="line">  ForwardIterator lower_bound ( ForwardIterator first, ForwardIterator last, const T&amp; value ) </div><div class="line">&#123; </div><div class="line">  ForwardIterator it; </div><div class="line">  iterator_traits&lt;ForwardIterator&gt;::difference_type count, step; </div><div class="line">  count = distance(first,last); </div><div class="line">  while (count&gt;0) </div><div class="line">  &#123; </div><div class="line">    it = first; step=count/2; advance (it,step); </div><div class="line">    if (*it&lt;value)          // or: if (comp(*it,value)), for the comp version </div><div class="line">      &#123; first=++it; count-=step+1;  &#125; </div><div class="line">    else count=step; </div><div class="line">  &#125; </div><div class="line">  return first; </div><div class="line">&#125; </div><div class="line">*************************************************************************************/  </div><div class="line">  </div><div class="line">  </div><div class="line"><span class="comment">/************************************************************************************* </span></div><div class="line">std::upper_bound                  所有排序容器适用                           algorithm </div><div class="line">-------------------------------------------------------------------------------------- </div><div class="line">template &lt;class ForwardIterator, class T&gt; </div><div class="line">  ForwardIterator upper_bound ( ForwardIterator first, ForwardIterator last, </div><div class="line">                                const T&amp; value ); </div><div class="line"> </div><div class="line">template &lt;class ForwardIterator, class T, class Compare&gt; </div><div class="line">  ForwardIterator upper_bound ( ForwardIterator first, ForwardIterator last, </div><div class="line">                                const T&amp; value, Compare comp ); </div><div class="line"> </div><div class="line">//eg： </div><div class="line">template &lt;class ForwardIterator, class T&gt; </div><div class="line">  ForwardIterator upper_bound ( ForwardIterator first, ForwardIterator last, const T&amp; value ) </div><div class="line">&#123; </div><div class="line">  ForwardIterator it; </div><div class="line">  iterator_traits&lt;ForwardIterator&gt;::difference_type count, step; </div><div class="line">  count = distance(first,last); </div><div class="line">  while (count&gt;0) </div><div class="line">  &#123; </div><div class="line">    it = first; step=count/2; advance (it,step); </div><div class="line">    if (!(value&lt;*it))                 // or: if (!comp(value,*it)), for the comp version </div><div class="line">      &#123; first=++it; count-=step+1;  &#125; </div><div class="line">    else count=step; </div><div class="line">  &#125; </div><div class="line">  return first; </div><div class="line">&#125; </div><div class="line">*************************************************************************************/  </div><div class="line">  </div><div class="line"><span class="comment">/************************************************************************************* </span></div><div class="line">std::equal_range                  所有排序容器适用                           algorithm </div><div class="line">-------------------------------------------------------------------------------------- </div><div class="line">template &lt;class ForwardIterator, class T&gt; </div><div class="line">  pair&lt;ForwardIterator,ForwardIterator&gt; </div><div class="line">    equal_range ( ForwardIterator first, ForwardIterator last, const T&amp; value ); </div><div class="line"> </div><div class="line">template &lt;class ForwardIterator, class T, class Compare&gt; </div><div class="line">  pair&lt;ForwardIterator,ForwardIterator&gt; </div><div class="line">    equal_range ( ForwardIterator first, ForwardIterator last, const T&amp; value, </div><div class="line">                  Compare comp ); </div><div class="line"> </div><div class="line">//eg： </div><div class="line">template &lt;class ForwardIterator, class T&gt; </div><div class="line">  pair&lt;ForwardIterator,ForwardIterator&gt; </div><div class="line">    equal_range ( ForwardIterator first, ForwardIterator last, const T&amp; value ) </div><div class="line">&#123; </div><div class="line">  ForwardIterator it = lower_bound (first,last,value); </div><div class="line">  return make_pair ( it, upper_bound(it,last,value) ); </div><div class="line">&#125; </div><div class="line">*************************************************************************************/  </div><div class="line"><span class="function"><span class="keyword">bool</span> <span class="title">mygreater</span> <span class="params">(<span class="keyword">int</span> i,<span class="keyword">int</span> j)</span></span>&#123; <span class="keyword">return</span> (i&gt;j); &#125;  </div><div class="line">  </div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span>  </span></div><div class="line">&#123;  </div><div class="line">    <span class="keyword">int</span> myints[] = &#123;<span class="number">10</span>,<span class="number">20</span>,<span class="number">30</span>,<span class="number">30</span>,<span class="number">20</span>,<span class="number">10</span>,<span class="number">10</span>,<span class="number">20</span>&#125;;  </div><div class="line">    <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; v(myints,myints+<span class="number">8</span>);           <span class="comment">// 10 20 30 30 20 10 10 20  </span></div><div class="line">    <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;::iterator low,up;  </div><div class="line">  </div><div class="line">    sort (v.begin(), v.end());                <span class="comment">// 10 10 10 20 20 20 30 30  </span></div><div class="line">  </div><div class="line">    <span class="built_in">cout</span>&lt;&lt;<span class="string">"10 10 10 20 20 20 30 30\n"</span>;  </div><div class="line">  </div><div class="line">    low=lower_bound (v.begin(), v.end(), <span class="number">20</span>); <span class="comment">//          ^  </span></div><div class="line">    up= upper_bound (v.begin(), v.end(), <span class="number">20</span>); <span class="comment">//                   ^  </span></div><div class="line">  </div><div class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="string">"20 lower_bound at position "</span> &lt;&lt; <span class="keyword">int</span>(low- v.begin()) + <span class="number">1</span> &lt;&lt; <span class="built_in">endl</span>;  </div><div class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="string">"20 upper_bound at position "</span> &lt;&lt; <span class="keyword">int</span>(up - v.begin()) + <span class="number">1</span> &lt;&lt; <span class="built_in">endl</span>;  </div><div class="line">  </div><div class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="built_in">endl</span>;  </div><div class="line">  </div><div class="line">    <span class="comment">/**-------------------------------------------------------------------------------**/</span>  </div><div class="line">  </div><div class="line">    pair&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;::iterator,<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;::iterator&gt; bounds;  </div><div class="line">  </div><div class="line">    <span class="comment">// using default comparison:  </span></div><div class="line"><span class="comment">//  sort (v.begin(), v.end());                              // 10 10 10 20 20 20 30 30  </span></div><div class="line">    bounds=equal_range (v.begin(), v.end(), <span class="number">20</span>);            <span class="comment">//          ^        ^  </span></div><div class="line">    <span class="built_in">cout</span>&lt;&lt;<span class="string">"10 10 10 20 20 20 30 30\n"</span>;  </div><div class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="string">"20 bounds at positions "</span> &lt;&lt; <span class="keyword">int</span>(bounds.first - v.begin());  </div><div class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="string">" and "</span> &lt;&lt; <span class="keyword">int</span>(bounds.second - v.begin()) &lt;&lt; <span class="built_in">endl</span>;  </div><div class="line">  </div><div class="line">    <span class="comment">// using "mygreater" as comp:  </span></div><div class="line">    sort (v.begin(), v.end(), mygreater);                   <span class="comment">// 30 30 20 20 20 10 10 10  </span></div><div class="line">    bounds=equal_range (v.begin(), v.end(), <span class="number">20</span>, mygreater); <span class="comment">//       ^        ^  </span></div><div class="line">  </div><div class="line">    <span class="built_in">cout</span>&lt;&lt;<span class="built_in">endl</span>&lt;&lt;<span class="string">"30 30 20 20 20 10 10 10"</span>&lt;&lt;<span class="built_in">endl</span>;  </div><div class="line">  </div><div class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="string">"20 bounds at positions "</span> &lt;&lt; <span class="keyword">int</span>(bounds.first - v.begin());  </div><div class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="string">" and "</span> &lt;&lt; <span class="keyword">int</span>(bounds.second - v.begin()) &lt;&lt; <span class="built_in">endl</span>;  </div><div class="line">  </div><div class="line">    <span class="keyword">return</span> <span class="number">0</span>;  </div><div class="line">&#125;  </div><div class="line">  </div><div class="line"><span class="comment">/****** </span></div><div class="line">Output: </div><div class="line">    10 10 10 20 20 20 30 30 </div><div class="line">    20 lower_bound at position 4 </div><div class="line">    20 upper_bound at position 7 </div><div class="line"> </div><div class="line">    10 10 10 20 20 20 30 30 </div><div class="line">    bounds at positions 3 and 6 </div><div class="line"> </div><div class="line">    30 30 20 20 20 10 10 10 </div><div class="line">    bounds at positions 2 and 5 </div><div class="line"> </div><div class="line">*/</div></pre></td></tr></table></figure>
+<p>比较好的代码样例：</p>
+<ul>
+<li><a href="https://blog.csdn.net/flushhip/article/details/79416715" target="_blank" rel="external">今日头条2018校园招聘后端开发工程师(第二批)编程题 - 题解</a></li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;bits/stdc++.h&gt;</span></span></div><div class="line"></div><div class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">bool</span> <span class="title">sort_cmp</span><span class="params">(<span class="keyword">const</span> pair&lt;<span class="keyword">int</span>, <span class="keyword">int</span>&gt; &amp;A, <span class="keyword">const</span> pair&lt;<span class="keyword">int</span>, <span class="keyword">int</span>&gt; &amp;B)</span></span></div><div class="line">&#123;</div><div class="line">    <span class="keyword">return</span> A.first == B.first ? A.second &lt; B.second :</div><div class="line">        A.first &lt; B.first;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">struct</span> find_first_cmp &#123;</div><div class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">operator</span><span class="params">()</span><span class="params">(<span class="keyword">const</span> pair&lt;<span class="keyword">int</span>, <span class="keyword">int</span>&gt; &amp;P, <span class="keyword">int</span> k)</span> <span class="keyword">const</span></span></div><div class="line">    &#123;</div><div class="line">        <span class="keyword">return</span> P.first &lt; k;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">operator</span><span class="params">()</span><span class="params">(<span class="keyword">int</span> k, <span class="keyword">const</span> pair&lt;<span class="keyword">int</span>, <span class="keyword">int</span>&gt; &amp;P)</span> <span class="keyword">const</span></span></div><div class="line">    &#123;</div><div class="line">        <span class="keyword">return</span> k &lt; P.first;</div><div class="line">    &#125;</div><div class="line">&#125;;</div><div class="line"></div><div class="line"><span class="keyword">struct</span> find_second_cmp &#123;</div><div class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">operator</span><span class="params">()</span><span class="params">(<span class="keyword">const</span> pair&lt;<span class="keyword">int</span>, <span class="keyword">int</span>&gt; &amp;P, <span class="keyword">int</span> k)</span> <span class="keyword">const</span></span></div><div class="line">    &#123;</div><div class="line">        <span class="keyword">return</span> P.second &lt; k;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">operator</span><span class="params">()</span><span class="params">(<span class="keyword">int</span> k, <span class="keyword">const</span> pair&lt;<span class="keyword">int</span>, <span class="keyword">int</span>&gt; &amp;P)</span> <span class="keyword">const</span></span></div><div class="line">    &#123;</div><div class="line">        <span class="keyword">return</span> k &lt; P.second;</div><div class="line">    &#125;</div><div class="line">&#125;;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></div><div class="line">&#123;</div><div class="line">    <span class="keyword">int</span> n, q;</div><div class="line">    <span class="keyword">while</span> (EOF != <span class="built_in">scanf</span>(<span class="string">"%d"</span>, &amp;n)) &#123;</div><div class="line">        <span class="built_in">vector</span>&lt;pair&lt;<span class="keyword">int</span>, <span class="keyword">int</span>&gt; &gt; arr;</div><div class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>, x; i &lt; n; <span class="built_in">cin</span> &gt;&gt; x, arr.emplace_back(x, ++i)) &#123;&#125;</div><div class="line">        sort(arr.begin(), arr.end(), sort_cmp);</div><div class="line"></div><div class="line">        <span class="keyword">for</span> (<span class="built_in">scanf</span>(<span class="string">"%d"</span>, &amp;q); q--;) &#123;</div><div class="line">            <span class="keyword">int</span> L, R, k;</div><div class="line">            <span class="built_in">scanf</span>(<span class="string">"%d%d%d"</span>, &amp;L, &amp;R, &amp;k);</div><div class="line">            pair&lt;<span class="built_in">vector</span>&lt;pair&lt;<span class="keyword">int</span>, <span class="keyword">int</span>&gt; &gt;::iterator, <span class="built_in">vector</span>&lt;pair&lt;<span class="keyword">int</span>, <span class="keyword">int</span>&gt; &gt;::iterator&gt; sd =</div><div class="line">                equal_range(arr.begin(), arr.end(), k, find_first_cmp&#123;&#125;);</div><div class="line">            <span class="built_in">printf</span>(<span class="string">"%d\n"</span>, upper_bound(sd.first, sd.second, R, find_second_cmp&#123;&#125;) -</div><div class="line">                lower_bound(sd.first, sd.second, L, find_second_cmp&#123;&#125;));</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/CPlusPlus/" rel="tag"># CPlusPlus</a>
+          
+            <a href="/tags/STL/" rel="tag"># STL</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/03/29/C++/C++ 点滴积累/" rel="next" title="C++ 点滴积累">
+                <i class="fa fa-chevron-left"></i> C++ 点滴积累
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/headPhoto.png"
+                alt="BaiJiazm" />
+            
+              <p class="site-author-name" itemprop="name">BaiJiazm</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">69</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">30</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/BaiJiazm" target="_blank" title="GitHub">
+                    
+                      <i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="mailto:b110011@qq.com" target="_blank" title="E-Mail">
+                    
+                      <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">BaiJiazm</span>
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
