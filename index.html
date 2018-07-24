@@ -248,6 +248,317 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/07/24/Other/爬虫的基本流程及反爬虫机制/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="BaiJiazm">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/headPhoto.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="BaiJiazm">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/07/24/Other/爬虫的基本流程及反爬虫机制/" itemprop="url">爬虫的基本流程及反爬虫机制</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-24T23:47:51+08:00">
+                2018-07-24
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1>爬虫的基本流程</h1>
+<p><img src="https://i.imgur.com/ye9VvBW.png" alt="爬虫的基本流程"></p>
+<ul>
+<li>选取一部分精心挑选的种子URL，将种子URL加入待抓取任务队列。</li>
+<li>从待抓取URL队列中取出待抓取的URL，DNS解析得到主机的ip，并将URL对应的网页下载存储进已下载网页库中，将该URL放进已抓取URL队列。</li>
+<li>分析提取已下载的网页中的URL，将未抓取过的URL放入待抓取URL队列，从而进入下一个循环。</li>
+<li>解析已下载的网页，将需要的数据内容解析出来。</li>
+<li>数据持久化，以数据库或其它形式存储。</li>
+</ul>
+<h1>一个URL的请求与响应</h1>
+<p>爬虫最主要的任务就是发起请求(Request)，然后获取服务器的响应(Response)，遵循HTTP协议。</p>
+<p><img src="https://i.imgur.com/8NCIf48.png" alt="请求与响应"></p>
+<p><strong>HTTP之请求消息Request</strong></p>
+<p>客户端发送一个HTTP请求到服务器的请求消息包括以下格式：</p>
+<ul>
+<li>请求行（request line）</li>
+<li>请求头部（header）</li>
+<li>空行</li>
+<li>请求数据</li>
+</ul>
+<p><img src="https://i.imgur.com/LhYgX0L.png" alt="HTTP之请求消息Request"></p>
+<p>GET请求样例：</p>
+<figure class="highlight http"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">GET</span> <span class="string">https://www.tvmao.com/program/CCTV</span> HTTP/1.1</div><div class="line"><span class="attribute">Host</span>: www.tvmao.com</div><div class="line"><span class="attribute">Connection</span>: keep-alive</div><div class="line"><span class="attribute">User-Agent</span>: Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.26</div><div class="line"><span class="attribute">Upgrade-Insecure-Requests</span>: 1</div><div class="line"><span class="attribute">Accept</span>: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8</div><div class="line"><span class="attribute">Accept-Encoding</span>: gzip, deflate, br</div><div class="line"><span class="attribute">Accept-Language</span>: zh-CN,zh;q=0.9</div><div class="line"><span class="attribute">Cookie</span>: UM_distinctid=164915db395f1-073fb37f3c265b-4d754111-1fa400-164915db39688f;</div></pre></td></tr></table></figure>
+<p><strong>HTTP之响应消息Response</strong></p>
+<p>一般情况下，服务器接收并处理客户端发过来的请求后会返回一个HTTP的响应消息。</p>
+<p>HTTP响应也由四个部分组成，分别是：</p>
+<ul>
+<li>状态行</li>
+<li>消息报头</li>
+<li>空行</li>
+<li>响应正文</li>
+</ul>
+<p><img src="https://i.imgur.com/HepnkrA.jpg" alt="HTTP之响应消息Response"></p>
+<p>Response响应样例：</p>
+<figure class="highlight http"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">HTTP/1.1 <span class="number">200</span> OK</div><div class="line"><span class="attribute">Server</span>: Tengine/2.1.0</div><div class="line"><span class="attribute">Date</span>: Mon, 23 Jul 2018 02:43:33 GMT</div><div class="line"><span class="attribute">Content-Type</span>: text/html;charset=UTF-8</div><div class="line"><span class="attribute">Connection</span>: keep-alive</div><div class="line"><span class="attribute">Vary</span>: Accept-Encoding</div><div class="line"><span class="attribute">Set-Cookie</span>: ASCK=; path=/; expires=Mon, 23-Jul-2018 03:13:33 GMT</div><div class="line"><span class="attribute">Strict-Transport-Security</span>: max-age=15768000</div><div class="line"><span class="attribute">Content-Length</span>: 32143</div><div class="line"></div><div class="line"><span class="undefined">&lt;!doctype html&gt;&lt;head&gt;</span></div><div class="line">&lt;meta http-equiv="Content-Type" content="text/html; charset=utf-8"/&gt;</div><div class="line">&lt;title&gt;CCTV-1综合节目表,中央电视台综合频道节目表_电视猫&lt;/title&gt;</div><div class="line">...</div><div class="line"></div><div class="line">&lt;/html&gt;</div></pre></td></tr></table></figure>
+<h1>解析网页数据</h1>
+<p><a href="http://python.jobbole.com/82633/" target="_blank" rel="external">更多Python爬虫工具</a></p>
+<p><strong>Python HTML解析器</strong></p>
+<p><img src="https://i.imgur.com/UZL1hn7.png" alt=""></p>
+<p><strong>DOM(文档对象模型)树</strong></p>
+<p><img src="https://i.imgur.com/hCAK0uj.png" alt=""></p>
+<p><strong>重点介绍Beautiful Soup</strong></p>
+<p>Beautiful Soup 是一个可以从HTML或XML文件中提取数据的Python库。它能够通过你喜欢的转换器实现惯用的文档导航，查找，修改文档的方式。Beautiful Soup会帮你节省数小时甚至数天的工作时间。</p>
+<p><a href="https://www.crummy.com/software/BeautifulSoup/bs4/doc/index.zh.html" target="_blank" rel="external">Beautiful Soup 4.2.0 文档</a></p>
+<p>Beautiful Soup 解析html样例：<a href="https://www.tvmao.com/program/CCTV" target="_blank" rel="external">电视猫</a></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div><div class="line">113</div><div class="line">114</div><div class="line">115</div><div class="line">116</div><div class="line">117</div><div class="line">118</div><div class="line">119</div><div class="line">120</div><div class="line">121</div><div class="line">122</div><div class="line">123</div><div class="line">124</div><div class="line">125</div><div class="line">126</div><div class="line">127</div><div class="line">128</div><div class="line">129</div><div class="line">130</div><div class="line">131</div><div class="line">132</div><div class="line">133</div><div class="line">134</div><div class="line">135</div><div class="line">136</div><div class="line">137</div><div class="line">138</div><div class="line">139</div><div class="line">140</div><div class="line">141</div><div class="line">142</div><div class="line">143</div><div class="line">144</div><div class="line">145</div><div class="line">146</div><div class="line">147</div><div class="line">148</div><div class="line">149</div><div class="line">150</div><div class="line">151</div><div class="line">152</div><div class="line">153</div><div class="line">154</div><div class="line">155</div><div class="line">156</div><div class="line">157</div><div class="line">158</div><div class="line">159</div><div class="line">160</div><div class="line">161</div><div class="line">162</div><div class="line">163</div><div class="line">164</div><div class="line">165</div><div class="line">166</div><div class="line">167</div><div class="line">168</div><div class="line">169</div><div class="line">170</div><div class="line">171</div><div class="line">172</div><div class="line">173</div><div class="line">174</div><div class="line">175</div><div class="line">176</div><div class="line">177</div><div class="line">178</div><div class="line">179</div><div class="line">180</div><div class="line">181</div><div class="line">182</div><div class="line">183</div><div class="line">184</div><div class="line">185</div><div class="line">186</div><div class="line">187</div><div class="line">188</div><div class="line">189</div><div class="line">190</div><div class="line">191</div><div class="line">192</div><div class="line">193</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># -*- coding:utf-8 -*-</span></div><div class="line"><span class="keyword">import</span> urllib.request <span class="keyword">as</span> urllib2</div><div class="line"><span class="keyword">import</span> requests</div><div class="line"><span class="keyword">from</span> bs4 <span class="keyword">import</span> BeautifulSoup</div><div class="line"><span class="keyword">import</span> random</div><div class="line"><span class="keyword">import</span> time</div><div class="line"><span class="keyword">import</span> sys</div><div class="line"><span class="keyword">import</span> os</div><div class="line"><span class="keyword">import</span> urllib3</div><div class="line"></div><div class="line"><span class="comment"># 禁用安全请求警告</span></div><div class="line"><span class="keyword">from</span> requests.packages.urllib3.exceptions <span class="keyword">import</span> InsecureRequestWarning</div><div class="line">requests.packages.urllib3.disable_warnings(InsecureRequestWarning)</div><div class="line"></div><div class="line">hrefFile = open(<span class="string">"testHref.txt"</span>, <span class="string">"w"</span>)</div><div class="line">resFile = open(<span class="string">"testRes.txt"</span>, <span class="string">"w"</span>)</div><div class="line"></div><div class="line">proxyHandler = urllib2.ProxyHandler(&#123;</div><div class="line">    <span class="string">'http'</span>: <span class="string">'http://115.225.88.99:8118'</span>,</div><div class="line">    <span class="string">'http'</span>: <span class="string">'http://118.190.95.43:9001'</span>,</div><div class="line">    <span class="string">'http'</span>: <span class="string">'http://111.155.116.207:8123'</span>,</div><div class="line">    <span class="string">'http'</span>: <span class="string">'http://122.114.31.177:808'</span>,</div><div class="line">    <span class="string">'http'</span>: <span class="string">'http://106.56.102.254:8070'</span>,</div><div class="line">    <span class="string">'http'</span>: <span class="string">'http://111.155.116.249:8123'</span>,</div><div class="line">    <span class="string">'http'</span>: <span class="string">'http://180.118.240.8:61234'</span>,</div><div class="line">    <span class="string">'http'</span>: <span class="string">'http://60.177.225.218:18118'</span></div><div class="line">&#125;)</div><div class="line"></div><div class="line">opener = urllib2.build_opener(proxyHandler)</div><div class="line">urllib2.install_opener(opener)</div><div class="line"></div><div class="line">prefix = <span class="string">'https://www.tvmao.com'</span></div><div class="line"></div><div class="line">todoUrlSet = set()</div><div class="line">doneUrlSet = set()</div><div class="line">channelsSet = set()</div><div class="line"></div><div class="line"><span class="comment"># userAgents是爬虫与反爬虫斗争的第一步</span></div><div class="line">userAgents = [<span class="string">'User-Agent:Mozilla/5.0 (Windows NT 6.1; rv:2.0.1) Gecko/20100101 Firefox/4.0.1'</span>,</div><div class="line">              <span class="string">'User-Agent:Mozilla/5.0 (Windows; U; Windows NT 6.1; en-us) AppleWebKit/534.50 (KHTML, like Gecko) Version/5.1 Safari/534.50'</span>,</div><div class="line">              <span class="string">'User-Agent:Opera/9.80 (Windows NT 6.1; U; en) Presto/2.8.131 Version/11.11'</span>,</div><div class="line">              <span class="string">'User-Agent:Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:57.0) Gecko/20100101 Firefox/57.0'</span>,</div><div class="line">              <span class="string">'User-Agent:Mozilla/4.0(compatible;MSIE7.0;WindowsNT5.1;Trident/4.0;InfoPath.2;.NET4.0C;.NET4.0E;.NETCLR2.0.50727;360SE'</span>,</div><div class="line">              <span class="string">'User-Agent:Mozilla/4.0(compatible;MSIE7.0;WindowsNT5.1;Trident/4.0;SE2.XMetaSr1.0;SE2.XMetaSr1.0;.NETCLR2.0.50727;SE2.XMetaSr1.0)'</span>,</div><div class="line">              <span class="string">'User-Agent:Mozilla/5.0(Macintosh;IntelMacOSX10_7_0)AppleWebKit/535.11(KHTML,likeGecko)Chrome/17.0.963.56Safari/535.11 '</span>,</div><div class="line">              <span class="string">'User-Agent:Mozilla/5.0(Macintosh;U;IntelMacOSX10_6_8;en-us)AppleWebKit/534.50(KHTML,likeGecko)Version/5.1Safari/534.50 '</span>,</div><div class="line">              <span class="string">'User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.26 Safari/537.36 Core/1.63.5514.400 QQBrowser/10.1.1660.400'</span></div><div class="line">              ]</div><div class="line"></div><div class="line">header = &#123;&#125;</div><div class="line">header[<span class="string">'Accept'</span>] = <span class="string">'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8'</span></div><div class="line">header[<span class="string">'Accept-Encoding'</span>] = <span class="string">'gzip, deflate, br'</span></div><div class="line">header[<span class="string">'Accept-Language'</span>] = <span class="string">'zh-CN,zh;q=0.9'</span></div><div class="line">header[<span class="string">'Connection'</span>] = <span class="string">'keep-alive'</span></div><div class="line">header[<span class="string">'Host'</span>] = <span class="string">'www.tvmao.com'</span></div><div class="line">header[<span class="string">'Origin'</span>] = <span class="string">'https://www.tvmao.com'</span></div><div class="line">header[<span class="string">'Referer'</span>] = <span class="string">'https://www.tvmao.com/program/channels'</span></div><div class="line">header[<span class="string">'User-Agent'</span>] = <span class="string">''</span></div><div class="line">header[<span class="string">'Cache-Control'</span>] = <span class="string">'max-age=0'</span></div><div class="line">header[<span class="string">'Upgrade-Insecure-Requests'</span>] = <span class="string">'1'</span></div><div class="line"></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">getHeaders</span><span class="params">()</span>:</span></div><div class="line">    <span class="comment"># 随机获取一个headers</span></div><div class="line">    header[<span class="string">'User-Agent'</span>] = random.choice(userAgents)</div><div class="line">    <span class="keyword">return</span> header</div><div class="line"></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">parseHtml</span><span class="params">(html)</span>:</span></div><div class="line">    <span class="comment"># print(html)</span></div><div class="line">    div = BeautifulSoup(html,  <span class="string">"lxml"</span>).find_all(<span class="string">'div'</span>, class_=<span class="string">'chlsnav'</span>)</div><div class="line">    divBs = BeautifulSoup(str(div),  <span class="string">"lxml"</span>)</div><div class="line">    <span class="comment"># print(divBs.prettify())</span></div><div class="line"></div><div class="line">    ul = divBs.ul.extract()</div><div class="line">    <span class="comment"># print(BeautifulSoup(str(ul),  "lxml").prettify)</span></div><div class="line">    <span class="comment"># print(BeautifulSoup(str(divBs),  "lxml").prettify)</span></div><div class="line">    <span class="comment"># sys.stdout.flush()</span></div><div class="line">    <span class="comment"># os._exit(0)</span></div><div class="line"></div><div class="line">    <span class="comment"># 寻找可能的新链接页面</span></div><div class="line">    allA = divBs.find_all(<span class="string">'a'</span>)</div><div class="line">    <span class="keyword">for</span> each <span class="keyword">in</span> allA:</div><div class="line">        href = each[<span class="string">'href'</span>]</div><div class="line">        <span class="keyword">if</span> (href <span class="keyword">not</span> <span class="keyword">in</span> doneUrlSet) <span class="keyword">and</span> (href <span class="keyword">not</span> <span class="keyword">in</span> todoUrlSet):</div><div class="line">            print(each.string, href)</div><div class="line">            print(each.string, href, file=hrefFile)</div><div class="line">            todoUrlSet.add(str(href))</div><div class="line"></div><div class="line">    <span class="comment"># 搜集未发现的节目</span></div><div class="line">    <span class="comment"># 查找当前频道仅为了结果的顺序更好一些</span></div><div class="line">    curChn = ul.find_all(<span class="string">'li'</span>, class_=<span class="string">'curchn'</span>)</div><div class="line">    <span class="comment"># print(curChn)</span></div><div class="line">    <span class="keyword">for</span> each <span class="keyword">in</span> curChn:</div><div class="line">        chn = each.string</div><div class="line">        <span class="keyword">if</span> chn <span class="keyword">not</span> <span class="keyword">in</span> channelsSet:</div><div class="line">            print(chn)</div><div class="line">            print(chn, file=resFile)</div><div class="line">            channelsSet.add(chn)</div><div class="line"></div><div class="line">    a = ul.find_all(<span class="string">'a'</span>)</div><div class="line">    <span class="comment"># print(a)</span></div><div class="line">    <span class="keyword">for</span> each <span class="keyword">in</span> a:</div><div class="line">        chn = each.string</div><div class="line">        <span class="keyword">if</span> chn <span class="keyword">not</span> <span class="keyword">in</span> channelsSet:</div><div class="line">            print(chn)</div><div class="line">            print(chn, file=resFile)</div><div class="line">            channelsSet.add(chn)</div><div class="line"></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">spiderGet</span><span class="params">(url)</span>:</span></div><div class="line">    response = requests.get(url=url, headers=getHeaders(), verify=<span class="keyword">False</span>)</div><div class="line">    response.encoding = <span class="string">'utf-8'</span></div><div class="line">    parseHtml(html=response.text)</div><div class="line"></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">spiderOneRoot</span><span class="params">(rootUrl)</span>:</span></div><div class="line">    todoUrlSet.clear()</div><div class="line">    doneUrlSet.clear()</div><div class="line">    todoUrlSet.add(rootUrl)</div><div class="line"></div><div class="line">    failed = <span class="number">0</span></div><div class="line">    <span class="keyword">while</span> len(todoUrlSet) &gt; <span class="number">0</span>:</div><div class="line">        postfix = todoUrlSet.pop()</div><div class="line">        <span class="keyword">try</span>:</div><div class="line">            doneUrlSet.add(postfix)</div><div class="line">            url = prefix+postfix</div><div class="line">            spiderGet(url)</div><div class="line">            sys.stdout.flush()</div><div class="line">            hrefFile.flush()</div><div class="line">            resFile.flush()</div><div class="line">            failed = <span class="number">0</span></div><div class="line">        <span class="keyword">except</span>:</div><div class="line">            <span class="comment"># print(err)</span></div><div class="line">            todoUrlSet.add(postfix)</div><div class="line">            <span class="comment"># t = random.randint(0, 30)</span></div><div class="line">            <span class="comment"># print('sleep', t, 'sec')</span></div><div class="line">            time.sleep(<span class="number">10</span>)</div><div class="line">            failed = failed+<span class="number">1</span></div><div class="line">            print(<span class="string">'failed'</span>, failed, <span class="string">'time'</span>)</div><div class="line">            <span class="keyword">if</span> failed &gt; <span class="number">120</span>:</div><div class="line">                print(postfix+<span class="string">'failed too much !'</span>)</div><div class="line">                <span class="keyword">return</span></div><div class="line"></div><div class="line"><span class="comment"># spiderOneRoot('/program/CCTV')</span></div><div class="line"><span class="comment"># os._exit(0)</span></div><div class="line"></div><div class="line"></div><div class="line">entryUrl = [</div><div class="line">    <span class="string">'/program/CCTV'</span>,</div><div class="line">    <span class="string">'/program_satellite/AHTV1-w3.html'</span>,</div><div class="line">    <span class="string">'/program_digital/CCTV3D-w3.html'</span>,</div><div class="line">    <span class="string">'/program/TVB'</span>,</div><div class="line">    <span class="string">'/program/AUMEN'</span>,</div><div class="line">    <span class="string">'/program/STARTV'</span>,</div><div class="line">    <span class="string">'/program/AUSTRALIANETWORK'</span>,</div><div class="line">    <span class="string">'/program/HEBEI-HEBEI1-w1.html'</span>,</div><div class="line">    <span class="string">'/program/XIZANGTV-XIZANGTV1-w1.html'</span>,</div><div class="line">    <span class="string">'/program/ZJTV-ZJTV1-w1.html'</span>,</div><div class="line">    <span class="string">'/program/GSTV-GSTV1-w1.html'</span>,</div><div class="line">    <span class="string">'/program/JXTV-JXTV1-w1.html'</span>,</div><div class="line">    <span class="string">'/program/LNTV-LNTV1-w1.html'</span>,</div><div class="line">    <span class="string">'/program/CCQTV-CCQTV1-w1.html'</span>,</div><div class="line">    <span class="string">'/program/SDTV-SDTV1-w1.html'</span>,</div><div class="line">    <span class="string">'/program/HAINANTV'</span>,</div><div class="line">    <span class="string">'/program/YNTV-YNTV1-w1.html'</span>,</div><div class="line">    <span class="string">'/program/GUIZOUTV-GUIZOUTV1-w1.html'</span>,</div><div class="line">    <span class="string">'/program/AHTV-AHTV1-w1.html'</span>,</div><div class="line">    <span class="string">'/program/AHTV-AHTV1-w1.html'</span>,</div><div class="line">    <span class="string">'/program/JILIN-JILIN1-w1.html'</span>,</div><div class="line">    <span class="string">'/program/QHTV-QHTV1-w1.html'</span>,</div><div class="line">    <span class="string">'/program/SCTV-SCTV1-w1.html'</span>,</div><div class="line">    <span class="string">'/program/NMGTV-NMGTV1-w1.html'</span>,</div><div class="line">    <span class="string">'/program/HUBEI-HUBEI1-w1.html'</span>,</div><div class="line">    <span class="string">'/program/NXTV-NXTV2-w1.html'</span>,</div><div class="line">    <span class="string">'/program/GUANXI-GUANXI2-w1.html'</span>,</div><div class="line">    <span class="string">'/program/XJTV-XJTV1-w1.html'</span>,</div><div class="line">    <span class="string">'/program/SHHAI'</span>,</div><div class="line">    <span class="string">'/program/HLJTV-HLJTV1-w1.html'</span>,</div><div class="line">    <span class="string">'/program/HNTV-HNTV1-w1.html'</span>,</div><div class="line">    <span class="string">'/program/HNTV-HNTV1-w1.html'</span>,</div><div class="line">    <span class="string">'/program/SXTV-SXTV1-w1.html'</span>,</div><div class="line">    <span class="string">'/program/BTV-BTV1-w1.html'</span>,</div><div class="line">    <span class="string">'/program/GDTV-GDTV1-w1.html'</span>,</div><div class="line">    <span class="string">'/program/JSTV-JSTV1-w1.html'</span>,</div><div class="line">    <span class="string">'/program/TJTV-TJTV1-w1.html'</span>,</div><div class="line">    <span class="string">'/program/HUNANTV-HUNANTV1-w1.html'</span>,</div><div class="line">    <span class="string">'/program/SHXITV-SHXITV1-w1.html'</span>,</div><div class="line">    <span class="string">'/program/FJTV-FJTV2-w1.html'</span></div><div class="line">]</div><div class="line"></div><div class="line"><span class="keyword">for</span> url <span class="keyword">in</span> entryUrl:</div><div class="line">    spiderOneRoot(url)</div></pre></td></tr></table></figure>
+<h1>存储数据</h1>
+<p><img src="https://i.imgur.com/v4t2tBA.png" alt=""></p>
+<h1>爬虫的抓取策略</h1>
+<p>在爬虫系统中，待抓取URL队列是很重要的一部分。待抓取URL队列中的URL以什么样的顺序排列也是一个很重要的问题，因为这涉及到先抓取那个页面，后抓取哪个页面。而决定这些URL排列顺序的方法，叫做抓取策略。下面重点介绍几种常见的抓取策略：</p>
+<p><img src="https://i.imgur.com/SUAH4bX.jpg" alt=""></p>
+<p><strong>深度优先策略(DFS)</strong></p>
+<p>深度优先策略是指爬虫从某个URL开始，一个链接一个链接的爬取下去，直到处理完了某个链接所在的所有线路，才切换到其它的线路。 此时抓取顺序为：<code>A -&gt; B -&gt; C -&gt; D -&gt; E -&gt; F -&gt; G -&gt; H -&gt; I -&gt; J</code></p>
+<p><strong>广度优先策略(BFS)</strong></p>
+<p>宽度优先遍历策略的基本思路是，将新下载网页中发现的链接直接插入待抓取URL队列的末尾。也就是指网络爬虫会先抓取起始网页中链接的所有网页，然后再选择其中的一个链接网页，继续抓取在此网页中链接的所有网页。 此时抓取顺序为：<code>A -&gt; B -&gt; E -&gt; G -&gt; H -&gt; I -&gt; C -&gt; F -&gt; J -&gt; D</code></p>
+<h1>高效抓取数据（多线程/多进程/分布式爬虫）</h1>
+<p>分布式爬取，针对大型爬虫系统的，实现一个分布式的爬虫，主要为以下几个步骤：</p>
+<ul>
+<li>1、基本的http抓取工具，如scrapy；</li>
+<li>2、避免重复抓取网页，如Bloom Filter；</li>
+<li>3、维护一个所有集群机器能够有效分享的分布式队列；</li>
+<li>4、将分布式队列和Scrapy的结合；</li>
+<li>5、后续处理，网页析取(如python-goose)，存储(如Mongodb)。</li>
+</ul>
+<h1>反爬虫机制与应对策略</h1>
+<p>爬虫：使用任何技术手段，批量获取网站信息的一种方式。
+反爬虫：使用任何技术手段，阻止别人批量获取自己网站信息的一种方式。</p>
+<p>**常见的反爬虫机制：**一般网站从三个方面反爬虫，即请求网站访问时的请求头Headers，用户行为，目标网站的目录和数据加载方式。前两个方面可以说是反爬虫策略中最为常见的，而第三个则是应用ajax（异步加载）的方式加载页面目录或者内容，增大爬虫在对目标网站形成访问之后获取数据的难度。</p>
+<h3>0x01 通过Headers反爬虫</h3>
+<ul>
+<li>
+<p><strong>通过Headers中的User-Agent识别爬虫</strong>
+从用户请求的Headers反爬虫是最常见的反爬虫策略。由于正常用户访问网站时是通过浏览器访问的，所以目标网站通常会在收到请求时校验Headers中的User-Agent字段，如果不是携带正常的User-Agent信息的请求便无法通过请求。</p>
+</li>
+<li>
+<p><strong>通过Headers中的Refer防止盗链</strong>
+盗链是指服务提供商自己不提供服务的内容，利用别人网站的链接去获取别人网站里面的图片或者视频等资源，一部分网站为了防盗链，还会校验请求Headers中的Referer字段。</p>
+</li>
+</ul>
+<h3>0x01 应对策略</h3>
+<ul>
+<li><strong>构造Headers</strong>
+针对这类反爬虫机制，可以直接在自己写的爬虫中添加Headers，将浏览器的User-Agent复制到爬虫的Headers中，或使用User-Agent池。也就是每次发送的时候随机从池中选择不一样的浏览器头信息，防止暴露爬虫身份；另外通过对请求的抓包分析，将Referer值修改为目标网站域名，就能很好的绕过。</li>
+</ul>
+<h3>0x02 基于用户行为反爬虫</h3>
+<ul>
+<li>
+<p><strong>设置IP访问频率，如果超过一定频率，弹出验证码</strong>
+如果输入正确的验证码，则放行，如果没有输入，则拉入禁止一段时间，如果超过禁爬时间，再次出发验证码，则拉入黑名单。当然根据具体的业务，为不同场景设置不同阈值，比如登陆用户和非登陆用户，请求是否含有refer。</p>
+</li>
+<li>
+<p><strong>通过并发识别爬虫</strong>
+有些爬虫的并发是很高的，统计并发最高的IP，加入黑名单（或者直接封掉爬虫IP所在C段）</p>
+</li>
+<li>
+<p><strong>请求的时间窗口过滤统计</strong>
+爬虫爬取网页的频率都是比较固定的，不像人去访问网页，中间的间隔时间比较无规则，所以我们可以给每个IP地址建立一个时间窗口，记录IP地址最近12次访问时间，每记录一次就滑动一次窗口，比较最近访问时间和当前时间，如果间隔时间很长判断不是爬虫，清除时间窗口，如果间隔不长，就回溯计算指定时间段的访问频率，如果访问频率超过阀值，就转向验证码页面让用户填写验证码。</p>
+</li>
+<li>
+<p><strong>限制单个ip/api token的访问量</strong>
+比如15分钟限制访问页面180次，具体标准可参考一些大型网站的公开api，如twitter api，对于抓取用户公开信息的爬虫要格外敏感</p>
+</li>
+</ul>
+<h3>0x02 应对策略</h3>
+<ul>
+<li>
+<p><strong>降低请求频率</strong>
+例如每隔一个时间段请求一次或者请求若干次之后sleep一段时间，也可以每次请求后随机间隔几秒再进行下一次请求。由于网站获取到的ip是一个区域网的ip，该ip被区域内的所有人共享，因此这个间隔时间并不需要特别长。</p>
+</li>
+<li>
+<p><strong>使用代理IP池</strong>
+使用代理IP池需要大量的IP资源。可以专门写一个在网上抓取可用代理ip的脚本，然后将抓取到的代理ip维护到代理池中供爬虫使用，当然，实际上抓取的ip不论是免费的还是付费的，通常的使用效果都极为一般，如果需要抓取高价值数据的话也可以考虑购买宽带adsl拨号的VPS，如果ip被目标网站被封掉，重新拨号即可。</p>
+</li>
+</ul>
+<h3>0x03 动态页面的反爬虫</h3>
+<ul>
+<li>
+<p><strong>数据通过ajax请求得到或JavaScript生成</strong>
+上述的几种情况大多都是出现在静态页面，但是对于动态网页，我们需要爬取的数据是通过ajax请求得到，或者通过JavaScript生成的。</p>
+</li>
+<li>
+<p><strong>ajax请求的所有参数全部加密</strong>
+网站把ajax请求的所有参数全部加密了。我们根本没办法构造自己所需要的数据的请求。还有一些严防死守的网站，除了加密ajax参数，它还把一些基本的功能都封装了，全部都是在调用自己的接口，而接口参数都是加密的。</p>
+</li>
+</ul>
+<h3>0x03 应对策略</h3>
+<ul>
+<li>
+<p><strong>模拟ajax请求获取数据</strong>
+首先用Firebug或者HttpFox对网络请求进行分析。如果能够找到ajax请求，也能分析出具体的参数和响应的具体含义，我们就能采用上面的方法，直接利用requests或者urllib2模拟ajax请求，对响应的json进行分析得到需要的数据。</p>
+</li>
+<li>
+<p><strong>调用浏览器内核模拟正常人的交互</strong>
+通过selenium+phantomJS框架，调用浏览器内核，并利用phantomJS执行js来模拟人为操作以及触发页面中的js脚本。从填写表单到点击按钮再到滚动页面，全部都可以模拟，不考虑具体的请求和响应过程，只是完完整整的把人浏览页面获取数据的过程模拟一遍。用这套框架几乎能绕过大多数的反爬虫，因为它不是在伪装成浏览器来获取数据（上述的通过添加Headers一定程度上就是为了伪装成浏览器），它本身就是浏览器，phantomJS就是一个没有界面的浏览器，只是操控这个浏览器的不是人。</p>
+</li>
+</ul>
+<h3>0x04 其它反爬虫机制-Cookie限制</h3>
+<ul>
+<li><strong>Cookie限制</strong>
+和Headers校验的反爬虫机制类似，当用户向目标网站发送请求时，会再请求数据中携带Cookie，网站通过校验请求信息是否存在Cookie，以及校验Cookie的值来判定发起访问请求的到底是真实的用户还是爬虫，第一次打开网页会生成一个随机cookie，如果再次打开网页这个Cookie不存在，那么再次设置，第三次打开仍然不存在，这就非常有可能是爬虫在工作了。</li>
+<li><strong>Cookie校验和Headers的区别</strong>
+用户发送的Headers的内容形式是固定的可以被轻易伪造的，Cookie则不然。原因是由于浏览器请求网站访问的过程中所分析得到的Cookie往往都是经过相关的js等过程已经改变了domain的Cookie，假如直接手动修改爬虫携带的Cookie去访问对应的网页，由于携带的Cookie已经是访问之后的domain而不是访问之前的domain，所以是无法成功模拟整个流程的，这种情况必然导致爬虫访问页面失败。</li>
+</ul>
+<h3>0x04 应对策略</h3>
+<ul>
+<li><strong>分析Cookie</strong>
+分析Cookie，可能会携带大量的随机哈希字符串，或者不同时间戳组合的字符串，并且会根据每次访问更新domain的值。分析过程：首先要在对目标网站抓包分析时，必须先清空浏览器的Cookie，然后在初次访问时，观察浏览器在完成访问的过程中的请求细节（通常会在这一过程中发生若干次301/302转跳，每次转跳网站返回不同的Cookie给浏览器然后在最后一次转跳中请求成功）。在抓包完成对请求细节的分析之后，再在爬虫上模拟这一转跳过程，然后截取Cookie作为爬虫自身携带的Cookie，这样就能够绕过Cookie的限制完成对目标网站的访问了。</li>
+</ul>
+<h3>0x05 其它反爬虫机制-验证码限制</h3>
+<ul>
+<li>
+<p>验证码（CAPTCHA）是“Completely Automated Public Turing test to tell Computers and Humans Apart”（全自动区分计算机和人类的图灵测试）的缩写，是一种区分用户是计算机还是人的公共全自动程序。人类有着一种天赋，可以很轻松的从一段图片中识别出文字和数字，而机器却不能。</p>
+</li>
+<li>
+<p><strong>数字字母验证码</strong>
+这类验证码优点是生成简单，大部分语言都自带图形库，在加入一点扭曲和噪点，基本可以解决掉初级爬虫工程师和暴力破解的脚本小子。缺点当然也显而易见，对于cnn代码只用写10行的今天，这些验证码只要有足够的标注数据，破解起来简直是轻而易举。</p>
+</li>
+<li>
+<p><strong>中文验证码</strong>
+比如知乎采用过的验证码选择倒立的中文以及网易邮箱类的验证码（标记文字位置）。这类验证码一般来很少有公用的代码，因此编写起来麻烦。不过也正因为每一家采用的都不一样，在加上中文庞大的汉字库，确实给机器识别带来的比较大的挑战，如果配合好字体和扭曲，确实可以有不错的效果。</p>
+</li>
+<li>
+<p><strong>极验验证</strong>
+极验的v2版验证体系破解难度甚至比不过数字字母验证码来的复杂，唯一的优势就是现在大部分打码平台不支持。图片识别上直接对比像素就可以识别位置，唯一难点的移动轨迹，但用轨迹做分类人类和机器间的特征并不那么明显，加上网页中采集轨迹的准确性较差，因此做一些简单的模拟就可以轻松躲过轨迹识别。</p>
+</li>
+<li>
+<p><strong>其它验证类型</strong>
+比如12306这类图片验证，这种反爬虫要求较高，需要强大的图片库。其它还有算术验证、成语验证等等，发爬虫通过难度不是很高。</p>
+</li>
+</ul>
+<h3>0x05 应对策略</h3>
+<ul>
+<li>
+<p><strong>打码平台</strong>
+最常用，最简单的识别，一般字母文字1分一次，中文识别略贵，计算题可能5分，不支持极验这类。</p>
+</li>
+<li>
+<p><strong>OCR库</strong>
+传统的ocr采用先切割再识别的方案，对于新型的验证码已经很难做了。</p>
+</li>
+<li>
+<p><strong>机器学习</strong>
+端到端数字字母识别神器，根据识别难度和长度不同，对标注数据的需求量不一样，当然图片预处理也稍微有些区别。一般简单常见的识别可以直接从网上找代码。</p>
+</li>
+</ul>
+<h1>参考文档</h1>
+<ul>
+<li><a href="https://www.jianshu.com/p/80e25cb1d81a" target="_blank" rel="external">关于HTTP协议，一篇就够了</a></li>
+<li><a href="https://blog.csdn.net/u012662731/article/details/78537432" target="_blank" rel="external">Python3网络爬虫快速入门实战解析</a></li>
+<li><a href="https://cloud.tencent.com/developer/article/1032918" target="_blank" rel="external">反爬虫机制和破解方法汇总</a></li>
+<li><a href="http://bigsec.com/bigsec-news/anan-16825-Antireptile-zonghe" target="_blank" rel="external">反爬虫思路与解决办法</a></li>
+</ul>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/06/21/Other/并行计算 cuda/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -624,7 +935,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/03/29/C++/C++ 奇奇怪怪的题目之构造析构顺序/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/03/29/C++/C++ STL emplace_back 和 push_back 的区别/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="BaiJiazm">
@@ -643,7 +954,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/03/29/C++/C++ 奇奇怪怪的题目之构造析构顺序/" itemprop="url">C++ 奇奇怪怪的题目之构造析构顺序</a></h1>
+                <a class="post-title-link" href="/2018/03/29/C++/C++ STL emplace_back 和 push_back 的区别/" itemprop="url">C++ STL emplace_back 和 push_back 的区别</a></h1>
         
 
         <div class="post-meta">
@@ -695,9 +1006,9 @@
       
         
           
-            <h3>C++ 奇奇怪怪的题目之构造析构顺序</h3>
+            <h3>emplace_back 和 push_back 的区别</h3>
 <ul>
-<li><a href="http://gaocegege.com/Blog/cpp/cppclass" target="_blank" rel="external">C++ 奇奇怪怪的题目之构造析构顺序</a></li>
+<li><a href="https://blog.csdn.net/xiaolewennofollow/article/details/52559364" target="_blank" rel="external">emplace_back 和 push_back 的区别</a></li>
 </ul>
 
           
@@ -870,7 +1181,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/03/29/C++/C++ STL emplace_back 和 push_back 的区别/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/03/29/C++/C++ 奇奇怪怪的题目之构造析构顺序/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="BaiJiazm">
@@ -889,7 +1200,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/03/29/C++/C++ STL emplace_back 和 push_back 的区别/" itemprop="url">C++ STL emplace_back 和 push_back 的区别</a></h1>
+                <a class="post-title-link" href="/2018/03/29/C++/C++ 奇奇怪怪的题目之构造析构顺序/" itemprop="url">C++ 奇奇怪怪的题目之构造析构顺序</a></h1>
         
 
         <div class="post-meta">
@@ -941,9 +1252,9 @@
       
         
           
-            <h3>emplace_back 和 push_back 的区别</h3>
+            <h3>C++ 奇奇怪怪的题目之构造析构顺序</h3>
 <ul>
-<li><a href="https://blog.csdn.net/xiaolewennofollow/article/details/52559364" target="_blank" rel="external">emplace_back 和 push_back 的区别</a></li>
+<li><a href="http://gaocegege.com/Blog/cpp/cppclass" target="_blank" rel="external">C++ 奇奇怪怪的题目之构造析构顺序</a></li>
 </ul>
 
           
@@ -9836,320 +10147,6 @@ WantedBy=multi-user.target
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/10/18/Linux/homework/Linux守护进程/Linux守护进程2/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="BaiJiazm">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/headPhoto.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="BaiJiazm">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/10/18/Linux/homework/Linux守护进程/Linux守护进程2/" itemprop="url">Linux守护进程2</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-18T19:44:25+08:00">
-                2017-10-18
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <hr>
-<h4>Linux守护进程2——守护进程的作用、用途、父进程标识的特点</h4>
-<hr>
-<ul>
-<li>
-<p><strong>在02 子目录下写test2.c，写配套的makefile 文件，make 后可生成test2 可执行文件</strong></p>
-<p>基本概念如下：<br>
-<strong>进程组 ：</strong><br>
-每个进程属于一个进程组<br>
-每个进程都有一个进程组号，该号等于该进程组组长的PID号<br>
-一个进程只能为它自己或子进程设置进程组ID号</p>
-<p><strong>会话期：</strong><br>
-会话期(session)是一个或多个进程组的集合<br>
-setsid()函数可以建立一个对话期。如果调用setsid的进程不是一个进程组的组长，此函数创建一个新的会话期：<br>
-(1)此进程变成该对话期的首进程<br>
-(2)此进程变成一个新进程组的组长进程。<br>
-(3)此进程没有控制终端，如果在调用setsid前，该进程有控制终端，那么与该终端的联系被解除。 如果该进程是一个进程组的组长，此函数返回错误。<br>
-(4)为了保证这一点，我们先调用fork()然后exit()，此时只有子进程在运行</p>
-<p><strong>编写守护进程的一般步骤步骤：</strong><br>
-（1）在父进程中执行fork并exit推出；<br>
-（2）在子进程中调用setsid函数创建新的会话；<br>
-（3）在子进程中调用chdir函数，让根目录 ”/” 成为子进程的工作目录；<br>
-（4）在子进程中调用umask函数，设置进程的umask为0；<br>
-（5）在子进程中关闭任何不需要的文件描述符</p>
-<pre><code>//test2.c
-#include &lt;unistd.h&gt;
-#include &lt;sys/types.h&gt;
-#include &lt;sys/stat.h&gt;
-#include &lt;stdlib.h&gt;
-#include &lt;stdio.h&gt;
-#include &lt;syslog.h&gt;
-#include &lt;signal.h&gt;
-
-int daemon_init(void){
-    pid_t pid;
-    if ((pid = fork()) &lt; 0)
-		return -1;
-	else if (pid)   
-		exit(0);	/* parent exit */
-
-	/* child continues */
-	/* become session leader */
-	setsid();
-	/* change working directory */
-    chdir(&quot;\n&quot;);
-	/* clear file mode creation mask */
-	umask(0);
-    /* close stdin stdout stderr */
-	close(0);
-	close(1);
-	close(2);
-
-	return 0;
-}       
-
-void sig_term(int signo){
-	if(signo==SIGTERM){
-		syslog(LOG_INFO, &quot;program terminated&quot;);
-		closelog();
-		exit(0);
-	}
-}
-
-#define SLEEP_TIME 5
-
-int main(){
-	
-	if (daemon_init() == -1){
-		printf(&quot;can't fork self\n&quot;);
-		exit(0);
-	}
-
-	//以下三行不是必须的，仅提供log信息
-	openlog(&quot;daemontest&quot;, LOG_PID, LOG_USER);
-	syslog(LOG_INFO, &quot;program started&quot;);
-	signal(SIGTERM, sig_term);
-
-	while(1){
-		printf(&quot;1453381\n&quot;);
-		sleep(SLEEP_TIME);
-	}
-	
-	return 0;
-}
-</code></pre>
-<p>makefile :</p>
-<pre><code>CC=gcc
-CFLAGS=
-
-BIN=test2
-SRC=$(wildcard *.c)
-OBJ=$(SRC:.c=.o)
-
-$(BIN):$(OBJ)
-	$(CC) $(OBJ) -o $(BIN)
-
-.PHONY :clean
-clean:
-	rm -f $(BIN) $(OBJ)
-</code></pre>
-<p>说明：</p>
-<ol>
-<li>在后台运行
-为避免挂起控制终端将Daemon放入后台执行。方法是在进程中调用fork使父进程终止，让Daemo在子
-进程中后台执行。
-if(pid=fork())
-exit(0);//是父进程，结束父进程，子进程继续</li>
-<li>脱离控制终端，登录会话和进程组
-登录会话和进程组之间的关系：进程属于一个进程组，进程组号（GID）就是进程组长的进程号（PID
-）。登录会话可以包含多个进程组。这些进程组共享一个控制终端。这个控制终端通常是创建进程的
-登录终端。 控制终端，登录会话和进程组通常是从父进程继承下来的。我们的目的就是要摆脱它们，
-使之不受它们的影响。方法是在第1点的基础上，调用setsid()使进程成为会话组长：
-setsid();
-说明：当进程是会话组长时setsid()调用失败。但第一点已经保证进程不是会话组长。setsid()调
-用成功后，进程成为新的会话组长和新的进程组长，并与原来的登录会话和进程组脱离。由于会话过
-程对控制终端的独占性，进程同时与控制终端脱离。</li>
-<li>禁止进程重新打开控制终端
-现在，进程已经成为无终端的会话组长。但它可以重新申请打开一个控制终端。可以通过使进程不再
-成为会话组长来禁止进程重新打开控制终端：
-if(pid=fork())
-exit(0);//结束第一子进程，第二子进程继续（第二子进程不再是会话组长）</li>
-<li>关闭打开的文件描述符
-进程从创建它的父进程那里继承了打开的文件描述符。如不关闭，将会浪费系统资源，造成进程所在
-的文件系统无法卸下以及引起无法预料的错误。</li>
-<li>改变当前工作目录
-进程活动时，其工作目录所在的文件系统不能卸下。一般需要将工作目录改变到根目录。对于需要转
-储核心，写运行日志的进程将工作目录改变到特定目录如/tmpchdir(&quot;/&quot;)</li>
-<li>重设文件创建掩模
-进程从创建它的父进程那里继承了文件创建掩模。它可能修改守护进程所创建的文件的存取位。为防
-止这一点，将文件创建掩模清除：umask(0);</li>
-</ol>
-</li>
-<li>
-<p><strong>用./test2 运行后直接成为守护进程</strong></p>
-</li>
-<li>
-<p><strong>test2 的进程标识、父进程标识是谁？如何查看？</strong></p>
-<p>进程 test2 的 ppid 为1，在 RedHat7.4 下为 systemd</p>
-<pre><code>ps -ef |grep test2
-pstree 1
-ps -ef |grep -E &quot;test2|systemd&quot;
-</code></pre>
-<p>测试截图：</p>
-<p><img src="/2017/10/18/Linux/homework/Linux守护进程/Linux守护进程2/1.jpg" alt="">
-<img src="/2017/10/18/Linux/homework/Linux守护进程/Linux守护进程2/2.jpg" alt=""></p>
-</li>
-<li>
-<p><strong>在另一个控制台中能否查看到test2 进程的相关信息？</strong></p>
-<p>能，完全一样。<br>
-测试截图：</p>
-<p><img src="/2017/10/18/Linux/homework/Linux守护进程/Linux守护进程2/3.jpg" alt=""></p>
-</li>
-<li>
-<p><strong>当test2 在后台运行时，如果CTRL+D 退出控制台登录，test2 会怎样？</strong></p>
-<p>test2 是守护进程，即使 [CTRL] + D 退出登录，只要操作系统保持运行，则 test2 会保持运行。</p>
-</li>
-<li>
-<p><strong>再次登录控制台后，test2 是否仍在运行？此时打印信息能否继续出现在新登录的终端上？</strong></p>
-<p>再次登陆，test2 仍在运行，打印信息不能出现在终端，原因上个题目已说。</p>
-</li>
-<li>
-<p><strong>引申问题：如果想在进程中打印信息并保证始终能被查看到，应该如何做？</strong></p>
-<p>守护进程没有控制终端进行信息的输出，而有些情况还需要根据进程提供的信息进行系统管理和维护工作。因此Linux提供了syslogd守护进程，专门用于接受其他守护进程提供的信息记录在指定位置来解决日志记录的问题。</p>
-<p>在 RedHat7.4 中没有syslogd，但是有rsyslogd守护进程，rsyslog的配置文件是<code>/etc/rsyslog.conf</code></p>
-<p>下面说明一下相关syslog函数：</p>
-<pre><code>// 函数说明
-#include &lt;syslog.h&gt;
-vodi openlog(const char *ident, int option, int facility);
-void syslog(int priority, const char *format, ...);
-void closelog(void);
-
-openlog函数原型如下：
-1）void openlog(const char* ident, int option, int facility);
-        //打开系统日志链接，必须步骤。
-ident   :信息来源，哪个可执行程序
-option  :控制标志的参数，多个可以同时使用，用|操作合并
-facility:指定消息类型，与配置文件对应，日志会写入配置文件指定位置。
-
-2）void syslog(int priority,const char* format,....);
-priority：消息级别，与openlog中的facility可以共同决定日志写入位置。
-format  ：消息格式，再后面为格式对应的参数，类似printf的使用
- 
-3）void closelog();
-关闭系统日志链接，可选步骤。
-</code></pre>
-<p>在原来的程序中打印学号的地方添加一行：</p>
-<pre><code>syslog(LOG_INFO, &quot;1453381\n&quot;);
-</code></pre>
-<p>执行后，查看新增信息</p>
-<pre><code>tail -f /var/log/messages
-</code></pre>
-<p>测试截图：</p>
-<p><img src="/2017/10/18/Linux/homework/Linux守护进程/Linux守护进程2/4.jpg" alt=""></p>
-</li>
-</ul>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/10/18/Linux/homework/Linux守护进程/Linux守护进程4/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -11028,7 +11025,7 @@ WUNTRACED	如果子进程进入暂停状态，则马上返回。</code></pre>
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/10/18/Linux/homework/Linux守护进程/Linux守护进程1/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/10/18/Linux/homework/Linux守护进程/Linux守护进程2/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="BaiJiazm">
@@ -11047,7 +11044,7 @@ WUNTRACED	如果子进程进入暂停状态，则马上返回。</code></pre>
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/10/18/Linux/homework/Linux守护进程/Linux守护进程1/" itemprop="url">Linux守护进程1</a></h1>
+                <a class="post-title-link" href="/2017/10/18/Linux/homework/Linux守护进程/Linux守护进程2/" itemprop="url">Linux守护进程2</a></h1>
         
 
         <div class="post-meta">
@@ -11100,148 +11097,198 @@ WUNTRACED	如果子进程进入暂停状态，则马上返回。</code></pre>
         
           
             <hr>
-<h4>Linux守护进程1——程序前后台切换</h4>
+<h4>Linux守护进程2——守护进程的作用、用途、父进程标识的特点</h4>
 <hr>
 <ul>
 <li>
-<p><strong>写test1-1.c/test1-2.c 两个程序，都是死循环操作，每5 秒打印一句话，写配套的makefile 文件，make 后可生成test1-1和test1-2 两个可执行文件</strong></p>
-<pre><code>//test1-1.c
-#include&lt;stdio.h&gt;
-#include&lt;unistd.h&gt;
+<p><strong>在02 子目录下写test2.c，写配套的makefile 文件，make 后可生成test2 可执行文件</strong></p>
+<p>基本概念如下：<br>
+<strong>进程组 ：</strong><br>
+每个进程属于一个进程组<br>
+每个进程都有一个进程组号，该号等于该进程组组长的PID号<br>
+一个进程只能为它自己或子进程设置进程组ID号</p>
+<p><strong>会话期：</strong><br>
+会话期(session)是一个或多个进程组的集合<br>
+setsid()函数可以建立一个对话期。如果调用setsid的进程不是一个进程组的组长，此函数创建一个新的会话期：<br>
+(1)此进程变成该对话期的首进程<br>
+(2)此进程变成一个新进程组的组长进程。<br>
+(3)此进程没有控制终端，如果在调用setsid前，该进程有控制终端，那么与该终端的联系被解除。 如果该进程是一个进程组的组长，此函数返回错误。<br>
+(4)为了保证这一点，我们先调用fork()然后exit()，此时只有子进程在运行</p>
+<p><strong>编写守护进程的一般步骤步骤：</strong><br>
+（1）在父进程中执行fork并exit推出；<br>
+（2）在子进程中调用setsid函数创建新的会话；<br>
+（3）在子进程中调用chdir函数，让根目录 ”/” 成为子进程的工作目录；<br>
+（4）在子进程中调用umask函数，设置进程的umask为0；<br>
+（5）在子进程中关闭任何不需要的文件描述符</p>
+<pre><code>//test2.c
+#include &lt;unistd.h&gt;
+#include &lt;sys/types.h&gt;
+#include &lt;sys/stat.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;stdio.h&gt;
+#include &lt;syslog.h&gt;
+#include &lt;signal.h&gt;
+
+int daemon_init(void){
+    pid_t pid;
+    if ((pid = fork()) &lt; 0)
+		return -1;
+	else if (pid)   
+		exit(0);	/* parent exit */
+
+	/* child continues */
+	/* become session leader */
+	setsid();
+	/* change working directory */
+    chdir(&quot;\n&quot;);
+	/* clear file mode creation mask */
+	umask(0);
+    /* close stdin stdout stderr */
+	close(0);
+	close(1);
+	close(2);
+
+	return 0;
+}       
+
+void sig_term(int signo){
+	if(signo==SIGTERM){
+		syslog(LOG_INFO, &quot;program terminated&quot;);
+		closelog();
+		exit(0);
+	}
+}
 
 #define SLEEP_TIME 5
 
 int main(){
-        while(1){
-                printf(&quot;1453381\n&quot;);
-                sleep(SLEEP_TIME);
-        }
-        return 0;
-}
+	
+	if (daemon_init() == -1){
+		printf(&quot;can't fork self\n&quot;);
+		exit(0);
+	}
 
-//test1-2.c
+	//以下三行不是必须的，仅提供log信息
+	openlog(&quot;daemontest&quot;, LOG_PID, LOG_USER);
+	syslog(LOG_INFO, &quot;program started&quot;);
+	signal(SIGTERM, sig_term);
 
-#include&lt;stdio.h&gt;
-#include&lt;unistd.h&gt;
-
-#define SLEEP_TIME 5
-
-int main(){
-        while(1){
-                printf(&quot;曾鸣\n&quot;);
-                sleep(SLEEP_TIME);
-        }
-        return 0;
+	while(1){
+		printf(&quot;1453381\n&quot;);
+		sleep(SLEEP_TIME);
+	}
+	
+	return 0;
 }
 </code></pre>
-<p>makefile ：</p>
-<pre><code>cc ?= gcc
+<p>makefile :</p>
+<pre><code>CC=gcc
+CFLAGS=
 
-srcNames :=test1-1 test1-2
+BIN=test2
+SRC=$(wildcard *.c)
+OBJ=$(SRC:.c=.o)
 
-all :
-	@for src in $(srcNames) ; \
-	do \
-		$(cc) -o $$src &quot;$$src&quot;.c ; \
-	done
+$(BIN):$(OBJ)
+	$(CC) $(OBJ) -o $(BIN)
 
-clean :
-	rm -f *.o $(srcNames)
-
-.PHONY : all clean
+.PHONY :clean
+clean:
+	rm -f $(BIN) $(OBJ)
 </code></pre>
-</li>
-<li>
-<p><strong>用SecureCRT登录系统（简称控制台），然后./test1-1 运行test1-1 程序，控制台进入死循环，不再出现#或$提示符</strong></p>
-</li>
-<li>
-<p><strong>如何将test1-1 放入后台运行？</strong></p>
-<p>程序运行时在终端按下 [Ctrl] + z，使工作转入后台，但此时工作停止，需要使用 bg 来使之运行。</p>
-</li>
-<li>
-<p><strong>如何查看在后台的test1-1 程序的信息？</strong></p>
-<ul>
-<li>
-<p>jobs命令<br>
-功能：查看当前终端后台运行的任务<br>
-<code>jobs -l</code>选项可显示当前终端所有任务的PID，jobs的状态可以是running，stopped，Terminated。+ 号表示当前任务，- 号表示后一个任务。</p>
-</li>
-<li>
-<p>ps命令<br>
-功能：ps命令用于报告当前系统的进程状态<br>
-<code>ps -ef | grep &quot;test1-1&quot;</code><br>
--a：显示所有终端机下执行的程序<br>
--f：显示UID,PPIP,C与STIME栏位。</p>
-</li>
-</ul>
-<p>测试截图</p>
-<p><img src="/2017/10/18/Linux/homework/Linux守护进程/Linux守护进程1/1.jpg" alt=""></p>
-</li>
-<li>
-<p><strong>如何使test1-1 重新切换到前台来？</strong></p>
-<p>fg 命令</p>
-</li>
-<li>
-<p><strong>再次将test1-1 放入后台，./test1-2 运行test1-2 程序，然后将test1-2 也放入后台如何控制将test1-1/test1-2 中的某一个切换到前台来？</strong></p>
-<p>fg + 工作序号。如 fg 2 会让 test1-2 回到前台。<br>
-同理，如果后台有多个工作停止，则使用 bg + 工作序号可以使指定工作开始后台运行。</p>
-<p><code>[1]- [2]+</code>，加号代表当前工作为<code>[2]</code>，减号代表当前工作的下一个工作为<code>[1]</code>。它们表明了工作执行的顺序，如果你使用不加序号的 fg 命令，则默认把带加号的工作提到前台。</p>
-<p>测试截图</p>
-<p><img src="/2017/10/18/Linux/homework/Linux守护进程/Linux守护进程1/2.jpg" alt=""></p>
-</li>
-<li>
-<p><strong>test1-1/test1-2 的父进程标识是谁？如何查看？</strong></p>
-<pre><code>ps -ef | grep test1-1   #查看test1-1进程信息
-pstree pid  #查看pid进程树
-ps -ef | grep pid #筛选出包含与pid有关的进程，其中第二列为pid，第三列为ppid
-</code></pre>
-<p>测试截图</p>
-<p><img src="/2017/10/18/Linux/homework/Linux守护进程/Linux守护进程1/3.jpg" alt=""><br>
-<img src="/2017/10/18/Linux/homework/Linux守护进程/Linux守护进程1/4.jpg" alt=""></p>
-</li>
-<li>
-<p><strong>用SecureCRT 再登录一个控制台，用什么命令可以看到test1-1/test1-2 的信息？此时父进
-程标识是谁？如何查看？</strong></p>
-<p>同上，一样的命令可以查看，原进程pid及ppid不变，此时的bash进程pid不同。</p>
-</li>
-<li>
-<p><strong>当test1-1/test1-2 在后台运行时，如果CTRL+D 退出该控制台登录，在另一个控制台再查看test1-1/test1-2 的信息，此时父进程标识是谁？</strong></p>
-<p>父进程PID 是 1。</p>
-<p>测试截图</p>
-<p><img src="/2017/10/18/Linux/homework/Linux守护进程/Linux守护进程1/5.jpg" alt=""></p>
-</li>
-<li>
-<p><strong>能否使test1-1/test1-2 在终端退出登录后继续运行（不是再次运行）？此时打印信息能否继续出现在新登录的终端上？</strong></p>
+<p>说明：</p>
 <ol>
-<li>
-<p>setsid命令，用setsid来启动程序，使启动的进程在新的session中，并且终端关闭时，进程不退出。</p>
-<pre><code>setsid ./test1-1 &amp;
-setsid ./test1-2 &amp;
-</code></pre>
-</li>
-<li>
-<p>nohup命令，被nohup启动的程序会忽略SIGHUP信号。</p>
-<pre><code>nohup ./test1-1 &amp;
-nohup ./test1-2 &amp;
-</code></pre>
-<p>nohup命令可以将程序以忽略挂起信号的方式运行起来，被运行的程序的输出信息将不会显示到终端。 无论是否将 nohup 命令的输出重定向到终端，输出都将附加到当前目录的 nohup.out 文件中。如果当前目录的 nohup.out 文件不可写，输出重定向到$HOME/nohup.out文件中。</p>
-</li>
-<li>
-<p>对于jobs中的后台程序，通过disown命令</p>
-<pre><code>disown -h %id   #id表示jobs中的id
-</code></pre>
-</li>
+<li>在后台运行
+为避免挂起控制终端将Daemon放入后台执行。方法是在进程中调用fork使父进程终止，让Daemo在子
+进程中后台执行。
+if(pid=fork())
+exit(0);//是父进程，结束父进程，子进程继续</li>
+<li>脱离控制终端，登录会话和进程组
+登录会话和进程组之间的关系：进程属于一个进程组，进程组号（GID）就是进程组长的进程号（PID
+）。登录会话可以包含多个进程组。这些进程组共享一个控制终端。这个控制终端通常是创建进程的
+登录终端。 控制终端，登录会话和进程组通常是从父进程继承下来的。我们的目的就是要摆脱它们，
+使之不受它们的影响。方法是在第1点的基础上，调用setsid()使进程成为会话组长：
+setsid();
+说明：当进程是会话组长时setsid()调用失败。但第一点已经保证进程不是会话组长。setsid()调
+用成功后，进程成为新的会话组长和新的进程组长，并与原来的登录会话和进程组脱离。由于会话过
+程对控制终端的独占性，进程同时与控制终端脱离。</li>
+<li>禁止进程重新打开控制终端
+现在，进程已经成为无终端的会话组长。但它可以重新申请打开一个控制终端。可以通过使进程不再
+成为会话组长来禁止进程重新打开控制终端：
+if(pid=fork())
+exit(0);//结束第一子进程，第二子进程继续（第二子进程不再是会话组长）</li>
+<li>关闭打开的文件描述符
+进程从创建它的父进程那里继承了打开的文件描述符。如不关闭，将会浪费系统资源，造成进程所在
+的文件系统无法卸下以及引起无法预料的错误。</li>
+<li>改变当前工作目录
+进程活动时，其工作目录所在的文件系统不能卸下。一般需要将工作目录改变到根目录。对于需要转
+储核心，写运行日志的进程将工作目录改变到特定目录如/tmpchdir(&quot;/&quot;)</li>
+<li>重设文件创建掩模
+进程从创建它的父进程那里继承了文件创建掩模。它可能修改守护进程所创建的文件的存取位。为防
+止这一点，将文件创建掩模清除：umask(0);</li>
 </ol>
-<p>打印信息不会继续出现在新的终端上。<br>
-会不会出现在新的终端上取决于新的 shell 的标准输出/错误输出的文件描述符是否与 test1-1 test1-2 进程相同。在原来终端未退出时，默认情况下（没有使用重定向）它们继承了父进程（即原来 shell）的文件描述符。在原来 shell 结束后，它们继承新的父进程的文件描述符，而新的文件描述符和原来文件描述符是不同的，所以不会。</p>
-<p>我们可以用重定向将输出重定向为指定设备。</p>
-<pre><code>tty #获取某个终端的控制台
-setsid ./test1-1 &gt;/dev/pts/1    #/dev/pts/1 是上面的结果
-</code></pre>
 </li>
 <li>
-<p><strong>如何将一个正常程序直接放入后台运行？（不要通过按键切换）</strong></p>
-<p>执行程序时，在命令后加上 &amp;，比如 <code>./test1-1 &amp;</code></p>
+<p><strong>用./test2 运行后直接成为守护进程</strong></p>
+</li>
+<li>
+<p><strong>test2 的进程标识、父进程标识是谁？如何查看？</strong></p>
+<p>进程 test2 的 ppid 为1，在 RedHat7.4 下为 systemd</p>
+<pre><code>ps -ef |grep test2
+pstree 1
+ps -ef |grep -E &quot;test2|systemd&quot;
+</code></pre>
+<p>测试截图：</p>
+<p><img src="/2017/10/18/Linux/homework/Linux守护进程/Linux守护进程2/1.jpg" alt="">
+<img src="/2017/10/18/Linux/homework/Linux守护进程/Linux守护进程2/2.jpg" alt=""></p>
+</li>
+<li>
+<p><strong>在另一个控制台中能否查看到test2 进程的相关信息？</strong></p>
+<p>能，完全一样。<br>
+测试截图：</p>
+<p><img src="/2017/10/18/Linux/homework/Linux守护进程/Linux守护进程2/3.jpg" alt=""></p>
+</li>
+<li>
+<p><strong>当test2 在后台运行时，如果CTRL+D 退出控制台登录，test2 会怎样？</strong></p>
+<p>test2 是守护进程，即使 [CTRL] + D 退出登录，只要操作系统保持运行，则 test2 会保持运行。</p>
+</li>
+<li>
+<p><strong>再次登录控制台后，test2 是否仍在运行？此时打印信息能否继续出现在新登录的终端上？</strong></p>
+<p>再次登陆，test2 仍在运行，打印信息不能出现在终端，原因上个题目已说。</p>
+</li>
+<li>
+<p><strong>引申问题：如果想在进程中打印信息并保证始终能被查看到，应该如何做？</strong></p>
+<p>守护进程没有控制终端进行信息的输出，而有些情况还需要根据进程提供的信息进行系统管理和维护工作。因此Linux提供了syslogd守护进程，专门用于接受其他守护进程提供的信息记录在指定位置来解决日志记录的问题。</p>
+<p>在 RedHat7.4 中没有syslogd，但是有rsyslogd守护进程，rsyslog的配置文件是<code>/etc/rsyslog.conf</code></p>
+<p>下面说明一下相关syslog函数：</p>
+<pre><code>// 函数说明
+#include &lt;syslog.h&gt;
+vodi openlog(const char *ident, int option, int facility);
+void syslog(int priority, const char *format, ...);
+void closelog(void);
+
+openlog函数原型如下：
+1）void openlog(const char* ident, int option, int facility);
+        //打开系统日志链接，必须步骤。
+ident   :信息来源，哪个可执行程序
+option  :控制标志的参数，多个可以同时使用，用|操作合并
+facility:指定消息类型，与配置文件对应，日志会写入配置文件指定位置。
+
+2）void syslog(int priority,const char* format,....);
+priority：消息级别，与openlog中的facility可以共同决定日志写入位置。
+format  ：消息格式，再后面为格式对应的参数，类似printf的使用
+ 
+3）void closelog();
+关闭系统日志链接，可选步骤。
+</code></pre>
+<p>在原来的程序中打印学号的地方添加一行：</p>
+<pre><code>syslog(LOG_INFO, &quot;1453381\n&quot;);
+</code></pre>
+<p>执行后，查看新增信息</p>
+<pre><code>tail -f /var/log/messages
+</code></pre>
+<p>测试截图：</p>
+<p><img src="/2017/10/18/Linux/homework/Linux守护进程/Linux守护进程2/4.jpg" alt=""></p>
 </li>
 </ul>
 
@@ -11690,6 +11737,270 @@ int main(int argc, char **argv){
 <p><strong>提示：当极限测试导致子进程分裂失败后，Linux 系统还能正常操作吗？</strong></p>
 <p>已经不能正常工作。</p>
 <p><img src="/2017/10/18/Linux/homework/Linux守护进程/Linux守护进程5/9.jpg" alt=""></p>
+</li>
+</ul>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/10/18/Linux/homework/Linux守护进程/Linux守护进程1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="BaiJiazm">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/headPhoto.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="BaiJiazm">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/10/18/Linux/homework/Linux守护进程/Linux守护进程1/" itemprop="url">Linux守护进程1</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-18T19:44:25+08:00">
+                2017-10-18
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <hr>
+<h4>Linux守护进程1——程序前后台切换</h4>
+<hr>
+<ul>
+<li>
+<p><strong>写test1-1.c/test1-2.c 两个程序，都是死循环操作，每5 秒打印一句话，写配套的makefile 文件，make 后可生成test1-1和test1-2 两个可执行文件</strong></p>
+<pre><code>//test1-1.c
+#include&lt;stdio.h&gt;
+#include&lt;unistd.h&gt;
+
+#define SLEEP_TIME 5
+
+int main(){
+        while(1){
+                printf(&quot;1453381\n&quot;);
+                sleep(SLEEP_TIME);
+        }
+        return 0;
+}
+
+//test1-2.c
+
+#include&lt;stdio.h&gt;
+#include&lt;unistd.h&gt;
+
+#define SLEEP_TIME 5
+
+int main(){
+        while(1){
+                printf(&quot;曾鸣\n&quot;);
+                sleep(SLEEP_TIME);
+        }
+        return 0;
+}
+</code></pre>
+<p>makefile ：</p>
+<pre><code>cc ?= gcc
+
+srcNames :=test1-1 test1-2
+
+all :
+	@for src in $(srcNames) ; \
+	do \
+		$(cc) -o $$src &quot;$$src&quot;.c ; \
+	done
+
+clean :
+	rm -f *.o $(srcNames)
+
+.PHONY : all clean
+</code></pre>
+</li>
+<li>
+<p><strong>用SecureCRT登录系统（简称控制台），然后./test1-1 运行test1-1 程序，控制台进入死循环，不再出现#或$提示符</strong></p>
+</li>
+<li>
+<p><strong>如何将test1-1 放入后台运行？</strong></p>
+<p>程序运行时在终端按下 [Ctrl] + z，使工作转入后台，但此时工作停止，需要使用 bg 来使之运行。</p>
+</li>
+<li>
+<p><strong>如何查看在后台的test1-1 程序的信息？</strong></p>
+<ul>
+<li>
+<p>jobs命令<br>
+功能：查看当前终端后台运行的任务<br>
+<code>jobs -l</code>选项可显示当前终端所有任务的PID，jobs的状态可以是running，stopped，Terminated。+ 号表示当前任务，- 号表示后一个任务。</p>
+</li>
+<li>
+<p>ps命令<br>
+功能：ps命令用于报告当前系统的进程状态<br>
+<code>ps -ef | grep &quot;test1-1&quot;</code><br>
+-a：显示所有终端机下执行的程序<br>
+-f：显示UID,PPIP,C与STIME栏位。</p>
+</li>
+</ul>
+<p>测试截图</p>
+<p><img src="/2017/10/18/Linux/homework/Linux守护进程/Linux守护进程1/1.jpg" alt=""></p>
+</li>
+<li>
+<p><strong>如何使test1-1 重新切换到前台来？</strong></p>
+<p>fg 命令</p>
+</li>
+<li>
+<p><strong>再次将test1-1 放入后台，./test1-2 运行test1-2 程序，然后将test1-2 也放入后台如何控制将test1-1/test1-2 中的某一个切换到前台来？</strong></p>
+<p>fg + 工作序号。如 fg 2 会让 test1-2 回到前台。<br>
+同理，如果后台有多个工作停止，则使用 bg + 工作序号可以使指定工作开始后台运行。</p>
+<p><code>[1]- [2]+</code>，加号代表当前工作为<code>[2]</code>，减号代表当前工作的下一个工作为<code>[1]</code>。它们表明了工作执行的顺序，如果你使用不加序号的 fg 命令，则默认把带加号的工作提到前台。</p>
+<p>测试截图</p>
+<p><img src="/2017/10/18/Linux/homework/Linux守护进程/Linux守护进程1/2.jpg" alt=""></p>
+</li>
+<li>
+<p><strong>test1-1/test1-2 的父进程标识是谁？如何查看？</strong></p>
+<pre><code>ps -ef | grep test1-1   #查看test1-1进程信息
+pstree pid  #查看pid进程树
+ps -ef | grep pid #筛选出包含与pid有关的进程，其中第二列为pid，第三列为ppid
+</code></pre>
+<p>测试截图</p>
+<p><img src="/2017/10/18/Linux/homework/Linux守护进程/Linux守护进程1/3.jpg" alt=""><br>
+<img src="/2017/10/18/Linux/homework/Linux守护进程/Linux守护进程1/4.jpg" alt=""></p>
+</li>
+<li>
+<p><strong>用SecureCRT 再登录一个控制台，用什么命令可以看到test1-1/test1-2 的信息？此时父进
+程标识是谁？如何查看？</strong></p>
+<p>同上，一样的命令可以查看，原进程pid及ppid不变，此时的bash进程pid不同。</p>
+</li>
+<li>
+<p><strong>当test1-1/test1-2 在后台运行时，如果CTRL+D 退出该控制台登录，在另一个控制台再查看test1-1/test1-2 的信息，此时父进程标识是谁？</strong></p>
+<p>父进程PID 是 1。</p>
+<p>测试截图</p>
+<p><img src="/2017/10/18/Linux/homework/Linux守护进程/Linux守护进程1/5.jpg" alt=""></p>
+</li>
+<li>
+<p><strong>能否使test1-1/test1-2 在终端退出登录后继续运行（不是再次运行）？此时打印信息能否继续出现在新登录的终端上？</strong></p>
+<ol>
+<li>
+<p>setsid命令，用setsid来启动程序，使启动的进程在新的session中，并且终端关闭时，进程不退出。</p>
+<pre><code>setsid ./test1-1 &amp;
+setsid ./test1-2 &amp;
+</code></pre>
+</li>
+<li>
+<p>nohup命令，被nohup启动的程序会忽略SIGHUP信号。</p>
+<pre><code>nohup ./test1-1 &amp;
+nohup ./test1-2 &amp;
+</code></pre>
+<p>nohup命令可以将程序以忽略挂起信号的方式运行起来，被运行的程序的输出信息将不会显示到终端。 无论是否将 nohup 命令的输出重定向到终端，输出都将附加到当前目录的 nohup.out 文件中。如果当前目录的 nohup.out 文件不可写，输出重定向到$HOME/nohup.out文件中。</p>
+</li>
+<li>
+<p>对于jobs中的后台程序，通过disown命令</p>
+<pre><code>disown -h %id   #id表示jobs中的id
+</code></pre>
+</li>
+</ol>
+<p>打印信息不会继续出现在新的终端上。<br>
+会不会出现在新的终端上取决于新的 shell 的标准输出/错误输出的文件描述符是否与 test1-1 test1-2 进程相同。在原来终端未退出时，默认情况下（没有使用重定向）它们继承了父进程（即原来 shell）的文件描述符。在原来 shell 结束后，它们继承新的父进程的文件描述符，而新的文件描述符和原来文件描述符是不同的，所以不会。</p>
+<p>我们可以用重定向将输出重定向为指定设备。</p>
+<pre><code>tty #获取某个终端的控制台
+setsid ./test1-1 &gt;/dev/pts/1    #/dev/pts/1 是上面的结果
+</code></pre>
+</li>
+<li>
+<p><strong>如何将一个正常程序直接放入后台运行？（不要通过按键切换）</strong></p>
+<p>执行程序时，在命令后加上 &amp;，比如 <code>./test1-1 &amp;</code></p>
 </li>
 </ul>
 
@@ -13679,7 +13990,7 @@ end tell
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">74</span>
+                  <span class="site-state-item-count">75</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -13692,7 +14003,7 @@ end tell
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">32</span>
+                  <span class="site-state-item-count">34</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
