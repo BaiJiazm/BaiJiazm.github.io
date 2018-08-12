@@ -1,7 +1,8 @@
 ---
 title: Linux动态编译
 date: 2017/10/8 22:16:50 
-tag: Linux
+tag: 
+- Linux
 ---
 
 ---

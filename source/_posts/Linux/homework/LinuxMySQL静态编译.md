@@ -1,7 +1,8 @@
 ---
 title: Linux-MySQL的静态编译
 date: 2017/10/8 23:26:12 
-tag: Linux
+tag:
+- Linux
 ---
 
 ---

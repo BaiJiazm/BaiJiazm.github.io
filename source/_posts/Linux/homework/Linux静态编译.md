@@ -1,7 +1,8 @@
 ---
 title: Linux静态编译
 date: 2017/10/8 21:45:01 
-tag: Linux
+tag: 
+- Linux
 ---
 
 ---

@@ -1,7 +1,8 @@
 ---
 title: Linux-rpm包的制作
 date: 2017/10/22 11:21:19 
-tag: Linux
+tag: 
+- Linux
 ---
 
 ---

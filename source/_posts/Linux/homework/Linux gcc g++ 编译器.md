@@ -1,7 +1,10 @@
 ---
 title: Linux gcc g++ 编译器
 date: 2017/10/8 11:58:07 
-tags: Linux gcc g++ 
+tags: 
+- Linux
+- gcc
+- g++ 
 ---
 
 ## GCC/G++编译器

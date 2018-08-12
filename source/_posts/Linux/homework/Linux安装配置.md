@@ -1,7 +1,8 @@
 ---
 title: Linux安装配置
 date: 2017/10/8 14:22:13 
-tags: Linux
+tags: 
+- Linux
 ---
 
 ## 1.安装Linux基本系统
