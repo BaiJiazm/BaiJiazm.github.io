@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Review," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="简述C++虚函数作用及底层实现原理
+
+C/C++杂记：虚函数的实现的基本原理
+C++虚函数实现多态原理
+
+内联函数、构造函数、静态成员函数可以是虚函数吗？
+
+都不可以。内联函数需要在编译阶段展开，而虚函数是运行时动态绑定的，编译时无法展开； 构造函数在进行调用时还不存在父类和子类的概念，父类只会调用父类的构造函数，子类调用子类的，因此不存在动态绑定的概念；静态成员函数是以类为单位的函数，与具体对象">
+<meta property="og:type" content="article">
+<meta property="og:title" content="BAT经典面试题">
+<meta property="og:url" content="http://yoursite.com/2018/03/08/Review/BAT经典面试题/index.html">
+<meta property="og:site_name" content="BaiJiazm">
+<meta property="og:description" content="简述C++虚函数作用及底层实现原理
+
+C/C++杂记：虚函数的实现的基本原理
+C++虚函数实现多态原理
+
+内联函数、构造函数、静态成员函数可以是虚函数吗？
+
+都不可以。内联函数需要在编译阶段展开，而虚函数是运行时动态绑定的，编译时无法展开； 构造函数在进行调用时还不存在父类和子类的概念，父类只会调用父类的构造函数，子类调用子类的，因此不存在动态绑定的概念；静态成员函数是以类为单位的函数，与具体对象">
+<meta property="og:updated_time" content="2018-03-22T12:09:56.390Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="BAT经典面试题">
+<meta name="twitter:description" content="简述C++虚函数作用及底层实现原理
+
+C/C++杂记：虚函数的实现的基本原理
+C++虚函数实现多态原理
+
+内联函数、构造函数、静态成员函数可以是虚函数吗？
+
+都不可以。内联函数需要在编译阶段展开，而虚函数是运行时动态绑定的，编译时无法展开； 构造函数在进行调用时还不存在父类和子类的概念，父类只会调用父类的构造函数，子类调用子类的，因此不存在动态绑定的概念；静态成员函数是以类为单位的函数，与具体对象">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.3',
+    sidebar: {"position":"right","display":"hide","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/03/08/Review/BAT经典面试题/"/>
+
+
+
+
+
+  <title>BAT经典面试题 | BaiJiazm</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">BaiJiazm</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">每一段路都是一种领悟:)</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/03/08/Review/BAT经典面试题/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="BaiJiazm">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/headPhoto.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="BaiJiazm">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">BAT经典面试题</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-08T19:33:08+08:00">
+                2018-03-08
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h5>简述C++虚函数作用及底层实现原理</h5>
+<ul>
+<li><a href="https://www.cnblogs.com/malecrab/p/5572730.html" target="_blank" rel="external">C/C++杂记：虚函数的实现的基本原理</a></li>
+<li><a href="https://www.cnblogs.com/jiayayao/p/6279483.html" target="_blank" rel="external">C++虚函数实现多态原理</a></li>
+</ul>
+<h5>内联函数、构造函数、静态成员函数可以是虚函数吗？</h5>
+<ul>
+<li>都不可以。内联函数需要在编译阶段展开，而虚函数是运行时动态绑定的，编译时无法展开； 构造函数在进行调用时还不存在父类和子类的概念，父类只会调用父类的构造函数，子类调用子类的，因此不存在动态绑定的概念；静态成员函数是以类为单位的函数，与具体对象无关，虚函数是与对象动态绑定的，因此是两个不冲突的概念；</li>
+</ul>
+<h5>构造函数中可以调用虚函数吗？</h5>
+<ul>
+<li>可以，但是没有动态绑定的效果，父类构造函数中调用的仍然是父类版本的函数，子类中调用的仍然是子类版本的函数</li>
+</ul>
+<h5>简述C++中虚继承的作用及底层实现原理?</h5>
+<ul>
+<li>虚继承用于解决多继承条件下的菱形继承问题，底层实现原理与编译器相关，一般通过虚基类指针实现，即各对象中只保存一份父类的对象，多继承时通过虚基类指针引用该公共对象，从而避免菱形继承中的二义性问题。</li>
+<li><a href="http://www.oschina.net/translate/cpp-virtual-inheritance" target="_blank" rel="external">C++ 多继承和虚继承的内存布局</a></li>
+</ul>
+<h5>C++空类占用一字节</h5>
+<ul>
+<li><a href="http://blog.csdn.net/xiong452980729/article/details/71077144" target="_blank" rel="external">C++中空类占一字节原因详解</a></li>
+</ul>
+<h5>结构体大小</h5>
+<ul>
+<li><a href="https://baijiazm.github.io/2018/03/05/Review/C%E8%AF%AD%E8%A8%80%E7%9A%84%E5%AD%97%E8%8A%82%E5%AF%B9%E9%BD%90/" target="_blank" rel="external">C语言的字节对齐</a></li>
+</ul>
+<p>注意：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">struct</span> A &#123;</div><div class="line">	<span class="keyword">char</span> a;</div><div class="line">	<span class="keyword">char</span> b;</div><div class="line">	<span class="keyword">char</span> c;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+<p>A的大小是3,结构体中每个成员的起始地址是<code>min(成员类型大小,pack)</code>的整数倍，整个结构体大小是最大成员大小的整数倍。</p>
+<h5>Struct和Class的区别</h5>
+<ul>
+<li><a href="http://blog.csdn.net/yuliu0552/article/details/6717915" target="_blank" rel="external">Struct和Class的区别</a></li>
+</ul>
+<h5>C++中成员函数能够同时用static和const进行修饰？</h5>
+<ul>
+<li>否，因为static表⽰示该函数为静态成员函数，为类所有；而const是用于修饰成员函数的，两者相矛盾。<code>[Error] static member function 'static void Test::fun()' cannot have cv-qualifier</code></li>
+</ul>
+<h5>C++中包含哪几种强制类型转换？他们有什么区别和联系？</h5>
+<p><a href="https://www.nowcoder.com/ta/nine-chapter/review?page=19" target="_blank" rel="external">参考答案</a>
+<a href="http://blog.jobbole.com/107033/" target="_blank" rel="external">C++ 的强制类型转换</a></p>
+<h5>简述Linux内存分配--伙伴系统 原理</h5>
+<p>参考答案：伙伴系统，其思想是：把内存块分成不同的组(1,2,4,8,16,32....)；分配内存时找到能够满足条件 的最小的块；如果找不到，就找大的块，然后一分为2，分配一块，留一块；回收时：如果有相邻的同样大小的块，则合并</p>
+<h5>使用mmap读写文件为什么比普通读写函数要快？</h5>
+<ul>
+<li><a href="http://blog.csdn.net/kai8wei/article/details/77980201" target="_blank" rel="external">mmap为什么比read/write快</a></li>
+</ul>
+<h5>实现一个Memcpy函数</h5>
+<ul>
+<li><a href="https://my.oschina.net/renhc/blog/36345" target="_blank" rel="external">实现memcpy函数</a>（代码较好，基本正确）</li>
+<li><a href="https://www.nowcoder.com/questionTerminal/9602083ec8d749999d86adf8a725b4f7" target="_blank" rel="external">实现一个Memcpy函数</a>（评论中有一个按照int 字节拷贝，效率提升，值得借鉴。）</li>
+</ul>
+<h5>100亿个整数，内存足够，如何找到中位数？内存不足，如何找到中位数？</h5>
+<ul>
+<li><a href="https://www.nowcoder.com/ta/nine-chapter/review?page=5" target="_blank" rel="external">参考答案</a></li>
+</ul>
+<h5>设计并实现一个LRU Cache</h5>
+<ul>
+<li><a href="https://songlee24.github.io/2015/05/10/design-LRU-Cache/" target="_blank" rel="external">设计并实现一个LRU Cache</a></li>
+</ul>
+<h5>请简述智能指针原理，并实现一个简单的智能指针</h5>
+<ul>
+<li><a href="https://www.nowcoder.com/ta/nine-chapter/review?page=6" target="_blank" rel="external">参考答案</a></li>
+<li><a href="http://www.cnblogs.com/QG-whz/p/4777312.html" target="_blank" rel="external">C++ 引用计数技术及智能指针的简单实现</a></li>
+<li><a href="http://www.cnblogs.com/lanxuezaipiao/p/4132096.html" target="_blank" rel="external">C++智能指针简单剖析</a></li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">class</span> SmartPointer;</div><div class="line"></div><div class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div><div class="line"><span class="keyword">class</span> Counter &#123;</div><div class="line">		<span class="keyword">friend</span> <span class="keyword">class</span> SmartPointer&lt;T&gt;;</div><div class="line">	<span class="keyword">private</span>:</div><div class="line">		T* ptr;</div><div class="line">		<span class="keyword">int</span> cnt;</div><div class="line">	<span class="keyword">public</span>:</div><div class="line">		Counter() &#123;</div><div class="line">			ptr = <span class="literal">NULL</span>;</div><div class="line">			cnt = <span class="number">0</span>;</div><div class="line">		&#125;</div><div class="line">		Counter(T* p) &#123;</div><div class="line">			ptr = p;</div><div class="line">			cnt = <span class="number">1</span>;</div><div class="line">		&#125;</div><div class="line">		~Counter() &#123;</div><div class="line">			<span class="keyword">delete</span> ptr;</div><div class="line">		&#125;</div><div class="line">&#125;;</div><div class="line"></div><div class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</div><div class="line"><span class="keyword">class</span> SmartPointer &#123;</div><div class="line">	<span class="keyword">private</span>:</div><div class="line">		Counter* ptr_counter;</div><div class="line">	<span class="keyword">public</span>:</div><div class="line">		SmartPointer(T* p) &#123;</div><div class="line">			ptr_counter = <span class="keyword">new</span> Counter(p);</div><div class="line">		&#125;</div><div class="line">		SmartPointer(<span class="keyword">const</span> SmartPointer &amp;sp) &#123;</div><div class="line">			ptr_counter = sp.ptr_counter;</div><div class="line">			++ptr_count-&gt;cnt;</div><div class="line">		&#125;</div><div class="line">		SmartPointer&amp; <span class="keyword">operator</span>=(<span class="keyword">const</span> SmartPointer &amp;sp) &#123;</div><div class="line">			++sp.ptr_counter-&gt;cnt;</div><div class="line">			--ptr_counter-&gt;cnt;</div><div class="line">			<span class="keyword">if</span> (ptr_counter-&gt;cnt == <span class="number">0</span>) &#123;</div><div class="line">				<span class="keyword">delete</span> ptr_counter;</div><div class="line">			&#125;</div><div class="line">			ptr_counter = sp.ptr_counter;</div><div class="line">		&#125;</div><div class="line">		~SmartPointer() &#123;</div><div class="line">			--ptr_counter-&gt;cnt;</div><div class="line">			<span class="keyword">if</span> (ptr_counter-&gt;cnt == <span class="number">0</span>) &#123;</div><div class="line">				<span class="keyword">delete</span> ptr_counter;</div><div class="line">			&#125;</div><div class="line">		&#125;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Review/" rel="tag"># Review</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/03/07/C++/C++ STL优先队列 priority_queue/" rel="next" title="C++ STL优先队列 priority_queue">
+                <i class="fa fa-chevron-left"></i> C++ STL优先队列 priority_queue
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/03/16/Linux/Linux 多线程 pthread/" rel="prev" title="Linux 多线程 pthread">
+                Linux 多线程 pthread <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/headPhoto.png"
+                alt="BaiJiazm" />
+            
+              <p class="site-author-name" itemprop="name">BaiJiazm</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">75</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">36</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/BaiJiazm" target="_blank" title="GitHub">
+                    
+                      <i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="mailto:b110011@qq.com" target="_blank" title="E-Mail">
+                    
+                      <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-5"><a class="nav-link" href="#undefined"><span class="nav-number">1.</span> <span class="nav-text">简述C++虚函数作用及底层实现原理</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#undefined"><span class="nav-number">2.</span> <span class="nav-text">内联函数、构造函数、静态成员函数可以是虚函数吗？</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#undefined"><span class="nav-number">3.</span> <span class="nav-text">构造函数中可以调用虚函数吗？</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#undefined"><span class="nav-number">4.</span> <span class="nav-text">简述C++中虚继承的作用及底层实现原理?</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#undefined"><span class="nav-number">5.</span> <span class="nav-text">C++空类占用一字节</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#undefined"><span class="nav-number">6.</span> <span class="nav-text">结构体大小</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#undefined"><span class="nav-number">7.</span> <span class="nav-text">Struct和Class的区别</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#undefined"><span class="nav-number">8.</span> <span class="nav-text">C++中成员函数能够同时用static和const进行修饰？</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#undefined"><span class="nav-number">9.</span> <span class="nav-text">C++中包含哪几种强制类型转换？他们有什么区别和联系？</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#undefined"><span class="nav-number">10.</span> <span class="nav-text">简述Linux内存分配--伙伴系统 原理</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#undefined"><span class="nav-number">11.</span> <span class="nav-text">使用mmap读写文件为什么比普通读写函数要快？</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#undefined"><span class="nav-number">12.</span> <span class="nav-text">实现一个Memcpy函数</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#undefined"><span class="nav-number">13.</span> <span class="nav-text">100亿个整数，内存足够，如何找到中位数？内存不足，如何找到中位数？</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#undefined"><span class="nav-number">14.</span> <span class="nav-text">设计并实现一个LRU Cache</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#undefined"><span class="nav-number">15.</span> <span class="nav-text">请简述智能指针原理，并实现一个简单的智能指针</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">BaiJiazm</span>
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
