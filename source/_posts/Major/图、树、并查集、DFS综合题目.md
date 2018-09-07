@@ -9,8 +9,6 @@ tags:
 ### LeetCode 685. Redundant Connection II
 好久没做Leetcode了，今天突发奇想，看到了一道综合性比较强的题目，花了一点时间自己做出来了，厉害！基本Leetcode题解我都是不会写的，直接在代码里有注释或方法及链接。具体可看[题解](https://github.com/BaiJiazm/DS-Algorithm)
 
-### Leetcode 164. Maximum Gap
-
 * [题目链接](https://leetcode.com/problems/redundant-connection-ii/description/)
 
 这道题目很好的考查了树的性质和图的基本知识，以及运用这些性质结合DFS和并查集解决问题的能力。
