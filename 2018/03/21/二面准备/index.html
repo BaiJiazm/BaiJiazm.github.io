@@ -1,0 +1,929 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="腾讯二面准备
+2018/3/21 11:44:44
+编程基本功扎实，掌握C/C++/JAVA等开发语言、常用算法和数据结构；
+熟悉TCP/UDP网络协议及相关编程、进程间通讯编程；
+了解Python、Shell、Perl等脚本语言；
+了解MYSQL及SQL语言、编程，了解NoSQL, key-value存储原理；
+全面、扎实的软件知识结构，掌握操作系统、软件工程、设计模式、数据结构、数据库系统、网">
+<meta property="og:type" content="article">
+<meta property="og:title" content="BaiJiazm">
+<meta property="og:url" content="http://yoursite.com/2018/03/21/二面准备/index.html">
+<meta property="og:site_name" content="BaiJiazm">
+<meta property="og:description" content="腾讯二面准备
+2018/3/21 11:44:44
+编程基本功扎实，掌握C/C++/JAVA等开发语言、常用算法和数据结构；
+熟悉TCP/UDP网络协议及相关编程、进程间通讯编程；
+了解Python、Shell、Perl等脚本语言；
+了解MYSQL及SQL语言、编程，了解NoSQL, key-value存储原理；
+全面、扎实的软件知识结构，掌握操作系统、软件工程、设计模式、数据结构、数据库系统、网">
+<meta property="og:updated_time" content="2018-03-22T08:21:40.015Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="BaiJiazm">
+<meta name="twitter:description" content="腾讯二面准备
+2018/3/21 11:44:44
+编程基本功扎实，掌握C/C++/JAVA等开发语言、常用算法和数据结构；
+熟悉TCP/UDP网络协议及相关编程、进程间通讯编程；
+了解Python、Shell、Perl等脚本语言；
+了解MYSQL及SQL语言、编程，了解NoSQL, key-value存储原理；
+全面、扎实的软件知识结构，掌握操作系统、软件工程、设计模式、数据结构、数据库系统、网">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.3',
+    sidebar: {"position":"right","display":"hide","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/03/21/二面准备/"/>
+
+
+
+
+
+  <title> | BaiJiazm</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">BaiJiazm</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">每一段路都是一种领悟:)</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/03/21/二面准备/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="BaiJiazm">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/headPhoto.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="BaiJiazm">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline"></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-21T11:44:03+08:00">
+                2018-03-21
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/03/21/二面准备/" class="leancloud_visitors" data-flag-title="">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3>腾讯二面准备</h3>
+<p>2018/3/21 11:44:44</p>
+<p>编程基本功扎实，掌握C/C++/JAVA等开发语言、常用算法和数据结构；
+<strong>熟悉TCP/UDP网络协议及相关编程、进程间通讯编程；</strong>
+了解Python、Shell、Perl等脚本语言；
+了解MYSQL及SQL语言、编程，了解NoSQL, key-value存储原理；
+全面、扎实的软件知识结构，掌握操作系统、软件工程、设计模式、数据结构、数据库系统、网络安全等专业知识；
+了解分布式系统设计与开发、负载均衡技术，系统容灾设计，高可用系统等知识。</p>
+<h3>复习计划</h3>
+<hr>
+<h3>操作系统及网络编程部分</h3>
+<h5>Linux进程间通讯方式及编程知识</h5>
+<ul>
+<li>见总结文档及demo程序</li>
+</ul>
+<h4>多个进程同时写共享内存，如何防止内容乱？</h4>
+<ul>
+<li><a href="http://zhangxiaoya.github.io/2015/05/15/multi-thread-of-c-program-language-on-linux/" target="_blank" rel="external">Linux 下多线程</a></li>
+</ul>
+<h4>多线程访问共享内存的不加锁实现方式</h4>
+<ul>
+<li><a href="http://blog.csdn.net/ywh147/article/details/8675532" target="_blank" rel="external">多线程访问共享内存的不加锁实现方式</a></li>
+</ul>
+<h4>进程线程的区别</h4>
+<h4>同步和异步、阻塞与非阻塞</h4>
+<h4>select、poll和epoll</h4>
+<ul>
+<li><a href="https://segmentfault.com/a/1190000004909797#articleHeader25" target="_blank" rel="external">I/O并发编程总结</a></li>
+<li><a href="https://segmentfault.com/a/1190000003063859" target="_blank" rel="external">Linux IO模式及 select、poll、epoll详解</a></li>
+</ul>
+<h4>共享内存两种机制</h4>
+<ul>
+<li>共享内存可以通过 mmap()映射普通文件（特殊情况下还可以采用匿名映射）机制实现， 也可以通过 System V 共享内存机制实现。</li>
+<li>mmap 的机制：在磁盘上建立一个文件，每个进程存储器里面，单独开辟一个空间来进 行映射。mmap 保存到实际硬盘。优点：储存量可以很大（多于主存）；缺点：进程间读 取和写入速度要比主存的要慢。</li>
+<li>shm 的机制：每个进程的共享内存都直接映射到实际物理存储器里面。shm 保存到物理存储器（主存），实际的储存量直接反映到主存上。优点，进程间访问速度（读写）比磁 盘要快；缺点，储存量不能非常大（多于主存） 。</li>
+<li>使用上看：如果分配的存储量不大，那么使用 shm；如果存储量大，那么使用 mmap。</li>
+</ul>
+<h4>产生死锁的条件</h4>
+<ul>
+<li>互斥条件（Mutualexclusion）：资源不能被共享，只能由一个进程使用。</li>
+<li>请求与保持条件（Hold andwait）：已经得到资源的进程可以再次申请新的资源。</li>
+<li>非剥夺条件（Nopre-emption）：已经分配的资源不能从相应的进程中被强制地剥夺。</li>
+<li>循环等待条件（ Circularwait ）：系统中若干进程组成环路，该环路中每个进程都在等待相 邻进程正占用的资源。</li>
+</ul>
+<hr>
+<h3>TCP/IP协议栈部分</h3>
+<h4>http状态码及报文格式</h4>
+<ul>
+<li><a href="http://www.runoob.com/http/http-status-codes.html" target="_blank" rel="external">HTTP 教程</a></li>
+</ul>
+<h4>http和https的区别</h4>
+<ul>
+<li><a href="https://juejin.im/entry/58d7635e5c497d0057fae036" target="_blank" rel="external">详细解析 HTTP 与 HTTPS 的区别</a></li>
+</ul>
+<h4>微信扫一扫登录电脑界面的机制</h4>
+<ul>
+<li><a href="http://blog.csdn.net/qq_25827845/article/details/78823861" target="_blank" rel="external">微信扫码登录原理解析</a></li>
+</ul>
+<h4>断点续传</h4>
+<ul>
+<li><a href="https://my.oschina.net/ososchina/blog/371468" target="_blank" rel="external">Http 206 文件断点续传下载原理</a></li>
+<li><a href="http://blog.csdn.net/liang19890820/article/details/53215087" target="_blank" rel="external">HTTP 断点续传（分块传输）</a></li>
+</ul>
+<h4>TCP三次握手，最后一次ACK包可以携带数据吗？有什么东西控制吗？什么时候携带数据？</h4>
+<h4>TCP四次挥手，为什么要有TIME_WAIT？如果有大量的TIME_WAIT怎么解决？</h4>
+<ul>
+<li>
+<ol>
+<li>A不能保证最后的ACK能达到B， 所以， 还应该观望一段时间， 护送一段时间。 如果最后的ACK丢失， 那么B显然收不到,  B于是发起了重传FIN的操作， 此时如果A处于CLOSED的状态， 就没办法给对端发ACK了（实际是发RST）， 呜呼哀哉。 所以A应该等一段时间， 这段时间就是所谓的TIME_WAIT， 比如， 等待一个RTT的时间（实际上， 考虑到如下的理由之二就知道， RTT可能不够， 用2MSL更靠谱）。TIME_WAIT存在的理由之一是尽可能护送最后的ACK达到对端。</li>
+</ol>
+</li>
+<li>
+<ol start="2">
+<li>假设tcp连接是： A(1.2.3.4:8888)------B(6.7.8.9:9999), 这就是一个tcp四元组。 当tcp连接关闭后， 四元组释放。 后面的新连接可能会重用到这个四元组（有这个可能性）。所以， 可以考虑这样一个机制： 让旧四元组对应的所有网络包都消失后（等一段时间）， 才允许新四元组建立， 颇有点锁的味道。 TIME_WAIT存在的理由之二是新旧四元组互不干扰。</li>
+</ol>
+</li>
+</ul>
+<h4>tcp和udp的区别，tcp是怎么做错误处理的？</h4>
+<hr>
+<h3>其它部分</h3>
+<h4>海量数据处理</h4>
+<ul>
+<li><a href="https://github.com/nonstriater/Learn-Algorithms/blob/master/Algorithms%20Job%20Interview/%E6%B5%B7%E9%87%8F%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86.md" target="_blank" rel="external">海量数据处理</a></li>
+<li><a href="http://blog.csdn.net/v_july_v/article/details/6279498" target="_blank" rel="external">海量数据处理方法总结</a></li>
+<li><a href="https://segmentfault.com/a/1190000000510258" target="_blank" rel="external">海量数据处理之经典实例分析</a></li>
+</ul>
+<h4>怎么实现多服务器负载均衡</h4>
+<ul>
+<li><a href="http://lobert.iteye.com/blog/2159970" target="_blank" rel="external">六大Web负载均衡原理与实现</a></li>
+<li><a href="http://blog.jobbole.com/97957/" target="_blank" rel="external">负载均衡详解</a></li>
+</ul>
+<p>数据库的引擎以及区别</p>
+<p>数据库事务的特性、4个隔离级别</p>
+<hr>
+<h3>C++语言及语法部分</h3>
+<p>面向对象的特性，对于多态的理解。</p>
+<p>动态链接库的加载机制</p>
+<p>单继承中虚函数是怎么实现的？</p>
+<p>重载和多态有什么区别？</p>
+<p>C++11的一些特性，C++14呢，C++17呢？lamdba匿名函数了解吗？为什么要有lamdba匿名函数？有什么好处呢？</p>
+<p>多重继承为什么会含有多个虚表指针而不是一个？</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/03/20/Linux/Linux RedHat 7.4 安装Docker/" rel="next" title="Linux RedHat 7.4 安装Docker">
+                <i class="fa fa-chevron-left"></i> Linux RedHat 7.4 安装Docker
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/03/23/Review/编程语言C++/" rel="prev" title="编程语言C++">
+                编程语言C++ <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/headPhoto.png"
+                alt="BaiJiazm" />
+            
+              <p class="site-author-name" itemprop="name">BaiJiazm</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">85</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">37</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/BaiJiazm" target="_blank" title="GitHub">
+                    
+                      <i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="mailto:b110011@qq.com" target="_blank" title="E-Mail">
+                    
+                      <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-number">1.</span> <span class="nav-text">腾讯二面准备</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-number">2.</span> <span class="nav-text">复习计划</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-number">3.</span> <span class="nav-text">操作系统及网络编程部分</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#undefined"><span class="nav-number">3.0.1.</span> <span class="nav-text">Linux进程间通讯方式及编程知识</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">3.1.</span> <span class="nav-text">多个进程同时写共享内存，如何防止内容乱？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">3.2.</span> <span class="nav-text">多线程访问共享内存的不加锁实现方式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">3.3.</span> <span class="nav-text">进程线程的区别</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">3.4.</span> <span class="nav-text">同步和异步、阻塞与非阻塞</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">3.5.</span> <span class="nav-text">select、poll和epoll</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">3.6.</span> <span class="nav-text">共享内存两种机制</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">3.7.</span> <span class="nav-text">产生死锁的条件</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-number">4.</span> <span class="nav-text">TCP/IP协议栈部分</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">4.1.</span> <span class="nav-text">http状态码及报文格式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">4.2.</span> <span class="nav-text">http和https的区别</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">4.3.</span> <span class="nav-text">微信扫一扫登录电脑界面的机制</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">4.4.</span> <span class="nav-text">断点续传</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">4.5.</span> <span class="nav-text">TCP三次握手，最后一次ACK包可以携带数据吗？有什么东西控制吗？什么时候携带数据？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">4.6.</span> <span class="nav-text">TCP四次挥手，为什么要有TIME_WAIT？如果有大量的TIME_WAIT怎么解决？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">4.7.</span> <span class="nav-text">tcp和udp的区别，tcp是怎么做错误处理的？</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-number">5.</span> <span class="nav-text">其它部分</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">5.1.</span> <span class="nav-text">海量数据处理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">5.2.</span> <span class="nav-text">怎么实现多服务器负载均衡</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-number">6.</span> <span class="nav-text">C++语言及语法部分</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+<span id="busuanzi_container_site_pv">
+  ��վ�ÿ���<span id="busuanzi_container_site_pv"></span>�˴�
+</span>
+
+<div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">BaiJiazm</span>
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("BR0Dv2XEuorHU2g9PzPTNnxM-gzGzoHsz", "oUWWDTzlTGNk6P1xoYo25hi0");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
